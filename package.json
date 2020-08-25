@@ -1,0 +1,68 @@
+{
+  "name": "vue3-gettext",
+  "version": "0.1.0",
+  "description": "Translate your Vue.js applications with gettext",
+  "author": "Leo Zurbriggen",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jshmrtn/vue3-gettext"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org"
+  },
+  "scripts": {
+    "start": "cd ./dev && vite",
+    "build": "npm run build:esm && npm run build:commonjs",
+    "build:esm": "tsc -m es2015 -d --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/esm",
+    "build:commonjs": "tsc -m commonjs --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/commonjs",
+    "test": "npm run test:lint && npm run test:unit",
+    "test:lint": "eslint src dev",
+    "test:unit": "jest",
+    "test:jest2": "jest -i directive.spec.ts -t 'returns an unchanged string when no translation is available for a language'"
+  },
+  "engines": {
+    "npm": ">= 3.0.0"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0-rc.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.9",
+    "@types/node": "^14.0.27",
+    "@vue/test-utils": "^2.0.0-beta.2",
+    "date-fns": "^2.15.0",
+    "easygettext": "^2.13.0",
+    "eslint": "^4.18.2",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-friendly-formatter": "^2.0.6",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-html": "^1.6.0",
+    "eslint-plugin-promise": "^3.3.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "jest": "^26.4.0",
+    "json-loader": "^0.5.4",
+    "prettier-eslint": "^11.0.0",
+    "puppeteer": "^1.17.0",
+    "ts-jest": "^26.2.0",
+    "typescript": "^3.9.7",
+    "vite": "^1.0.0-rc.4",
+    "vue": "^3.0.0-rc.5",
+    "vue-loader": "^10.3.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "main": "dist/cjs/index.js",
+  "exports": {
+    ".": {
+      "require": "./dist/commonjs/index.js",
+      "default": "./dist/esm/index.js"
+    }
+  },
+  "types": "dist/esm/index.d.ts",
+  "module": "./dist/esm/index.js",
+  "files": [
+    "dist",
+    "src",
+    "types/*.d.ts"
+  ]
+}
