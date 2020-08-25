@@ -1,5 +1,5 @@
 {
-  "name": "vue3-gettext",
+  "name": "@jshmrtn/vue3-gettext",
   "version": "0.1.0",
   "description": "Translate your Vue.js applications with gettext",
   "author": "Leo Zurbriggen",
@@ -62,7 +62,7 @@
   "module": "./dist/esm/index.js",
   "files": [
     "dist",
-    "src",
-    "types/*.d.ts"
+    "LICENSE",
+    "README.md"
   ]
 }
