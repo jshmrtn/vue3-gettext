@@ -11,6 +11,10 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
+  "bin": {
+    "gettext-extract": "./scripts/gettext_extract.js",
+    "gettext-compile": "./scripts/gettext_compile.js"
+  },
   "scripts": {
     "start": "cd ./dev && vite",
     "build": "npm run build:esm && npm run build:commonjs",
@@ -19,7 +23,10 @@
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint src dev",
     "test:unit": "jest",
-    "test:jest2": "jest -i directive.spec.ts -t 'returns an unchanged string when no translation is available for a language'"
+    "test:jest2": "jest -i directive.spec.ts -t 'returns an unchanged string when no translation is available for a language'",
+    "dev:extract": "node ./scripts/gettext_extract.js",
+    "dev:extract2": "make messages",
+    "dev:compile": "node ./scripts/gettext_compile.js"
   },
   "engines": {
     "npm": ">= 3.0.0"
@@ -32,7 +39,7 @@
     "@types/node": "^14.0.27",
     "@vue/test-utils": "^2.0.0-beta.2",
     "date-fns": "^2.15.0",
-    "easygettext": "^2.13.0",
+    "easygettext": "github:lzurbriggen/easygettext#vue3-compat",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^6.2.1",
     "eslint-friendly-formatter": "^2.0.6",
@@ -64,5 +71,8 @@
     "dist",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "dependencies": {
+    "shelljs": "^0.8.4"
+  }
 }

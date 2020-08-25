@@ -37,7 +37,7 @@
 
 <script>
 export default {
-  created: function() {
+  created: function () {
     // this.styles = styles;
   },
   data: () => ({
