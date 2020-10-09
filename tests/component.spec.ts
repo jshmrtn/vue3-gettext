@@ -1,5 +1,33 @@
-import translations from "./json/component.json";
 import { mountWithPlugin } from "./utils";
+
+const translations = {
+  "en_US": {
+      "Answer": {
+          "Noun": "Answer (noun)",
+          "Verb": "Answer (verb)"
+      },
+      "Hello %{ name }": "Hello %{ name }",
+      "Hello %{ user.details.name }": "Hello %{ user.details.name }",
+      "Pending": "Pending",
+      "%{ count } car": ["1 car", "%{ count } cars"],
+      "A lot of lines": "A lot of lines2"
+  },
+  "fr_FR": {
+      "Answer": {
+          "Noun": "Réponse (nom)",
+          "Verb": "Réponse (verbe)"
+      },
+      "Hello %{ name }": "Bonjour %{ name }",
+      "Hello %{ user.details.name }": "Bonjour %{ user.details.name }",
+      "Pending": "En cours",
+      "%{ count } car": ["1 véhicule", "%{ count } véhicules"],
+      "A lot of lines": "Plein de lignes"
+  }
+};
+
+
+
+        
 
 const mount = mountWithPlugin({
   availableLanguages: {
@@ -39,46 +67,41 @@ describe("translate component tests", () => {
     warnSpy.mockRestore();
   });
 
-  it("translates known strings", () => {
+  it("translates known strings", async () => {
     const wrapper = mount({ template: "<div><translate>Pending</translate></div>" });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>En cours</span>");
   });
 
-  it("translates multiline strings no matter the number of spaces", () => {
+  it("translates multiline strings no matter the number of spaces", async () => {
     const wrapper = mount({
-      template: `<div><translate tag="p">
-
-                      A
-
-                                        lot
-
-                      of
-
-                      lines
-
-        </translate></div>`,
+      template: `<div><translate tag="p">A lot    of  lines</translate></div>`,
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual(`<p>Plein de lignes</p>`);
   });
 
-  it("renders translation in custom html tag", () => {
+  it("renders translation in custom html tag", async () => {
     const wrapper = mount({ template: '<div><translate tag="h1">Pending</translate></div>' });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<h1>En cours</h1>");
   });
 
-  it("translates known strings according to a given translation context", () => {
+  it("translates known strings according to a given translation context", async () => {
     let wrapper = mount({ template: '<div><translate translate-context="Verb">Answer</translate></div>' });
     let vm = wrapper.vm as any;
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Answer (verb)</span>");
     wrapper = mount({ template: '<div><translate translate-context="Noun">Answer</translate></div>' });
     vm = wrapper.vm as any;
     vm.$language.current = "en_US";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Answer (noun)</span>");
   });
 
@@ -172,7 +195,7 @@ describe("translate component tests", () => {
     expect(vm.$el.innerHTML.trim()).toEqual("<span>2 véhicules</span>");
   });
 
-  it("updates a plural translation after a data change", async (done) => {
+  it("updates a plural translation after a data change", async () => {
     const wrapper = mount({
       template: `<p>
             <translate :translate-n="count" translate-plural="%{ count } cars">%{ count } car</translate>
@@ -184,25 +207,22 @@ describe("translate component tests", () => {
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
     await vm.$nextTick();
-    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>10 véhicules</span>");
     vm.count = 8;
-    vm.$nextTick(function() {
+    await vm.$nextTick();
+
       expect(vm.$el.innerHTML.trim()).toEqual("<span>8 véhicules</span>");
-      done();
-    });
   });
 
-  it("updates a translation after a language change", (done) => {
+  it("updates a translation after a language change", async () => {
     const wrapper = mount({ template: "<div><translate>Pending</translate></div>" });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>En cours</span>");
     vm.$language.current = "en_US";
-    vm.$nextTick(function() {
+    await vm.$nextTick();
       expect(vm.$el.innerHTML.trim()).toEqual("<span>Pending</span>");
-      done();
-    });
   });
 
   it("thrown errors if you forget to add a `translate-plural` attribute", async () => {

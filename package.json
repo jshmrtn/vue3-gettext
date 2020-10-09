@@ -22,8 +22,9 @@
     "build:commonjs": "tsc -m commonjs --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/commonjs",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "eslint src dev",
-    "test:unit": "jest",
-    "test:jest2": "jest -i directive.spec.ts -t 'returns an unchanged string when no translation is available for a language'",
+    "test:unit": "jest --watch",
+    "test:jest2": "jest -i directive.spec.ts -t 'translates multiline strings as-is, preserving the original content'",
+    "test:unit3": "jest -i component.spec.ts --silent --watch",
     "dev:extract": "node ./scripts/gettext_extract.js",
     "dev:extract2": "make messages",
     "dev:compile": "node ./scripts/gettext_compile.js"
@@ -32,14 +33,14 @@
     "npm": ">= 3.0.0"
   },
   "peerDependencies": {
-    "vue": "^3.0.0-rc.1"
+    "vue": "^3.0.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.9",
     "@types/node": "^14.0.27",
-    "@vue/test-utils": "^2.0.0-beta.2",
+    "@vue/test-utils": "^2.0.0-beta.6",
     "date-fns": "^2.15.0",
-    "easygettext": "github:lzurbriggen/easygettext#vue3-compat",
+    "easygettext": "github:Polyconseil/easygettext",
     "eslint": "^4.18.2",
     "eslint-config-standard": "^6.2.1",
     "eslint-friendly-formatter": "^2.0.6",
@@ -50,13 +51,11 @@
     "jest": "^26.4.0",
     "json-loader": "^0.5.4",
     "prettier-eslint": "^11.0.0",
-    "puppeteer": "^1.17.0",
     "ts-jest": "^26.2.0",
     "typescript": "^3.9.7",
     "vite": "^1.0.0-rc.4",
-    "vue": "^3.0.0-rc.5",
-    "vue-loader": "^10.3.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue": "^3.0.0",
+    "vue-loader": "^10.3.0"
   },
   "main": "dist/cjs/index.js",
   "exports": {

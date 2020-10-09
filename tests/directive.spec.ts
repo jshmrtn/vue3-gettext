@@ -1,14 +1,44 @@
-import translations from "./json/directive.json";
+// import translations from "./json/directive.json";
 import { mountWithPlugin } from "./utils";
+
+const translations = {
+  "en_US": {
+      "Answer": {
+          "Noun": "Answer (noun)",
+          "Verb": "Answer (verb)"
+      },
+      "Hello <strong>%{ name }</strong>": "Hello <strong>%{ name }</strong>",
+      "Hello %{ openingTag }%{ name }%{ closingTag }": "Hello %{ openingTag }%{ name }%{ closingTag }",
+      "Pending": "Pending",
+      "<strong>%{ count }</strong> car": ["<strong>1</strong> car", "<strong>%{ count }</strong> cars"],
+      "<strong>%{ count }</strong> %{ brand } car": ["<strong>1</strong> %{ brand } car", "<strong>%{ count }</strong> %{ brand } cars"],
+      "A\n\n\nlot\n\n\nof\n\nlines": "A\n\n\nlot\n\n\nof\n\nlines"
+  },
+  "fr_FR": {
+      "Answer": {
+          "Noun": "Réponse (nom)",
+          "Verb": "Réponse (verbe)"
+      },
+      "Hello %{ openingTag }%{ name }%{ closingTag }": "Bonjour %{ openingTag }%{ name }%{ closingTag }",
+      "Hello <strong>%{ name }</strong>": "Bonjour <strong>%{ name }</strong>",
+      "Pending": "En cours",
+      "<strong>%{ count }</strong> car": ["<strong>1</strong> véhicule", "<strong>%{ count }</strong> véhicules"],
+      "<strong>%{ count }</strong> %{ brand } car": ["<strong>1</strong> %{ brand } véhicule", "<strong>%{ count }</strong> %{ brand } véhicules"],
+      "A\n\n\nlot\n\n\nof\n\nlines": "Plein\n\n\nde\n\nlignes"
+  }
+}
+
 
 const mount = mountWithPlugin({
   availableLanguages: {
     en_US: "American English",
     fr_FR: "Français",
   },
-  defaultLanguage: "en_US",
+  defaultLanguage: "en_US2",
   translations: translations,
 });
+
+// console.log('translations', translations);
 
 describe("translate directive tests", () => {
   it("works on empty strings", () => {
