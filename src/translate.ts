@@ -15,7 +15,7 @@ const translate = (plugin: GetText) => ({
    *
    * @return {String} The translated string
    */
-  getTranslation: function(msgid: string, n: number = 1, context = null, defaultPlural = null, language?: string) {
+  getTranslation: function (msgid: string, n: number = 1, context = null, defaultPlural = null, language?: string) {
     if (language === undefined) {
       language = plugin.current;
     }
@@ -111,7 +111,7 @@ const translate = (plugin: GetText) => ({
    *
    * @return {String} The translated string
    */
-  gettext: function(msgid) {
+  gettext: function (msgid) {
     return this.getTranslation(msgid);
   },
 
@@ -124,7 +124,7 @@ const translate = (plugin: GetText) => ({
    *
    * @return {String} The translated string
    */
-  pgettext: function(context, msgid) {
+  pgettext: function (context, msgid) {
     return this.getTranslation(msgid, 1, context);
   },
 
@@ -139,7 +139,7 @@ const translate = (plugin: GetText) => ({
    *
    * @return {String} The translated string
    */
-  ngettext: function(msgid, plural, n) {
+  ngettext: function (msgid, plural, n) {
     return this.getTranslation(msgid, n, null, plural);
   },
 
@@ -155,7 +155,7 @@ const translate = (plugin: GetText) => ({
    *
    * @return {String} The translated string
    */
-  npgettext: function(context, msgid, plural, n) {
+  npgettext: function (context, msgid, plural, n) {
     return this.getTranslation(msgid, n, context, plural);
   },
 });

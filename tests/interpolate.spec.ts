@@ -1,5 +1,5 @@
 import rawInterpolate from "../src/interpolate";
-import translations from "./json/translate.json";
+import translations from "./json/translate";
 import { mountWithPlugin } from "./utils";
 import { GetText } from "../src";
 
@@ -38,7 +38,7 @@ describe("Interpolate tests", () => {
     let msgid = "Foo %{ placeholder } baz";
     let context = { placeholder: "<p>bar</p>" };
     let disableHtmlEscaping = true;
-    let interpolated = interpolate(msgid, context, disableHtmlEscaping);
+    let interpolated = interpolate(msgid, context, undefined, disableHtmlEscaping);
     expect(interpolated).toEqual("Foo <p>bar</p> baz");
   });
 

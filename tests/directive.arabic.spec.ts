@@ -1,4 +1,4 @@
-import translations from "./json/directive.arabic.json";
+import translations from "./json/directive.arabic";
 import { mountWithPlugin } from "./utils";
 
 const mount = mountWithPlugin({
@@ -21,7 +21,7 @@ describe("translate arabic directive tests", () => {
     expect(vm.$el.innerHTML).toEqual("البرتقالي");
   });
 
-  it("translates plural form 0", () => {
+  it("translates plural form 0", async () => {
     const count = 0;
     let vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
@@ -29,6 +29,7 @@ describe("translate arabic directive tests", () => {
         return { count };
       },
     }).vm;
+    await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual(`${count}أقل من يوم`);
   });
 

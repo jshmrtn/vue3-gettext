@@ -8,7 +8,7 @@
  * https://github.com/rubenv/angular-gettext/blob/master/src/plural.js
  */
 export default {
-  getTranslationIndex: function(languageCode, n) {
+  getTranslationIndex: function (languageCode, n) {
     n = Number(n);
     n = typeof n === "number" && isNaN(n) ? 1 : n; // Fallback to singular.
 

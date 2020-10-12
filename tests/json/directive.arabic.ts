@@ -1,0 +1,13 @@
+export default {
+  ar: {
+    Orange: "البرتقالي",
+    "%{ count } day": [
+      "%{ count }أقل من يوم",
+      "%{ count }يوم واحد",
+      "%{ count }يومان",
+      "%{ count } أيام",
+      "%{ count } يومًا",
+      "%{ count } يوم",
+    ],
+  },
+};

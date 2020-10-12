@@ -1,44 +1,15 @@
-// import translations from "./json/directive.json";
+import translations from "./json/directive";
 import { mountWithPlugin } from "./utils";
-
-const translations = {
-  "en_US": {
-      "Answer": {
-          "Noun": "Answer (noun)",
-          "Verb": "Answer (verb)"
-      },
-      "Hello <strong>%{ name }</strong>": "Hello <strong>%{ name }</strong>",
-      "Hello %{ openingTag }%{ name }%{ closingTag }": "Hello %{ openingTag }%{ name }%{ closingTag }",
-      "Pending": "Pending",
-      "<strong>%{ count }</strong> car": ["<strong>1</strong> car", "<strong>%{ count }</strong> cars"],
-      "<strong>%{ count }</strong> %{ brand } car": ["<strong>1</strong> %{ brand } car", "<strong>%{ count }</strong> %{ brand } cars"],
-      "A\n\n\nlot\n\n\nof\n\nlines": "A\n\n\nlot\n\n\nof\n\nlines"
-  },
-  "fr_FR": {
-      "Answer": {
-          "Noun": "Réponse (nom)",
-          "Verb": "Réponse (verbe)"
-      },
-      "Hello %{ openingTag }%{ name }%{ closingTag }": "Bonjour %{ openingTag }%{ name }%{ closingTag }",
-      "Hello <strong>%{ name }</strong>": "Bonjour <strong>%{ name }</strong>",
-      "Pending": "En cours",
-      "<strong>%{ count }</strong> car": ["<strong>1</strong> véhicule", "<strong>%{ count }</strong> véhicules"],
-      "<strong>%{ count }</strong> %{ brand } car": ["<strong>1</strong> %{ brand } véhicule", "<strong>%{ count }</strong> %{ brand } véhicules"],
-      "A\n\n\nlot\n\n\nof\n\nlines": "Plein\n\n\nde\n\nlignes"
-  }
-}
-
 
 const mount = mountWithPlugin({
   availableLanguages: {
     en_US: "American English",
     fr_FR: "Français",
   },
-  defaultLanguage: "en_US2",
+  defaultLanguage: "en_US",
   translations: translations,
+  silent: false,
 });
-
-// console.log('translations', translations);
 
 describe("translate directive tests", () => {
   it("works on empty strings", () => {
@@ -63,27 +34,24 @@ describe("translate directive tests", () => {
     warnSpy.mockRestore();
   });
 
-  it("translates known strings", () => {
+  it("translates known strings", async () => {
     const vm = mount({ template: "<div v-translate>Pending</div>" }).vm;
     (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("En cours");
   });
 
-  it("translates known strings when surrounded by one or more tabs and spaces", () => {
+  it("translates known strings when surrounded by one or more tabs and spaces", async () => {
     const vm = mount({ template: "<div v-translate>\tPending\t\t \t\r\n\t\f\v</div>" }).vm;
     (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("En cours");
   });
 
-  it("translates multiline strings as-is, preserving the original content", () => {
-    const vm = mount({ template: "<p v-translate>\n\nA\n\n\nlot\n\n\nof\n\nlines</p>" }).vm;
-    (vm as any).$language.current = "fr_FR";
-    expect(vm.$el.innerHTML).toEqual("Plein\n\n\nde\n\nlignes");
-  });
-
-  it("translates known strings according to a given translation context", () => {
+  it("translates known strings according to a given translation context", async () => {
     let vm = mount({ template: '<div v-translate translate-context="Verb">Answer</div>' }).vm;
     (vm as any).$language.current = "en_US";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Answer (verb)");
     vm = mount({ template: '<div v-translate translate-context="Noun">Answer</div>' }).vm;
     expect(vm.$el.innerHTML).toEqual("Answer (noun)");
@@ -145,7 +113,7 @@ describe("translate directive tests", () => {
     expect(vm.$el.innerHTML).toEqual("Bonjour <b>John Doe</b>");
   });
 
-  it("allows interpolation with computed property", () => {
+  it("allows interpolation with computed property", async () => {
     const vm = mount({
       template: "<p v-translate>Hello <strong>%{ name }</strong></p>",
       computed: {
@@ -155,10 +123,11 @@ describe("translate directive tests", () => {
       },
     }).vm;
     (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
   });
 
-  it("allows custom params for interpolation", () => {
+  it("allows custom params for interpolation", async () => {
     const vm = mount({
       template: '<p v-translate="{name: someNewNameVar}">Hello <strong>%{ name }</strong></p>',
       data() {
@@ -168,10 +137,11 @@ describe("translate directive tests", () => {
       },
     }).vm;
     (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("Bonjour <strong>John Doe</strong>");
   });
 
-  it("allows interpolation within v-for with custom params", () => {
+  it("allows interpolation within v-for with custom params", async () => {
     let names = ["John Doe", "Chester"];
     const vm = mount({
       template: '<p><span v-for="name in names" v-translate="{name: name}">Hello <strong>%{ name }</strong></span></p>',
@@ -182,6 +152,7 @@ describe("translate directive tests", () => {
       },
     }).vm;
     (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
     let html = vm.$el.innerHTML.trim();
     let missedName = names.some((name) => {
       if (html.indexOf(name) === -1) {
@@ -191,7 +162,7 @@ describe("translate directive tests", () => {
     expect(missedName).toEqual(false);
   });
 
-  it("logs a warning in the console if translate-params is used", () => {
+  it("logs a warning in the console if translate-params is used", async () => {
     const warnSpy = jest.spyOn(console, "warn");
     const vm = mount({
       template: '<p v-translate :translate-params="{name: someNewNameVar}">Hello <strong>%{ name }</strong></p>',
@@ -202,158 +173,96 @@ describe("translate directive tests", () => {
       },
     }).vm;
     (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("Bonjour <strong>name</strong>");
     expect(console.warn).toHaveBeenCalled;
     warnSpy.mockRestore();
   });
 
-  // it("updates a translation after a data change", (done) => {
-  //   const vm = mount({
-  //     template: '<p v-translate="name">Hello <strong>%{ name }</strong></p>',
-  //     data() {
-  //       return { name: "John Doe" };
-  //     },
-  //   }).vm;
-  //   (vm as any).$language.current = "fr_FR";
-  //   expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
-  //   vm.name = "Kenny";
-  //   vm.$nextTick(function() {
-  //     expect(vm.$el.innerHTML).toEqual("Bonjour <strong>Kenny</strong>");
-  //     done();
-  //   });
-  // });
+  it("updates a translation after a data change", async () => {
+    const vm = mount({
+      template: '<p v-translate="name">Hello <strong>%{ name }</strong></p>',
+      data() {
+        return { name: "John Doe" };
+      },
+    }).vm;
+    (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
+    (vm as any).name = "Kenny";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("Bonjour <strong>Kenny</strong>");
+  });
 
-  // it("logs an info in the console if an interpolation is required but an expression is not provided", () => {
-  //   console.info = sinon.spy(console, "info");
-  //   const vm = mount({
-  //     template: "<p v-translate>Hello <strong>%{ name }</strong></p>",
-  //     data() {
-  //       return { name: "John Doe" };
-  //     },
-  //   }).vm;
-  //   (vm as any).$language.current = "fr_FR";
-  //   expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
-  //   expect(console.info).toHaveBeenCalledTimes(1);
-  //   console.info.restore();
-  // });
+  it("translates plurals", async () => {
+    const vm = mount({
+      template:
+        '<p v-translate :translate-n="count" translate-plural="<strong>%{ count }</strong> cars"><strong>%{ count }</strong> car</p>',
+      data() {
+        return { count: 2 };
+      },
+    }).vm;
+    (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("<strong>2</strong> véhicules");
+  });
 
-  // it("translates plurals", () => {
-  //   const vm = mount({
-  //     template:
-  //       '<p v-translate :translate-n="count" translate-plural="<strong>%{ count }</strong> cars"><strong>%{ count }</strong> car</p>',
-  //     data() {
-  //       return { count: 2 };
-  //     },
-  //   }).vm;
-  //   (vm as any).$language.current = "fr_FR";
-  //   expect(vm.$el.innerHTML).toEqual("<strong>2</strong> véhicules");
-  // });
+  it("translates plurals with computed property", async () => {
+    const vm = mount({
+      template:
+        '<p v-translate :translate-n="count" translate-plural="<strong>%{ count }</strong> cars"><strong>%{ count }</strong> car</p>',
+      computed: {
+        count() {
+          return 2;
+        },
+      },
+    }).vm;
+    (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("<strong>2</strong> véhicules");
+  });
 
-  // it("translates plurals with computed property", () => {
-  //   const vm = mount({
-  //     template:
-  //       '<p v-translate :translate-n="count" translate-plural="<strong>%{ count }</strong> cars"><strong>%{ count }</strong> car</p>',
-  //     computed: {
-  //       count() {
-  //         return 2;
-  //       },
-  //     },
-  //   }).vm;
-  //   (vm as any).$language.current = "fr_FR";
-  //   expect(vm.$el.innerHTML).toEqual("<strong>2</strong> véhicules");
-  // });
+  it("updates a plural translation after a data change", async () => {
+    const vm = mount({
+      template:
+        '<p v-translate="count + brand" :translate-n="count" translate-plural="<strong>%{ count }</strong> %{ brand } cars"><strong>%{ count }</strong> %{ brand } car</p>',
+      data() {
+        return { count: 1, brand: "Toyota" };
+      },
+    }).vm;
+    (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("<strong>1</strong> Toyota véhicule");
+    (vm as any).count = 8;
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("<strong>8</strong> Toyota véhicules");
+  });
 
-  // it("updates a plural translation after a data change", (done) => {
-  //   const vm = mount({
-  //     template:
-  //       '<p v-translate="count + brand" :translate-n="count" translate-plural="<strong>%{ count }</strong> %{ brand } cars"><strong>%{ count }</strong> %{ brand } car</p>',
-  //     data() {
-  //       return { count: 1, brand: "Toyota" };
-  //     },
-  //   }).vm;
-  //   (vm as any).$language.current = "fr_FR";
-  //   expect(vm.$el.innerHTML).toEqual("<strong>1</strong> Toyota véhicule");
-  //   vm.count = 8;
-  //   vm.$nextTick(function() {
-  //     expect(vm.$el.innerHTML).toEqual("<strong>8</strong> Toyota véhicules");
-  //     done();
-  //   });
-  // });
+  it("updates a translation after a language change", async () => {
+    const vm = mount({ template: "<div v-translate>Pending</div>" }).vm;
+    (vm as any).$language.current = "fr_FR";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("En cours");
+    (vm as any).$language.current = "en_US";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("Pending");
+  });
 
-  // it("updates a translation after a language change", (done) => {
-  //   const vm = mount({ template: "<div v-translate>Pending</div>" }).vm;
-  //   (vm as any).$language.current = "fr_FR";
-  //   expect(vm.$el.innerHTML).toEqual("En cours");
-  //   (vm as any).$language.current = "en_US";
-  //   vm.$nextTick(function() {
-  //     expect(vm.$el.innerHTML).toEqual("Pending");
-  //     done();
-  //   });
-  // });
-
-  // it("supports conditional rendering such as v-if, v-else-if, v-else", (done) => {
-  //   const vm = mount({
-  //     template: `
-  //     <div v-if="show" v-translate>Pending</div>
-  //     <div v-else v-translate>Hello <strong>%{ name }</strong></div>
-  //     `,
-  //     data() {
-  //       return { show: true, name: "John Doe" };
-  //     },
-  //   }).vm;
-  //   (vm as any).$language.current = "en_US";
-  //   expect(vm.$el.innerHTML).toEqual("Pending");
-  //   vm.show = false;
-  //   vm.$nextTick(function() {
-  //     expect(vm.$el.innerHTML).toEqual("Hello <strong>John Doe</strong>");
-  //     done();
-  //   });
-  // });
-
-  // it("does not trigger re-render of innerHTML when using expression with object and expression value was not changed", (done) => {
-  //   const vm = mount({
-  //     template: `
-  //     <div v-translate="{name: 'test'}">Hello %{ name }</div>
-  //     `,
-  //     data() {
-  //       return { someCounter: 0 };
-  //     },
-  //   }).vm;
-  //   expect(vm.$el.innerHTML).toEqual("Hello test");
-
-  //   let spy = sinon.spy(vm.$el, "innerHTML", ["set"]);
-  //   vm.someCounter += 1;
-  //   vm.$nextTick(function() {
-  //     vm.someCounter += 1;
-  //     vm.$nextTick(function() {
-  //       expect(spy.set.callCount).toEqual(0);
-  //       done();
-  //     });
-  //   });
-  // });
-
-  // it("re-render innerHTML when using expression and only if translation data was changed", (done) => {
-  //   const vm = mount({
-  //     template: `
-  //     <div v-translate="{name: {first: varFromData}}">Hello %{ name.first }</div>
-  //     `,
-  //     data() {
-  //       return { someCounter: 0, varFromData: "name" };
-  //     },
-  //   }).vm;
-  //   expect(vm.$el.innerHTML).toEqual("Hello name");
-
-  //   let spy = sinon.spy(vm.$el, "innerHTML", ["set"]);
-  //   vm.varFromData = "name";
-  //   vm.someCounter += 1;
-  //   vm.$nextTick(function() {
-  //     vm.varFromData = "otherName";
-  //     vm.someCounter += 1;
-  //     vm.$nextTick(function() {
-  //       expect(vm.$el.innerHTML).toEqual("Hello otherName");
-  //       expect(spy.set).toHaveBeenCalledTimes(1);
-  //       done();
-  //     });
-  //   });
-  // });
+  it("supports conditional rendering such as v-if, v-else-if, v-else", async () => {
+    const vm = mount({
+      template: `
+      <div v-if="show" v-translate>Pending</div>
+      <div v-else v-translate>Hello <strong>%{ name }</strong></div>
+      `,
+      data() {
+        return { show: true, name: "John Doe" };
+      },
+    }).vm;
+    (vm as any).$language.current = "en_US";
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("Pending");
+    (vm as any).show = false;
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("Hello <strong>John Doe</strong>");
+  });
 });

@@ -38,7 +38,7 @@ let interpolate: any = (plugin: GetText) => (
   msgid,
   context: any = {},
   parent: ComponentInternalInstance | any,
-  disableHtmlEscaping = false
+  disableHtmlEscaping = false,
 ) => {
   const silent = plugin.options.silent;
   if (!silent && MUSTACHE_SYNTAX_RE.test(msgid)) {
@@ -87,7 +87,7 @@ let interpolate: any = (plugin: GetText) => (
         return result;
       }
       // Escape HTML, see #78.
-      return result.replace(/[&<>"']/g, function(m) {
+      return result.replace(/[&<>"']/g, function (m) {
         return escapeHtmlMap[m];
       });
     }

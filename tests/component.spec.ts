@@ -1,33 +1,5 @@
 import { mountWithPlugin } from "./utils";
-
-const translations = {
-  "en_US": {
-      "Answer": {
-          "Noun": "Answer (noun)",
-          "Verb": "Answer (verb)"
-      },
-      "Hello %{ name }": "Hello %{ name }",
-      "Hello %{ user.details.name }": "Hello %{ user.details.name }",
-      "Pending": "Pending",
-      "%{ count } car": ["1 car", "%{ count } cars"],
-      "A lot of lines": "A lot of lines2"
-  },
-  "fr_FR": {
-      "Answer": {
-          "Noun": "Réponse (nom)",
-          "Verb": "Réponse (verbe)"
-      },
-      "Hello %{ name }": "Bonjour %{ name }",
-      "Hello %{ user.details.name }": "Bonjour %{ user.details.name }",
-      "Pending": "En cours",
-      "%{ count } car": ["1 véhicule", "%{ count } véhicules"],
-      "A lot of lines": "Plein de lignes"
-  }
-};
-
-
-
-        
+import translations from "./json/component";
 
 const mount = mountWithPlugin({
   availableLanguages: {
@@ -35,7 +7,7 @@ const mount = mountWithPlugin({
     fr_FR: "Français",
   },
   defaultLanguage: "en_US",
-  translations: translations,
+  translations,
 });
 
 describe("translate component tests", () => {
@@ -75,7 +47,7 @@ describe("translate component tests", () => {
     expect(vm.$el.innerHTML.trim()).toEqual("<span>En cours</span>");
   });
 
-  it("translates multiline strings no matter the number of spaces", async () => {
+  it("translates strings no matter the number of spaces", async () => {
     const wrapper = mount({
       template: `<div><translate tag="p">A lot    of  lines</translate></div>`,
     });
@@ -211,7 +183,7 @@ describe("translate component tests", () => {
     vm.count = 8;
     await vm.$nextTick();
 
-      expect(vm.$el.innerHTML.trim()).toEqual("<span>8 véhicules</span>");
+    expect(vm.$el.innerHTML.trim()).toEqual("<span>8 véhicules</span>");
   });
 
   it("updates a translation after a language change", async () => {
@@ -222,7 +194,7 @@ describe("translate component tests", () => {
     expect(vm.$el.innerHTML.trim()).toEqual("<span>En cours</span>");
     vm.$language.current = "en_US";
     await vm.$nextTick();
-      expect(vm.$el.innerHTML.trim()).toEqual("<span>Pending</span>");
+    expect(vm.$el.innerHTML.trim()).toEqual("<span>Pending</span>");
   });
 
   it("thrown errors if you forget to add a `translate-plural` attribute", async () => {
@@ -263,7 +235,7 @@ describe("translate component tests", () => {
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Pending");
     vm.show = false;
-    vm.$nextTick(function() {
+    vm.$nextTick(function () {
       expect(vm.$el.innerHTML).toEqual("Hello John Doe");
       done();
     });
@@ -287,7 +259,7 @@ describe("translate component tests for interpolation", () => {
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
-    vm.$nextTick(function() {
+    vm.$nextTick(function () {
       expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour John Doe</span></p>");
       done();
     });
@@ -314,7 +286,7 @@ describe("translate component tests for interpolation", () => {
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
-    vm.$nextTick(function() {
+    vm.$nextTick(function () {
       expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour Jane Doe</span></p>");
       expect(warnSpy).not.toHaveBeenCalled;
       warnSpy.mockRestore();
@@ -348,7 +320,7 @@ describe("translate component tests for interpolation", () => {
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
-    vm.$nextTick(function() {
+    vm.$nextTick(function () {
       expect(vm.$el.innerHTML.trim()).toEqual("<p><b><span>Bonjour Jane Doe</span></b></p>");
       expect(console.warn).not.toHaveBeenCalled;
       warnSpy.mockRestore();
