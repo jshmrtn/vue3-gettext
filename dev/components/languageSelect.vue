@@ -3,12 +3,22 @@
     <p>
       <translate>Select your language:</translate>
     </p>
-    <p>
-      <select v-model="$language.current" name="language">
-        <option v-for="(language, key) in $language.availableLanguages" :key="key" :value="key">
-          {{ language }}
-        </option>
-      </select>
-    </p>
+    <button v-for="(name, key) in language.available" :key="key" @click="language.current = key">
+      {{ name }}
+    </button>
   </div>
 </template>
+
+<script>
+import { useGettext } from "/@gettext/";
+
+export default {
+  setup() {
+    const language = useGettext();
+
+    return {
+      language,
+    };
+  },
+};
+</script>

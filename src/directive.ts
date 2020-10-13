@@ -1,9 +1,9 @@
 import interpolate from "./interpolate";
 import translate from "./translate";
 import { VNode, DirectiveBinding, Directive, watch } from "vue";
-import { GetText } from ".";
+import { Language } from ".";
 
-const updateTranslation = (plugin: GetText, el, binding: DirectiveBinding, vnode: VNode) => {
+const updateTranslation = (language: Language, el, binding: DirectiveBinding, vnode: VNode) => {
   const attrs = vnode.props || {};
   const msgid = el.dataset.msgid;
   const translateContext = attrs["translate-context"];
@@ -16,22 +16,22 @@ const updateTranslation = (plugin: GetText, el, binding: DirectiveBinding, vnode
     throw new Error("`translate-n` and `translate-plural` attributes must be used together:" + msgid + ".");
   }
 
-  if (!plugin.silent && attrs["translate-params"]) {
+  if (!language.silent && attrs["translate-params"]) {
     console.warn(
       `\`translate-params\` is required as an expression for v-translate directive. Please change to \`v-translate='params'\`: ${msgid}`,
     );
   }
 
-  let translation = translate(plugin).getTranslation(
+  let translation = translate(language).getTranslation(
     msgid,
     translateN,
     translateContext,
     isPlural ? translatePlural : null,
-    el.dataset.currentLanguage,
+    language.current,
   );
 
   const context = Object.assign(binding.instance, binding.value);
-  let msg = interpolate(plugin)(translation, context, null, disableHtmlEscaping);
+  let msg = interpolate(language)(translation, context, null, disableHtmlEscaping);
 
   el.innerHTML = msg;
 };
@@ -51,11 +51,11 @@ const updateTranslation = (plugin: GetText, el, binding: DirectiveBinding, vnode
  * context variable:
  * `<p v-translate="fullName + location">I am %{ fullName } and from %{ location }</p>`
  */
-export default function directive( plugin: GetText): Directive {
+export default function directive(language: Language): Directive {
   const update = (el: HTMLElement, binding: DirectiveBinding, vnode: VNode) => {
     // Store the current language in the element's dataset.
-    el.dataset.currentLanguage = plugin.current;
-    updateTranslation(plugin, el, binding, vnode);
+    el.dataset.currentLanguage = language.current;
+    updateTranslation(language, el, binding, vnode);
   };
   return {
     beforeMount(el: HTMLElement, binding: DirectiveBinding, vnode: VNode) {
@@ -64,7 +64,8 @@ export default function directive( plugin: GetText): Directive {
         el.dataset.msgid = el.innerHTML;
       }
 
-      watch(plugin, () => {
+      // TODO
+      watch(language, () => {
         update(el, binding, vnode);
       });
 

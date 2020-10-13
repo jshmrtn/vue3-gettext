@@ -27,6 +27,38 @@ const app = createApp(App);
 app.use(gettext);
 ```
 
+## Basic usage
+
+Use the component or directive to annotate translatable strings:
+
+<translate>Hello!</translate>
+<span v-translate>Hello!</span>
+
+Or inject the plugin using `useGettext` (Example of a language switcher):
+
+```vue
+<template>
+  <div>
+    <select v-model="language.current">
+      <option v-for="(language, key) in language.availableLanguages" :key="key" :value="key">{{ language }}</option>
+    </select>
+  </div>
+</template>
+
+<script>
+import { useGettext } from "@jshmrtn/vue3-gettext";
+
+export default {
+  setup() {
+    const language = useGettext();
+    return {
+      ...language,
+    };
+  },
+};
+</script>
+```
+
 ## Workflow
 
 1. **Annotating strings**: annotate all the translatable strings in your project using the `<translate>` component, the `v-translate` directive or by calling the gettext functions (`gettext`, `pgettext`, `ngettext`, `npgettext`) directly.
@@ -43,7 +75,7 @@ app.use(gettext);
 
 ## Configuration
 
-The options you can pass to `createGettext` are
+The options you can pass to `createGettext` are:
 
 ### `availableLanguages`
 
@@ -77,7 +109,30 @@ The [**local name**](http://www.localeplanet.com/icu/) of the default language, 
 defaultLanguage: 'en_GB',
 ```
 
-### `muteLanguages`
+### `translations`
+
+Type: `{ [key: string]: { [key: string]: any } }`
+
+Default: `{}`
+
+The JSON file of the application's translations (produced by `gettext-compile`).
+
+#### Example
+
+```javascript
+translations: {
+  "en_Use": {
+    "Color": "Color",
+    ...
+  },
+  "de_DE": {
+    "Color": "Farbe",
+    ...
+  }
+},
+```
+
+### `mutedLanguages`
 
 Type: `string[]`
 
@@ -88,7 +143,7 @@ Discard warnings for missing translations for all languages of the list. This is
 #### Example
 
 ```javascript
-muteLanguages: ['fr_FR', 'de'],
+mutedLanguages: ['fr_FR', 'de'],
 ```
 
 ### `mixins`
@@ -121,30 +176,7 @@ Enable or disable logs/warnings for missing translations and untranslated keys.
 silent: true,
 ```
 
-### `translations`
-
-Type: `{ [key: string]: { [key: string]: any } }`
-
-Default: `{}`
-
-The JSON file of the application's translations (produced by `gettext-compile`).
-
-#### Example
-
-```javascript
-translations: {
-  "en_Use": {
-    "Color": "Color",
-    ...
-  },
-  "de_DE": {
-    "Color": "Farbe",
-    ...
-  }
-},
-```
-
-### Configuration example:
+### Full configuration example:
 
 ```javascript
 import { createGettext } from "@jshmrtn/vue3-gettext";
@@ -161,7 +193,7 @@ const gettext = createGettext({
     languageWithoutRegion: (lang) => computed(() => lang.current.toLowerCase().split("_")[0]),
   },
   defaultLanguage: "en_GB",
-  muteLanguages: ["fr_FR"]
+  mutedLanguages: ["fr_FR"]
   translations,
   silent: true,
 });
@@ -169,38 +201,6 @@ const gettext = createGettext({
 const app = createApp(App);
 app.use(gettext);
 ```
-
-# Introduction
-
-`vue-gettext` is a plugin to translate Vue.js applications with [`gettext`](http://www.labri.fr/perso/fleury/posts/programming/a-quick-gettext-tutorial.html). It relies on the [GNU gettext toolset](https://www.gnu.org/software/gettext/manual/index.html) and [`easygettext`](https://github.com/Polyconseil/easygettext).
-
-## Workflow
-
-1. **Annotating strings**: to make a Vue.js app translatable, you have to annotate the strings you want to translate in your JavaScript code and/or templates.
-
-2. **Extracting strings**: once strings are annotated, you have to run extraction tools ([`gettext-extract`](https://github.com/Polyconseil/easygettext#gettext-extract) and some GNU gettext utilities) to run over a Vue.js app source tree and pulls out all strings marked for translation to create a message file. A message file is just a plain-text file with a `.po` file extension, representing a single language, that contains all available translation strings as keys and how they should be represented in the given language.
-
-3. **Translating message files**: a translator needs to fill out the translations of each generated `.po` files.
-
-4. **Compiling translations**: once all message files have been translated, use [`gettext-compile`](https://github.com/Polyconseil/easygettext#gettext-compile) to make the translated `.po` files usable in a Vue app. This will basically merge all translated `.po` files into a unique `.json` translation file.
-
-5. **Dynamically render translated strings to the DOM**: `vue3-gettext` currently uses a custom component for this.
-
-## What does `vue3-gettext` provide?
-
-- a custom `component` and a custom `directive` to annotate strings in templates and dynamically render translated strings to the DOM
-
-- a set of methods to annotate strings in JavaScript code and translate them
-
-- a `language` ViewModel exposed to every Vue instances that you can use to:
-
-  - get all available languages (defined at configuration time)
-
-  - get or set the current language (_initially_ defined at configuration time)
-
-  - access whatever you passed to the plugin mixin (defined at configuration time)
-
-- a global and reactive `language` property added to `Vue.config` you can use to get or set the current language _outside_ of Vue instances
 
 ## What does `vue3-gettext` depend on?
 

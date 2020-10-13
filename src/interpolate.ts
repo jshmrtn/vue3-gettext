@@ -1,5 +1,5 @@
-import { GetText } from ".";
 import { ComponentInternalInstance } from "vue";
+import { Language } from ".";
 
 const EVALUATION_RE = /[[\].]{1,2}/g;
 
@@ -34,7 +34,7 @@ const MUSTACHE_SYNTAX_RE = /\{\{((?:.|\n)+?)\}\}/g;
  *
  * @return {String} The interpolated string
  */
-let interpolate: any = (plugin: GetText) => (
+let interpolate: any = (plugin: Language) => (
   msgid,
   context: any = {},
   parent: ComponentInternalInstance | any,
