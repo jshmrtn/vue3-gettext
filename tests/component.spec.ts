@@ -22,7 +22,7 @@ describe("translate component tests", () => {
     const warnSpy = jest.spyOn(console, "warn");
     const wrapper = mount({ template: "<div><translate>Unchanged string</translate></div>" });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_BE";
+    vm.$gettextPlugin.current = "fr_BE";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Unchanged string</span>");
     expect(warnSpy).toHaveBeenCalledTimes(1);
@@ -42,7 +42,7 @@ describe("translate component tests", () => {
   it("translates known strings", async () => {
     const wrapper = mount({ template: "<div><translate>Pending</translate></div>" });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>En cours</span>");
   });
@@ -52,7 +52,7 @@ describe("translate component tests", () => {
       template: `<div><translate tag="p">A lot    of  lines</translate></div>`,
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual(`<p>Plein de lignes</p>`);
   });
@@ -60,7 +60,7 @@ describe("translate component tests", () => {
   it("renders translation in custom html tag", async () => {
     const wrapper = mount({ template: '<div><translate tag="h1">Pending</translate></div>' });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<h1>En cours</h1>");
   });
@@ -72,7 +72,7 @@ describe("translate component tests", () => {
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Answer (verb)</span>");
     wrapper = mount({ template: '<div><translate translate-context="Noun">Answer</translate></div>' });
     vm = wrapper.vm as any;
-    vm.$language.current = "en_US";
+    vm.$gettextPlugin.current = "en_US";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Answer (noun)</span>");
   });
@@ -85,7 +85,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Bonjour John Doe</span>");
   });
@@ -100,7 +100,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Bonjour John Doe</span>");
   });
@@ -115,7 +115,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Bonjour John Doe</span>");
   });
@@ -130,7 +130,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Bonjour John Doe</span><span>Bonjour Chester</span>");
   });
@@ -145,7 +145,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>2 véhicules</span>");
   });
@@ -162,7 +162,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>2 véhicules</span>");
   });
@@ -177,7 +177,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>10 véhicules</span>");
     vm.count = 8;
@@ -189,10 +189,10 @@ describe("translate component tests", () => {
   it("updates a translation after a language change", async () => {
     const wrapper = mount({ template: "<div><translate>Pending</translate></div>" });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>En cours</span>");
-    vm.$language.current = "en_US";
+    vm.$gettextPlugin.current = "en_US";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("<span>Pending</span>");
   });
@@ -231,7 +231,7 @@ describe("translate component tests", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "en_US";
+    vm.$gettextPlugin.current = "en_US";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Pending");
     vm.show = false;
@@ -258,7 +258,7 @@ describe("translate component tests for interpolation", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     vm.$nextTick(function () {
       expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour John Doe</span></p>");
       done();
@@ -285,7 +285,7 @@ describe("translate component tests for interpolation", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     vm.$nextTick(function () {
       expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour Jane Doe</span></p>");
       expect(warnSpy).not.toHaveBeenCalled;
@@ -319,7 +319,7 @@ describe("translate component tests for interpolation", () => {
       },
     });
     const vm = wrapper.vm as any;
-    vm.$language.current = "fr_FR";
+    vm.$gettextPlugin.current = "fr_FR";
     vm.$nextTick(function () {
       expect(vm.$el.innerHTML.trim()).toEqual("<p><b><span>Bonjour Jane Doe</span></b></p>");
       expect(console.warn).not.toHaveBeenCalled;

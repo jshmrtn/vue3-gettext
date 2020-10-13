@@ -16,7 +16,7 @@ const updateTranslation = (plugin: GetText, el, binding: DirectiveBinding, vnode
     throw new Error("`translate-n` and `translate-plural` attributes must be used together:" + msgid + ".");
   }
 
-  if (!plugin.options.silent && attrs["translate-params"]) {
+  if (!plugin.silent && attrs["translate-params"]) {
     console.warn(
       `\`translate-params\` is required as an expression for v-translate directive. Please change to \`v-translate='params'\`: ${msgid}`,
     );
@@ -51,7 +51,7 @@ const updateTranslation = (plugin: GetText, el, binding: DirectiveBinding, vnode
  * context variable:
  * `<p v-translate="fullName + location">I am %{ fullName } and from %{ location }</p>`
  */
-export default function directive(plugin: GetText): Directive {
+export default function directive( plugin: GetText): Directive {
   const update = (el: HTMLElement, binding: DirectiveBinding, vnode: VNode) => {
     // Store the current language in the element's dataset.
     el.dataset.currentLanguage = plugin.current;
@@ -61,8 +61,7 @@ export default function directive(plugin: GetText): Directive {
     beforeMount(el: HTMLElement, binding: DirectiveBinding, vnode: VNode) {
       // Get the raw HTML and store it in the element's dataset (as advised in Vue's official guide).
       if (!el.dataset.msgid) {
-        const msgid = el.innerHTML;
-        el.dataset.msgid = msgid;
+        el.dataset.msgid = el.innerHTML;
       }
 
       watch(plugin, () => {

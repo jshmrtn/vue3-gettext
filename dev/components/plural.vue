@@ -14,9 +14,7 @@
     </p>
     <p>
       computed:
-      <translate :translate-n="nComputed" translate-plural="%{ nComputed } books">
-        %{ nComputed } book
-      </translate>
+      <translate :translate-n="nComputed" translate-plural="%{ nComputed } books"> %{ nComputed } book </translate>
     </p>
 
     <p :class="$style.title">
@@ -37,9 +35,6 @@
 
 <script>
 export default {
-  created: function () {
-    // this.styles = styles;
-  },
   data: () => ({
     n: 0,
     countForUntranslated: 10,
@@ -60,11 +55,3 @@ export default {
   },
 };
 </script>
-
-<style module>
-@import "../variables.css";
-
-.title {
-  color: var(--color-blue);
-}
-</style>

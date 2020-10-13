@@ -73,9 +73,9 @@ export default {
   padding: 15px;
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.02);
   border-radius: 2px;
+}
 
-  h2 {
-    margin-top: 0;
-  }
+h2 {
+  margin-top: 0;
 }
 </style>

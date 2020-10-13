@@ -13,7 +13,7 @@ const mount = mountWithPlugin({
 });
 
 const wrapper = mount({ template: "<div></div>" });
-let plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
+let plugin = wrapper.vm.$.appContext.config.globalProperties.$gettextPlugin as GetText;
 const setLanguage = (lang: string) => (plugin.current = lang);
 
 const translate = translateRaw(plugin);
@@ -21,11 +21,7 @@ const translate = translateRaw(plugin);
 describe("Translate tests", () => {
   let translated;
   beforeEach(async () => {
-    plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
-    plugin.options = {
-      ...plugin.options,
-      silent: false,
-    };
+    plugin = wrapper.vm.$.appContext.config.globalProperties.$gettextPlugin as GetText;
     setLanguage("en_US");
   });
 
@@ -166,7 +162,7 @@ describe("Translate tests", () => {
   });
 
   it("works when a msgid exists with and without a context, but the one with the context has not been translated", () => {
-    expect(plugin.options.silent).toEqual(false);
+    expect(plugin.silent).toEqual(false);
     const warnSpy = jest.spyOn(console, "warn");
 
     translated = translate.getTranslation("May", null, null, null, "fr_FR");

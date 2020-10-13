@@ -1,12 +1,12 @@
 import { createApp, computed } from "vue";
 import App from "./App.vue";
 import "./index.css";
-import GetTextPlugin from "/@gettext/";
+import { createGettext } from "/@gettext/";
 import translations from "./translations.json";
 
 const app = createApp(App);
 
-app.use(GetTextPlugin, {
+const gettext = createGettext({
   availableLanguages: {
     en_GB: "British English",
     fr_FR: "Français",
@@ -18,6 +18,8 @@ app.use(GetTextPlugin, {
   defaultLanguage: "en_GB",
   translations: translations,
 });
+
+app.use(gettext);
 
 app.mount("#app");
 

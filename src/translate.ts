@@ -24,7 +24,7 @@ const translate = (plugin: GetText) => ({
       return ""; // Allow empty strings.
     }
 
-    let silent = plugin ? plugin.options?.silent || plugin.options.muteLanguages.indexOf(language) !== -1 : false;
+    let silent = plugin ? plugin.silent || plugin.muteLanguages.indexOf(language) !== -1 : false;
 
     // Default untranslated string, singular or plural.
     let untranslated = defaultPlural && plurals.getTranslationIndex(language, n) > 0 ? defaultPlural : msgid;
@@ -35,7 +35,7 @@ const translate = (plugin: GetText) => ({
     // See the `Language` section in https://www.gnu.org/software/gettext/manual/html_node/Header-Entry.html
     // So try `ll_CC` first, or the `ll` abbreviation which can be three-letter sometimes:
     // https://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes
-    const pluginTranslations = plugin.options.translations;
+    const pluginTranslations = plugin.translations;
     let translations = pluginTranslations[language] || pluginTranslations[language.split("_")[0]];
 
     if (!translations) {

@@ -4,7 +4,6 @@
       <button @click="toggleShow()">Toggle: {{ show }}</button>
       <translate v-if="show">Welcome %{ obj.name }</translate>
     </p>
-
     <div>
       <p>
         <button @click="setName1()">1</button>

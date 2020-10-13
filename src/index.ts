@@ -2,7 +2,8 @@ import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { reactive, App, inject } from "vue";
+import { reactive, App, inject, watch, computed, ref } from "vue";
+import { normalizeTranslations } from "./utils";
 
 export interface GetTextOptions {
   availableLanguages: { [key: string]: string };
@@ -24,13 +25,11 @@ const defaultOptions: GetTextOptions = {
 
 export const GetTextSymbol = Symbol("GETTEXT");
 
-export interface GetText {
-  options: GetTextOptions;
-  available: { [key: string]: string };
+export interface GetText extends GetTextOptions {
   current: string;
 }
 
-export default function install(app: App, options: Partial<GetTextOptions> = {}) {
+export function createGettext(options: Partial<GetTextOptions> = {}) {
   Object.keys(options).forEach((key) => {
     if (Object.keys(defaultOptions).indexOf(key) === -1) {
       throw new Error(`${key} is an invalid option for the translate plugin.`);
@@ -42,35 +41,51 @@ export default function install(app: App, options: Partial<GetTextOptions> = {})
     ...options,
   };
 
-  const globalProperties = app.config.globalProperties;
+  let translations = reactive({ value: normalizeTranslations(mergedOptions.translations) });
+  // TODO: type
+  const gettext: any = reactive({
+    availableLanguages: ref(mergedOptions.availableLanguages),
+    muteLanguages: ref(mergedOptions.muteLanguages),
+    silent: ref(mergedOptions.silent),
+    translations: computed({
+      get: () => {
+        return translations.value;
+      },
+      set: (val: any) => {
+        translations.value = normalizeTranslations(val);
+      },
+    }),
+    current: ref(mergedOptions.defaultLanguage),
+    install(app: App) {
+      app[GetTextSymbol] = gettext;
+      app.provide(GetTextSymbol, gettext);
 
-  let plugin: GetText = reactive({
-    options: mergedOptions,
-    available: mergedOptions.availableLanguages,
-    current: mergedOptions.defaultLanguage,
+      const globalProperties = app.config.globalProperties;
+
+      globalProperties.$gettext = gettext.gettext;
+      globalProperties.$pgettext = gettext.pgettext;
+      globalProperties.$ngettext = gettext.ngettext;
+      globalProperties.$npgettext = gettext.npgettext;
+      globalProperties.$gettextInterpolate = gettext.interpolate;
+      globalProperties.$gettextPlugin = gettext;
+
+      app.directive("translate", Directive(gettext));
+      // eslint-disable-next-line vue/component-definition-name-casing
+      app.component("translate", Component);
+    },
   });
 
-  if (options.mixins) {
-    Object.keys(options.mixins).map((key) => {
-      return (plugin[key] = plugin.options.mixins[key](plugin));
-    });
-  }
-  globalProperties.$language = plugin;
+  Object.keys(mergedOptions.mixins).forEach((key) => (gettext[key] = mergedOptions.mixins[key](gettext)));
 
-  app.directive("translate", Directive(plugin));
-  app.component("translate", Component);
+  const translate = translateRaw(gettext);
+  const interpolate = interpolateRaw(gettext);
+  gettext.gettext = translate.gettext.bind(translate);
+  gettext.pgettext = translate.pgettext.bind(translate);
+  gettext.ngettext = translate.ngettext.bind(translate);
+  gettext.npgettext = translate.npgettext.bind(translate);
+  gettext.gettextInterpolate = interpolate.bind(interpolate);
 
-  globalProperties.$translations = plugin.options.translations;
-  const translate = translateRaw(plugin);
-  const interpolate = interpolateRaw(plugin);
-  globalProperties.$gettext = translate.gettext.bind(translate);
-  globalProperties.$pgettext = translate.pgettext.bind(translate);
-  globalProperties.$ngettext = translate.ngettext.bind(translate);
-  globalProperties.$npgettext = translate.npgettext.bind(translate);
-  globalProperties.$gettextInterpolate = interpolate.bind(interpolate);
-
-  app.provide(GetTextSymbol, plugin);
-  return plugin;
+  return gettext;
 }
 
 export const useGettext = (): GetText => inject(GetTextSymbol);

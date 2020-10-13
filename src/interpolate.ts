@@ -40,7 +40,7 @@ let interpolate: any = (plugin: GetText) => (
   parent: ComponentInternalInstance | any,
   disableHtmlEscaping = false,
 ) => {
-  const silent = plugin.options.silent;
+  const silent = plugin.silent;
   if (!silent && MUSTACHE_SYNTAX_RE.test(msgid)) {
     console.warn(`Mustache syntax cannot be used with vue-gettext. Please use "%{}" instead of "{{}}" in: ${msgid}`);
   }

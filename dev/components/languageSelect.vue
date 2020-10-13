@@ -4,8 +4,10 @@
       <translate>Select your language:</translate>
     </p>
     <p>
-      <select name="language" v-model="$language.current">
-        <option v-for="(language, key) in $language.available" :value="key">{{ language }}</option>
+      <select v-model="$gettextPlugin.current" name="language">
+        <option v-for="(language, key) in $gettextPlugin.availableLanguages" :key="key" :value="key">
+          {{ language }}
+        </option>
       </select>
     </p>
   </div>

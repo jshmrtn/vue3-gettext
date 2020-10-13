@@ -20,7 +20,7 @@ describe("translate directive tests", () => {
   it("returns an unchanged string when no translation is available for a language", () => {
     const warnSpy = jest.spyOn(console, "warn");
     const vm = mount({ template: "<div v-translate>Unchanged string</div>" }).vm;
-    (vm as any).$language.current = "fr_BE";
+    (vm as any).$gettextPlugin.current = "fr_BE";
     expect(vm.$el.innerHTML).toEqual("Unchanged string");
     expect(warnSpy).toHaveBeenCalledTimes(1);
     warnSpy.mockRestore();
@@ -36,21 +36,21 @@ describe("translate directive tests", () => {
 
   it("translates known strings", async () => {
     const vm = mount({ template: "<div v-translate>Pending</div>" }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("En cours");
   });
 
   it("translates known strings when surrounded by one or more tabs and spaces", async () => {
     const vm = mount({ template: "<div v-translate>\tPending\t\t \t\r\n\t\f\v</div>" }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("En cours");
   });
 
   it("translates known strings according to a given translation context", async () => {
     let vm = mount({ template: '<div v-translate translate-context="Verb">Answer</div>' }).vm;
-    (vm as any).$language.current = "en_US";
+    (vm as any).$gettextPlugin.current = "en_US";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Answer (verb)");
     vm = mount({ template: '<div v-translate translate-context="Noun">Answer</div>' }).vm;
@@ -76,7 +76,7 @@ describe("translate directive tests", () => {
         return { name: "John Doe" };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
   });
@@ -92,7 +92,7 @@ describe("translate directive tests", () => {
         };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Bonjour &lt;b&gt;John Doe&lt;/b&gt;");
   });
@@ -108,7 +108,7 @@ describe("translate directive tests", () => {
         };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Bonjour <b>John Doe</b>");
   });
@@ -122,7 +122,7 @@ describe("translate directive tests", () => {
         },
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
   });
@@ -136,7 +136,7 @@ describe("translate directive tests", () => {
         };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("Bonjour <strong>John Doe</strong>");
   });
@@ -151,7 +151,7 @@ describe("translate directive tests", () => {
         };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     let html = vm.$el.innerHTML.trim();
     let missedName = names.some((name) => {
@@ -172,7 +172,7 @@ describe("translate directive tests", () => {
         };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML.trim()).toEqual("Bonjour <strong>name</strong>");
     expect(console.warn).toHaveBeenCalled;
@@ -186,7 +186,7 @@ describe("translate directive tests", () => {
         return { name: "John Doe" };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Bonjour <strong>John Doe</strong>");
     (vm as any).name = "Kenny";
@@ -202,7 +202,7 @@ describe("translate directive tests", () => {
         return { count: 2 };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("<strong>2</strong> véhicules");
   });
@@ -217,7 +217,7 @@ describe("translate directive tests", () => {
         },
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("<strong>2</strong> véhicules");
   });
@@ -230,7 +230,7 @@ describe("translate directive tests", () => {
         return { count: 1, brand: "Toyota" };
       },
     }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("<strong>1</strong> Toyota véhicule");
     (vm as any).count = 8;
@@ -240,10 +240,10 @@ describe("translate directive tests", () => {
 
   it("updates a translation after a language change", async () => {
     const vm = mount({ template: "<div v-translate>Pending</div>" }).vm;
-    (vm as any).$language.current = "fr_FR";
+    (vm as any).$gettextPlugin.current = "fr_FR";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("En cours");
-    (vm as any).$language.current = "en_US";
+    (vm as any).$gettextPlugin.current = "en_US";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Pending");
   });
@@ -258,7 +258,7 @@ describe("translate directive tests", () => {
         return { show: true, name: "John Doe" };
       },
     }).vm;
-    (vm as any).$language.current = "en_US";
+    (vm as any).$gettextPlugin.current = "en_US";
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Pending");
     (vm as any).show = false;

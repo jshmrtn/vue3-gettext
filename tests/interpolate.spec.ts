@@ -9,7 +9,7 @@ const mount = mountWithPlugin({
 });
 
 const wrapper = mount({ template: "<div></div>" });
-const plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
+const plugin = wrapper.vm.$.appContext.config.globalProperties.$gettextPlugin as GetText;
 
 const interpolate = rawInterpolate(plugin);
 
@@ -126,7 +126,7 @@ describe("Interpolate tests", () => {
     const warnSpy = jest.spyOn(console, "warn");
     interpolate(msgid, context);
     expect(warnSpy).not.toHaveBeenCalled;
-    plugin.options.silent = false;
+    plugin.silent = false;
     interpolate(msgid, context);
     expect(warnSpy).toHaveBeenCalledTimes(1);
     warnSpy.mockRestore();
