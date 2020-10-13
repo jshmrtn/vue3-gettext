@@ -25,17 +25,15 @@
 
 ## Dev setup
 
-Node v10+ is required for development.
-
 ```shell
-# install deps
-npm install
+# install dependencies
+npm i
 
-# serve examples at localhost:8080
-npm run dev
+# serve demo page at localhost:3000
+npm start
 
 # lint & run all tests
-npm run test
+npm test
 ```
 
 ## Pull request guidelines

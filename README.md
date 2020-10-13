@@ -4,25 +4,177 @@
 
 Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
-[Live demo](https://polyconseil.github.io/vue-gettext/).
+## Installation
 
-# Contribution
+```shell
+npm i @jshmrtn/vue3-gettext
+```
 
-Please make sure to read the [Pull request guidelines](https://github.com/Polyconseil/vue-gettext/blob/master/README_DEV.md#pull-request-guidelines) before making a pull request.
+```javascript
+import { createGettext } from "@jshmrtn/vue3-gettext";
+import { createApp } from "vue";
+import translations from "./path/to/translations.json";
 
-# Known issues
+const gettext = createGettext({
+  availableLanguages: {
+    en_GB: "British English",
+  },
+  defaultLanguage: "en_GB",
+  translations,
+});
 
-Any help is greatly appreciated:
+const app = createApp(App);
+app.use(gettext);
+```
 
-- It could be tricky to parse some `.vue` files, see [#28](https://github.com/Polyconseil/vue-gettext/issues/28)
-- Translations in attributes is not supported yet, see [#9](https://github.com/Polyconseil/vue-gettext/issues/9)
-- `vue-gettext` is not SSR compliant, see [#51](https://github.com/Polyconseil/vue-gettext/issues/51)
+## Workflow
+
+1. **Annotating strings**: annotate all the translatable strings in your project using the `<translate>` component, the `v-translate` directive or by calling the gettext functions (`gettext`, `pgettext`, `ngettext`, `npgettext`) directly.
+
+2. **Extracting strings**: you can now extract all strings to create message files. A message file is just a plain-text file with a `.po` file extension, representing a single language, that contains all available translation strings as keys and how they should be represented in the given language.
+
+`vue3-gettext` provides scripts to make this straightforward.
+
+<!-- TODO link to scripts -->
+
+3. **Translating message files**: a translator needs to fill out the translations of each generated `.po` files. I recommend you use software like [poedit](https://poedit.net/) (some alternatives are listed on wikipedia [here](https://en.wikipedia.org/wiki/Gettext#See_also)).
+
+4. **Compiling translations**: once all message files have been translated, use [`gettext-compile`](https://github.com/Polyconseil/easygettext#gettext-compile) to make the translated `.po` files usable in a Vue app. This will merge all translated `.po` files into a `.json` file ready to be used by `vue3-gettext`.
+
+## Configuration
+
+The options you can pass to `createGettext` are
+
+### `availableLanguages`
+
+Type: `{ [key: string]: string }`
+
+Default: `{ en_US: "English" }`
+
+An object that represents the list of the available languages for the app whose keys are [**local names**](http://www.localeplanet.com/icu/) (e.g. [`en`](https://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes) or [`en_US`](https://www.gnu.org/software/gettext/manual/html_node/Country-Codes.html#Country-Codes)) and whose values are [**language names**](http://docs.translatehouse.org/projects/localization-guide/en/latest/l10n/languagenames.html) used for the display in UI, e.g. `English (United States)`. It's exposed in all Vue instances via `vm.$language.available`
+
+#### Example
+
+```javascript
+availableLanguages: {
+  en_GB: "British English",
+  fr_FR: "Français",
+  it_IT: "Italiano",
+},
+```
+
+### `defaultLanguage`
+
+Type: `string`
+
+Default: `'en_US'`
+
+The [**local name**](http://www.localeplanet.com/icu/) of the default language, e.g. `en_US`. This will be the current active language. It's exposed in all Vue instances via `vm.$language.current`
+
+#### Example
+
+```javascript
+defaultLanguage: 'en_GB',
+```
+
+### `muteLanguages`
+
+Type: `string[]`
+
+Default: `[]`
+
+Discard warnings for missing translations for all languages of the list. This is useful to avoid messages from the language used in source code.
+
+#### Example
+
+```javascript
+muteLanguages: ['fr_FR', 'de'],
+```
+
+### `mixins`
+
+Type: `{ [key: string]: (language: string) => any }`
+
+Default: `{}`
+
+Mixins allows extending the plugin instance with your own properties. This is helpful if you want to provide shared computed properties, e.g.
+
+#### Example
+
+```javascript
+mixins: {
+  upperCaseLang: (language) => computed(() => lang.toUpperCase()),
+},
+```
+
+### `silent`
+
+Type: `boolean`
+
+Default: `false`
+
+Enable or disable logs/warnings for missing translations and untranslated keys.
+
+#### Example
+
+```javascript
+silent: true,
+```
+
+### `translations`
+
+Type: `{ [key: string]: { [key: string]: any } }`
+
+Default: `{}`
+
+The JSON file of the application's translations (produced by `gettext-compile`).
+
+#### Example
+
+```javascript
+translations: {
+  "en_Use": {
+    "Color": "Color",
+    ...
+  },
+  "de_DE": {
+    "Color": "Farbe",
+    ...
+  }
+},
+```
+
+### Configuration example:
+
+```javascript
+import { createGettext } from "@jshmrtn/vue3-gettext";
+import { createApp } from "vue";
+import translations from "./path/to/translations.json";
+
+const gettext = createGettext({
+  availableLanguages: {
+    en_GB: "British English",
+    fr_FR: "Français",
+    it_IT: "Italiano",
+  },
+  mixins: {
+    languageWithoutRegion: (lang) => computed(() => lang.current.toLowerCase().split("_")[0]),
+  },
+  defaultLanguage: "en_GB",
+  muteLanguages: ["fr_FR"]
+  translations,
+  silent: true,
+});
+
+const app = createApp(App);
+app.use(gettext);
+```
 
 # Introduction
 
 `vue-gettext` is a plugin to translate Vue.js applications with [`gettext`](http://www.labri.fr/perso/fleury/posts/programming/a-quick-gettext-tutorial.html). It relies on the [GNU gettext toolset](https://www.gnu.org/software/gettext/manual/index.html) and [`easygettext`](https://github.com/Polyconseil/easygettext).
 
-## How does `vue-gettext` work at a high level?
+## Workflow
 
 1. **Annotating strings**: to make a Vue.js app translatable, you have to annotate the strings you want to translate in your JavaScript code and/or templates.
 
@@ -32,9 +184,9 @@ Any help is greatly appreciated:
 
 4. **Compiling translations**: once all message files have been translated, use [`gettext-compile`](https://github.com/Polyconseil/easygettext#gettext-compile) to make the translated `.po` files usable in a Vue app. This will basically merge all translated `.po` files into a unique `.json` translation file.
 
-5. **Dynamically render translated strings to the DOM**: `vue-gettext` currently uses a custom component for this.
+5. **Dynamically render translated strings to the DOM**: `vue3-gettext` currently uses a custom component for this.
 
-## What does `vue-gettext` provide?
+## What does `vue3-gettext` provide?
 
 - a custom `component` and a custom `directive` to annotate strings in templates and dynamically render translated strings to the DOM
 
@@ -50,7 +202,7 @@ Any help is greatly appreciated:
 
 - a global and reactive `language` property added to `Vue.config` you can use to get or set the current language _outside_ of Vue instances
 
-## What does `vue-gettext` depend on?
+## What does `vue3-gettext` depend on?
 
 - [`easygettext`](https://github.com/Polyconseil/easygettext)
 
@@ -67,72 +219,6 @@ Any help is greatly appreciated:
   - [`msgattrib`](https://www.gnu.org/software/gettext/manual/html_node/msgattrib-Invocation.html#msgattrib-Invocation)
 
 Those tools should be integrated in your build process. We'll show you an example later.
-
-# Installation
-
-## NPM
-
-```javascript
-npm install vue-gettext
-```
-
-## Basic installation
-
-Basic installation with ES6 modules:
-
-```javascript
-// ES6
-import Vue from "vue";
-import GetTextPlugin from "vue-gettext";
-import translations from "./path/to/translations.json";
-
-Vue.use(GetTextPlugin, { translations: translations });
-```
-
-## Configuration
-
-There are a number of options you can use to configure the `vue-gettext` plugin:
-
-| Option                 | Type        | Requirement | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
-| ---------------------- | ----------- | ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `autoAddKeyAttributes` | `{Boolean}` | optional    | If `true`, key attributes are auto-generated if not present in your code. See the [`key` documentation](https://vuejs.org/v2/api/#key) and issues [#29](https://github.com/Polyconseil/vue-gettext/issues/29) and [#66](https://github.com/Polyconseil/vue-gettext/issues/66). Default value is `false`. Enable this option only if you know what you're doing.                                                                                                                                                                                                                                                              |
-| `availableLanguages`   | `{Object}`  | optional    | An object that represents the list of the available languages for the app whose keys are [**local names**](http://www.localeplanet.com/icu/) (e.g. [`en`](https://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes) or [`en_US`](https://www.gnu.org/software/gettext/manual/html_node/Country-Codes.html#Country-Codes)) and whose values are [**language names**](http://docs.translatehouse.org/projects/localization-guide/en/latest/l10n/languagenames.html) used for the display in UI, e.g. `English (United States)`. It's exposed in all Vue instances via `vm.$language.available` |
-| `defaultLanguage`      | `{String}`  | optional    | The [**local name**](http://www.localeplanet.com/icu/) of the default language, e.g. `en_US`. This will be the current active language. It's exposed in all Vue instances via `vm.$language.current`                                                                                                                                                                                                                                                                                                                                                                                                                         |
-| `muteLanguages`        | `{Array}`   | optional    | Discard warnings for missing translations for all languages of the list. This is useful to avoid messages from the language used in source code.                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
-| `languageVmMixin`      | `{Object}`  | optional    | A [**mixin**](https://vuejs.org/v2/guide/mixins.html#Option-Merging) that will be passed to the main `languageVm` instance (exposed via `$language`) that can be used, for example, to add custom computed properties                                                                                                                                                                                                                                                                                                                                                                                                        |
-| `silent`               | `{Boolean}` | optional    | Enable or disable logs/warnings for missing translations and untranslated keys. Default value is [`Vue.config.silent`](https://vuejs.org/v2/api/#silent).                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| `translations`         | `{Object}`  | required    | The JSON file of the application's translations (produced by `gettext-compile`). It's exposed as a Vue global property as `Vue.$translations`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-
-The key special attribute is primarily used as a hint for Vue's virtual DOM algorithm to identify VNodes when diffing ... Vue uses an algorithm that minimizes element movement and tries to patch/reuse elements of the same type in-place as much as possible.
-
-Example:
-
-```javascript
-// ES6
-import Vue from "vue";
-import GetTextPlugin from "vue-gettext";
-import translations from "./path/to/translations.json";
-
-Vue.use(GetTextPlugin, {
-  availableLanguages: {
-    en_GB: "British English",
-    en_US: "American English",
-    es_US: "Español",
-    fr_FR: "Français",
-    it_IT: "Italiano",
-  },
-  defaultLanguage: "fr_FR",
-  languageVmMixin: {
-    computed: {
-      currentKebabCase: function() {
-        return this.current.toLowerCase().replace("_", "-");
-      },
-    },
-  },
-  translations: translations,
-  silent: true,
-});
-```
 
 ## `vm.$language`
 
@@ -175,7 +261,7 @@ You can use `Vue.config.language` to e.g. configure a third party plugin in a fi
 import moment from "moment";
 import Vue from "vue";
 
-const dateFormat = function(value, formatString) {
+const dateFormat = function (value, formatString) {
   moment.locale(Vue.config.language);
   return moment(value).format(arguments.length > 1 ? formatString : "dddd D MMMM HH:mm:ss");
 };
@@ -283,9 +369,7 @@ Since [interpolation inside attributes are deprecated](https://vuejs.org/v2/guid
 Raw HTML in data is interpreted as plain text, not HTML. In order to output real HTML, you will need to use the `render-html` attribute and set it to `true`.
 
 ```html
-<p v-translate render-html="true">
-  Hello %{ openingTag }%{ name }%{ closingTag }
-</p>
+<p v-translate render-html="true">Hello %{ openingTag }%{ name }%{ closingTag }</p>
 ```
 
 Dynamically rendering arbitrary HTML on your website can be very dangerous because it can easily lead to XSS vulnerabilities. Only use HTML `render-html="true"` on trusted content and never on user-provided content.
@@ -441,32 +525,13 @@ make translations
 
 Look at the included `Makefile` for an example.
 
-# Usage of `translate` without Vue
+# Contribute
 
-For convenience `translate` can be imported directly in JavaScript files for cases where you need the translations from `translations.json` outside of `vue-gettext` (see [#113](https://github.com/Polyconseil/vue-gettext/pull/113)):
-
-```js
-import { translate } from "vue-gettext";
-
-const { gettext: $gettext } = translate;
-
-let str = $gettext("Hello");
-```
-
-# Elsewhere
-
-## Support for Pug templates
-
-If you are using a template language, i.e. [Pug.js](https://pugjs.org/api/getting-started.html) in [Single File Component](https://vuejs.org/v2/guide/single-file-components.html) within a webpack setup (using vue-loader), have a look at [vue-webpack-gettext](https://github.com/kennyki/vue-webpack-gettext).
+Please make sure to read the [Pull request guidelines](https://github.com/Polyconseil/vue-gettext/blob/master/README_DEV.md#pull-request-guidelines) before making a pull request.
 
 # Credits
 
-This plugin was inspired by:
-
-- [`systematic`](https://github.com/Polyconseil/systematic) for Makefile and
-  extraction of translatable strings.
-- [`angular-gettext`](https://angular-gettext.rocketeer.be)
-- [`vue-i18n`](https://github.com/kazupon/vue-i18n)
+This plugin heavily relies on the work of the original [`vue-gettext`](https://github.com/Polyconseil/vue-gettext/).
 
 # License
 

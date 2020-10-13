@@ -9,7 +9,7 @@ declare module "vue/types/vue" {
   }
 
   interface Vue {
-    $gettextPlugin: ILanguageComponent;
+    $language: ILanguageComponent;
     $gettext: (msgid: string) => string;
     $pgettext: (context: string, msgid: string) => string;
     $ngettext: (msgid: string, plural: string, n: number) => string;

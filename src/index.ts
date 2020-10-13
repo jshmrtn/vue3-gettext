@@ -2,13 +2,13 @@ import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { reactive, App, inject, watch, computed, ref } from "vue";
+import { reactive, App, inject, watch, computed, ref, ComputedRef } from "vue";
 import { normalizeTranslations } from "./utils";
 
 export interface GetTextOptions {
   availableLanguages: { [key: string]: string };
   defaultLanguage: string;
-  mixins: object;
+  mixins: { [key: string]: (language: string) => any }; // TODO: type
   muteLanguages: Array<string>;
   silent: boolean;
   translations: { [key: string]: { [key: string]: any } };
@@ -67,7 +67,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
       globalProperties.$ngettext = gettext.ngettext;
       globalProperties.$npgettext = gettext.npgettext;
       globalProperties.$gettextInterpolate = gettext.interpolate;
-      globalProperties.$gettextPlugin = gettext;
+      globalProperties.$language = gettext;
 
       app.directive("translate", Directive(gettext));
       // eslint-disable-next-line vue/component-definition-name-casing

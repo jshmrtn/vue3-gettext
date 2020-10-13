@@ -9,7 +9,7 @@ const mount = mountWithPlugin({
 });
 
 const wrapper = mount({ template: "<div></div>" });
-const plugin = wrapper.vm.$.appContext.config.globalProperties.$gettextPlugin as GetText;
+const plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
 
 const interpolate = rawInterpolate(plugin);
 
