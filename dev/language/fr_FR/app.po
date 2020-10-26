@@ -1,4 +1,5 @@
-# English translations for vue-gettext package.
+# French translations for vue-gettext package
+# Traductions françaises du paquet vue-gettext.
 # Copyright (C) 2016 THE vue-gettext'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the vue-gettext package.
 # Automatically generated, 2016.
@@ -11,13 +12,13 @@ msgstr ""
 "PO-Revision-Date: 2016-11-22 16:24+0100\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
-"Language: en_GB\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: dev/components/plural.vue:27
+#: dev/components/plural.vue:25
 msgid "%{ countForUntranslated } item. This is left untranslated on purpose."
 msgid_plural ""
 "%{ countForUntranslated } items. This is left untranslated on purpose."
@@ -27,80 +28,80 @@ msgstr[1] ""
 #: dev/components/plural.vue:12
 msgid "%{ n } book"
 msgid_plural "%{ n } books"
-msgstr[0] "%{ n } book"
-msgstr[1] "%{ n } books"
+msgstr[0] "%{ n } livre"
+msgstr[1] "%{ n } livres"
 
 #: dev/components/alert.vue:20
 msgid "%{ n } car"
 msgid_plural "%{ n } cars"
-msgstr[0] "%{ n } car"
-msgstr[1] "%{ n } cars"
+msgstr[0] "%{ n } voiture"
+msgstr[1] "%{ n } voitures"
 
 #: dev/components/plural.vue:16
 msgid "%{ nComputed } book"
 msgid_plural "%{ nComputed } books"
-msgstr[0] "%{ nComputed } book"
-msgstr[1] "%{ nComputed } books"
+msgstr[0] "%{ nComputed } livre"
+msgstr[1] "%{ nComputed } livres"
 
-#: dev/components/directive.vue:15
+#: dev/components/directive.vue:14
 msgid "<strong>%{ count }</strong> apple"
 msgid_plural "<strong>%{ count }</strong> apples"
-msgstr[0] "<strong>%{ count }</strong> apple"
-msgstr[1] "<strong>%{ count }</strong> apples"
+msgstr[0] "<strong>%{ count }</strong> pomme"
+msgstr[1] "<strong>%{ count }</strong> pommes"
 
-#: dev/components/directive.vue:4
+#: dev/components/directive.vue:3
 msgid "A <b>random</b> number: <i>%{ random }</i>"
-msgstr "A <b>random</b> number: <i>%{ random }</i>"
+msgstr "Un <b>nombre</b> aléatoire : <i>%{ random }</i>"
 
 #: dev/components/multilines.vue:2
 msgid ""
 "Forgotten your password? Enter your \"email address\" below,\n"
 "      and we'll email instructions for setting a new one."
 msgstr ""
-"Forgotten your password? Enter your \"email address\" below,\n"
-"      and we'll email instructions for setting a new one."
+"Mot de passe perdu ? Saisissez votre \"adresse électronique\" ci-dessous\n"
+"    et nous vous enverrons les instructions pour en créer un nouveau."
 
 #: dev/components/alert.vue:9
 msgid "Good bye!"
-msgstr "Good bye!"
+msgstr "Au revoir !"
 
 #: dev/components/customTags.vue:2
 msgid "Headline 1"
-msgstr "Headline 1"
+msgstr "Titre 1"
 
 #: dev/components/customTags.vue:3
 msgid "Headline 2"
-msgstr "Headline 2"
+msgstr "Titre 2"
 
 #: dev/components/customTags.vue:4
 msgid "Headline 3"
-msgstr "Headline 3"
+msgstr "Titre 3"
 
 #: dev/components/customTags.vue:5
 msgid "Headline 4"
-msgstr "Headline 4"
+msgstr "Titre 4"
 
-#: dev/components/directive.vue:9
+#: dev/components/directive.vue:8
 msgid "Hello <strong>%{ name }</strong>"
-msgstr "Hello <strong>%{ name }</strong>"
+msgstr "Bonjour <strong>%{ name }</strong>"
 
 #: dev/components/plural.vue:3
 msgid "In English, '0' (zero) is always plural."
-msgstr "In English, '0' (zero) is always plural."
+msgstr "En anglais, '0' (zero) prend toujours le pluriel."
 
 #: dev/components/customTags.vue:6
 msgid "Paragraph"
-msgstr "Paragraph"
+msgstr "Paragraphe"
 
 #: dev/components/languageSelect.vue:3
 msgid "Select your language:"
-msgstr "Select your language:"
+msgstr "Sélectionner votre langage"
 
-#: dev/components/if.vue:14 dev/components/if.vue:15 dev/components/if.vue:16
+#: dev/components/if.vue:13 dev/components/if.vue:14 dev/components/if.vue:15
 msgid "This is %{ obj.name }"
-msgstr "This is %{ obj.name }"
+msgstr "C'est %{ obj.name }"
 
-#: dev/components/plural.vue:22
+#: dev/components/plural.vue:20
 msgid ""
 "Use default singular or plural form when there is no translation. This is "
 "left untranslated on purpose."
@@ -108,4 +109,4 @@ msgstr ""
 
 #: dev/components/if.vue:4
 msgid "Welcome %{ obj.name }"
-msgstr "Welcome %{ obj.name }"
+msgstr "Bienvenue %{ obj.name }"

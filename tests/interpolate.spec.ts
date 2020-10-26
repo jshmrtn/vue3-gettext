@@ -1,7 +1,7 @@
 import rawInterpolate from "../src/interpolate";
 import translations from "./json/translate";
 import { mountWithPlugin } from "./utils";
-import { GetText } from "../src";
+import { Language } from "../src";
 
 const mount = mountWithPlugin({
   translations: translations,
@@ -9,7 +9,7 @@ const mount = mountWithPlugin({
 });
 
 const wrapper = mount({ template: "<div></div>" });
-const plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
+const plugin = wrapper.vm.$.appContext.config.globalProperties.$language as Language;
 
 const interpolate = rawInterpolate(plugin);
 

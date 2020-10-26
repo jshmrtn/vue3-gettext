@@ -2,7 +2,7 @@ import { createApp, computed } from "vue";
 import App from "./App.vue";
 import "./index.css";
 import { createGettext } from "/@gettext/";
-import translations from "./translations.json";
+import translations from "./language/translations.json";
 
 const app = createApp(App);
 

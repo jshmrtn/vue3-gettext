@@ -1,4 +1,4 @@
-import { GetText } from "../src";
+import { Language } from "../src";
 import translateRaw from "../src/translate";
 import { mountWithPlugin } from "./utils";
 import translations from "./json/translate";
@@ -13,7 +13,7 @@ const mount = mountWithPlugin({
 });
 
 const wrapper = mount({ template: "<div></div>" });
-let plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
+let plugin = wrapper.vm.$.appContext.config.globalProperties.$language as Language;
 const setLanguage = (lang: string) => (plugin.current = lang);
 
 const translate = translateRaw(plugin);
@@ -21,7 +21,7 @@ const translate = translateRaw(plugin);
 describe("Translate tests", () => {
   let translated;
   beforeEach(async () => {
-    plugin = wrapper.vm.$.appContext.config.globalProperties.$language as GetText;
+    plugin = wrapper.vm.$.appContext.config.globalProperties.$language as Language;
     setLanguage("en_US");
   });
 
