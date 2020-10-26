@@ -45,6 +45,9 @@ function execShellCommand(cmd) {
 (async () => {
   const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.vue' 2> /dev/null`);
 
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir);
+  }
   const extracted = await execShellCommand(
     `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
   );

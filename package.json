@@ -12,8 +12,8 @@
     "registry": "https://registry.npmjs.org"
   },
   "bin": {
-    "gettext-extract": "./scripts/gettext_extract.js",
-    "gettext-compile": "./scripts/gettext_compile.js"
+    "vue-gettext-extract": "./scripts/gettext_extract.js",
+    "vue-gettext-compile": "./scripts/gettext_compile.js"
   },
   "scripts": {
     "start": "cd ./dev && vite",
