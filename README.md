@@ -43,8 +43,11 @@ app.use(gettext);
 
 Use the component or directive to annotate translatable strings:
 
+```html
 <translate>Hello!</translate>
+
 <span v-translate>Hello!</span>
+```
 
 Or inject the plugin using `useGettext` (Example of a language switcher):
 
@@ -77,7 +80,7 @@ export default {
 
 2. **Extracting strings**: you can now extract all strings to create message files. A message file is just a plain-text file with a `.po` file extension, representing a single language, that contains all available translation strings as keys and how they should be represented in the given language.
 
-`vue3-gettext` provides scripts to make this straightforward. Take a look at the [Message extraction and compilation](#message-extraction-and-compilation) section.
+   `vue3-gettext` provides scripts to make this straightforward. Take a look at the [Message extraction and compilation](#message-extraction-and-compilation) section.
 
 3. **Translating message files**: a translator needs to fill out the translations of each generated `.po` files. I recommend you use software like [poedit](https://poedit.net/) (some alternatives are listed on wikipedia [here](https://en.wikipedia.org/wiki/Gettext#See_also)).
 
