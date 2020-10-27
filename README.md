@@ -1,8 +1,20 @@
 # vue3-gettext
 
-> :warning: **WIP**: This project is based on the original [vue-gettext](https://github.com/Polyconseil/vue-gettext). It's still in development and has not yet been used in production. The readme has not been updated yet.
+> :warning: **WIP**: This project is based on the original [vue-gettext](https://github.com/Polyconseil/vue-gettext). It has not yet been used in production. Parts of the readme have not been updated yet.
 
 Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
+
+## Table of contents
+
+- [Installation](#installation)
+- [Basic usage](#basic-usage)
+- [Workflow](#workflow)
+- [Configuration](#configuration)
+- [Annotating strings](#annotating-strings-in-templates-html-or-vue-files)
+- [Message extraction and compilation](#message-extraction-and-compilation)
+- [Dependencies](#Dependencies)
+
+- [Dependencies](#what-does-vue3-gettext-depend-on)
 
 ## Installation
 
@@ -65,9 +77,7 @@ export default {
 
 2. **Extracting strings**: you can now extract all strings to create message files. A message file is just a plain-text file with a `.po` file extension, representing a single language, that contains all available translation strings as keys and how they should be represented in the given language.
 
-`vue3-gettext` provides scripts to make this straightforward.
-
-<!-- TODO link to scripts -->
+`vue3-gettext` provides scripts to make this straightforward. Take a look at the [Message extraction and compilation](#message-extraction-and-compilation) section.
 
 3. **Translating message files**: a translator needs to fill out the translations of each generated `.po` files. I recommend you use software like [poedit](https://poedit.net/) (some alternatives are listed on wikipedia [here](https://en.wikipedia.org/wiki/Gettext#See_also)).
 
@@ -202,7 +212,7 @@ const app = createApp(App);
 app.use(gettext);
 ```
 
-## What does `vue3-gettext` depend on?
+## Dependencies
 
 - [`easygettext`](https://github.com/Polyconseil/easygettext)
 
@@ -245,47 +255,47 @@ You can use `vm.$language.current` and `vm.$language.available` to e.g. easily b
 </template>
 ```
 
-## `Vue.config.language`
+# Message extraction and compilation
 
-After the plugin initialization, a global and reactive `language` property is added to `Vue.config` that you can use to get or set the current language outside of Vue instances.
+`vue3-gettext` exposes two scripts to simplify this process:
 
-```javascript
-> Vue.config.language
-'en_GB'
-> Vue.config.language = 'fr_FR'
+## `vue-gettext-extract`
+
+The extract script will create an output directory containing a `.pot` file, directories and a `.po` file for each locale. You can now edit the `.po` files to translate your app before compiling them.
+
+You may set a source directory to extract messages from, an output directory and a comma separated list of all the locales in your application.
+
+Example call:
+
+```sh
+vue-gettext-extract --src ./src --out ./src/language --locales "de_CH,en_US"
 ```
 
-You can use `Vue.config.language` to e.g. configure a third party plugin in a filter:
+## `vue-gettext-compile`
 
-```javascript
-import moment from "moment";
-import Vue from "vue";
+The compile script will merge the contents of all the `.po` files and combine them into a single `translations.json` file that you can use with `vue3-gettext` (in the `createGettext` function).
 
-const dateFormat = function (value, formatString) {
-  moment.locale(Vue.config.language);
-  return moment(value).format(arguments.length > 1 ? formatString : "dddd D MMMM HH:mm:ss");
-};
+You may set the directory where all your locales are located (the `--out` directory of the extract script) and the locales
+
+Example call:
+
+```sh
+vue-gettext-compile --dir ./src/language --locales "de_CH,en_US"
 ```
 
-# Workflow
+## Recommended setup
 
-1. Annotate your strings
+We recommend setting up the scripts in your `package.json` like this:
 
-2. Extract translations (`make makemessages`)
-
-3. Translate message files
-
-4. Compile translations (`make translations`)
-
-```
-   Annotate    |       Extract        |              Translate                 |        Compile
---------------------------------------------------------------------------------------------------------
-component.js
-component.vue ---> /tmp/template.pot ---> app/locale/fr_FR/LC_MESSAGES/app.po ---> app/translations.json
-template.html
+```json
+"scripts": {
+    "gettext": "npm run gettext:extract && npm run gettext:compile",
+    "gettext:extract": "vue-gettext-extract --src ./src --out ./src/language --locales \"de_CH,en_US\"",
+    "gettext:compile": "vue-gettext-compile --dir ./src/language --locales \"de_CH,en_US\""
+  },
 ```
 
-## 1a) Annotating strings in templates (`.html` or `.vue` files)
+# Annotating strings in templates (`.html` or `.vue` files)
 
 ### Use the component or the directive
 
@@ -295,7 +305,7 @@ Strings are marked as translatable in your templates using either the `translate
 <translate>Hello!</translate> <span v-translate>Hello!</span>
 ```
 
-This will automatically be translated. For instance, in French, it might read _Bonjour !_.
+This will automatically be translated. For instance, in French, it might read _Bonjour!_.
 
 #### Singular
 
@@ -356,9 +366,9 @@ When rendered, the content of the `translate` component will be wrapped in a `sp
 <translate tag="h1">Hello!</translate>
 ```
 
-### Interpolation support
+### Interpolation
 
-Since [interpolation inside attributes are deprecated](https://vuejs.org/v2/guide/syntax.html#Attributes) in Vue 2, we have to use another set of delimiters. Instead of the "Mustache" syntax (double curly braces), we use `%{` and `}`:
+You can use the tokens `%{` and `}` to for string interpolation within messages:
 
 ```html
 <translate>Hello %{ name }</translate>
@@ -378,6 +388,8 @@ Dynamically rendering arbitrary HTML on your website can be very dangerous becau
 
 #### Caveat when using `v-translate` with interpolation
 
+> :warning: **TODO**: Section not updated
+
 It's not possible (yet) to detect changes on the parent component's data, so you have to add an expression to the directive to provide a changing binding value. This is so that it can do a comparison on old and current value before running the translation in its `update` hook.
 
 It is described in the [official guide](https://vuejs.org/v2/guide/custom-directive.html#Hook-Functions):
@@ -396,6 +408,8 @@ It is described in the [official guide](https://vuejs.org/v2/guide/custom-direct
 ```
 
 #### Caveat when using either the component `<translate>` or directive `v-translate` with interpolation inside `v-for`
+
+> :warning: **TODO**: Section not updated
 
 It's not possible (yet) to access the scope within `v-for`, example:
 
@@ -419,6 +433,8 @@ You need to pass in custom parameters for it to work:
 
 #### Caveat when using `v-translate` with Vue components or Vue specific attributes
 
+> :warning: **TODO**: Section not updated
+
 It's not possible (yet) to support components or attributes like `v-bind` and `v-on`. So make sure that your HTML translations stay basic for now.
 
 For example, this is _not supported_:
@@ -428,6 +444,8 @@ For example, this is _not supported_:
 ```
 
 ## 1b) Annotating strings in JavaScript code (`.js` or `.vue` files)
+
+> :warning: **TODO**: Section not updated
 
 Strings are marked as translatable in your Vue instances JavaScript code using methods attached to `Vue.prototype`.
 
@@ -473,61 +491,11 @@ methods: {
 
 `vm.$gettextInterpolate` dynamically populates a translation string with a given context object.
 
-## 2) Extracting strings
-
-This should be a step in your build process and this can be done in several ways.
-
-Here are the things we must do:
-
-1. extracting annotated strings from templates (`.html` and/or `.vue` files),
-
-2. extracting annotated strings from JavaScript code (`.js` and/or `.vue` files),
-
-3. creating a main `.pot` template based on the extracted strings,
-
-4. creating editable `.po` files for each available language.
-
-You'll need to install [`easygettext`](https://github.com/Polyconseil/easygettext) and use `gettext-extract` to extract annotated strings from template files and produce a `.pot` file.
-
-You'll also need some GNU gettext utilities, namely `msgmerge`, `msginit` and `msgattrib` to generate `.po` files from the `.pot` dictionary file.
-
-We use a `Makefile` with a `makemessages` target to automate this step. To give you an example, I included a `Makefile` with a `makemessages` target in this project that you can include in your build process.
-
-Extracting strings and generating `.po` files becomes as easy as running:
-
-```shell
-make makemessages
-```
-
-## 3) Translating message files
-
-The translator needs to fill out the translations of each generated `.po` files.
-
-This can be done by you or outsourced to other firms or individuals since `.po` files are the industry standard for multilingual websites.
-
-There is also a wide range of translation tools available in the gettext ecosystem. Some of them are listed on [Wikipedia](https://en.wikipedia.org/wiki/Gettext#See_also).
-
-## 4) Compiling translations
-
-This step focuses on making the translated `.po` files usable in your Vue.js app.
-
-Once translated, install `easygettext` and use [`gettext-compile`](https://github.com/Polyconseil/easygettext#gettext-compile) to merge all translated `.po` files into a unique `.json` translation file.
-
-Embed the `.json` translation file back into your application. This is done only one time at `vue-gettext` configuration time.
-
-We use a `Makefile` with a `translations` target to automate this step.
-
-Compiling translations becomes as easy as running:
-
-```shell
-make translations
-```
-
-Look at the included `Makefile` for an example.
-
 # Contribute
 
-Please make sure to read the [Pull request guidelines](https://github.com/Polyconseil/vue-gettext/blob/master/README_DEV.md#pull-request-guidelines) before making a pull request.
+Please make sure your code is properly formatted (the project contains a `prettier` config) and all the tests run successfully (`npm run test`) when opening a pull request.
+
+Please specify clearly what you changed and why.
 
 # Credits
 
