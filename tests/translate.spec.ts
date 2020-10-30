@@ -10,6 +10,7 @@ const mount = mountWithPlugin({
   },
   defaultLanguage: "en_US",
   translations: translations,
+  setGlobalProperties: true,
 });
 
 const wrapper = mount({ template: "<div></div>" });

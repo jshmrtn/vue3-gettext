@@ -8,6 +8,7 @@ const mount = mountWithPlugin({
   },
   defaultLanguage: "ar",
   translations: translations,
+  setGlobalProperties: true,
 });
 
 describe("translate arabic directive tests", () => {

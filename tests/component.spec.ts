@@ -8,6 +8,7 @@ const mount = mountWithPlugin({
   },
   defaultLanguage: "en_US",
   translations,
+  setGlobalProperties: true,
 });
 
 describe("translate component tests", () => {

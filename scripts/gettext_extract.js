@@ -3,7 +3,6 @@
 "use strict";
 
 const fs = require("fs");
-const shell = require("shelljs");
 
 const srcIndex = process.argv.indexOf("--src");
 let srcDir = "./src";
@@ -46,18 +45,18 @@ function execShellCommand(cmd) {
   const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.vue' 2> /dev/null`);
 
   if (!fs.existsSync(outDir)) {
-    fs.mkdirSync(outDir);
+    fs.mkdirSync(outDir, { recursive: true });
   }
   const extracted = await execShellCommand(
     `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
   );
-  shell.chmod("666", potPath);
+  fs.chmodSync(potPath, 666);
   console.log(extracted);
 
   locales.forEach(async (loc) => {
     const poDir = `${outDir}/${loc}/`;
     const poFile = `${poDir}app.po`;
-    shell.mkdir("-p", poDir);
+    fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
       await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potPath} || break`);
@@ -65,7 +64,7 @@ function execShellCommand(cmd) {
       await execShellCommand(
         `msginit --no-translator --locale=${loc} --input=${potPath} --output-file=${poFile} || break`,
       );
-      shell.chmod("666", poFile);
+      fs.chmodSync(poFile, 666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile} || break`);
     }
   });

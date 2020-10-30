@@ -100,10 +100,12 @@ const translate = (language: Language) => ({
       translationIndex = 0;
     }
 
+    if (!translated[translationIndex]) {
+      throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
+    }
     return translated[translationIndex];
   },
 
-  // TODO: improve types
   /*
    * Returns a string of the translation of the message.
    * Also makes the string discoverable by gettext-extract.

@@ -2,25 +2,29 @@ import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { reactive, App, inject, computed, UnwrapRef, WritableComputedRef } from "vue";
+import { reactive, App, inject, computed, UnwrapRef, WritableComputedRef, Directive as VueDirective } from "vue";
 import { normalizeTranslations } from "./utils";
 
 export interface GetTextOptions {
   availableLanguages: { [key: string]: string };
   defaultLanguage: string;
-  mixins: { [key: string]: (language: Language) => any }; // TODO: type
   mutedLanguages: Array<string>;
   silent: boolean;
   translations: { [key: string]: { [key: string]: any } };
+  setGlobalProperties: boolean;
+  provideDirective: boolean;
+  provideComponent: boolean;
 }
 
 const defaultOptions: GetTextOptions = {
   availableLanguages: { en_US: "English" },
   defaultLanguage: "en_US",
-  mixins: {},
   mutedLanguages: [],
   silent: false,
   translations: {},
+  setGlobalProperties: false,
+  provideDirective: true,
+  provideComponent: true,
 };
 
 export const GetTextSymbol = Symbol("GETTEXT");
@@ -31,12 +35,14 @@ export type Language = UnwrapRef<{
   silent: GetTextOptions["silent"];
   translations: WritableComputedRef<WritableComputedRef<GetTextOptions["translations"]>>;
   current: string;
-  gettext: (msgid: string) => string;
-  pgettext: (context: string, msgid: string) => string;
-  ngettext: (msgid: string, plural: string, n: number) => string;
-  npgettext: (context: string, msgid: string, plural: string, n: number) => string;
-  gettextInterpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
+  $gettext: (msgid: string) => string;
+  $pgettext: (context: string, msgid: string) => string;
+  $ngettext: (msgid: string, plural: string, n: number) => string;
+  $npgettext: (context: string, msgid: string, plural: string, n: number) => string;
+  interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
   install: (app: App) => void;
+  directive: VueDirective;
+  component: typeof Component;
 }>;
 
 export function createGettext(options: Partial<GetTextOptions> = {}) {
@@ -52,7 +58,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
   };
 
   let translations = reactive({ value: normalizeTranslations(mergedOptions.translations) });
-  // TODO: type
+
   const gettext: Language = (reactive({
     available: mergedOptions.availableLanguages,
     muted: mergedOptions.mutedLanguages,
@@ -70,30 +76,36 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
       app[GetTextSymbol] = gettext;
       app.provide(GetTextSymbol, gettext);
 
-      const globalProperties = app.config.globalProperties;
+      if (mergedOptions.setGlobalProperties) {
+        const globalProperties = app.config.globalProperties;
+        globalProperties.$gettext = gettext.$gettext;
+        globalProperties.$pgettext = gettext.$pgettext;
+        globalProperties.$ngettext = gettext.$ngettext;
+        globalProperties.$npgettext = gettext.$npgettext;
+        globalProperties.$gettextInterpolate = gettext.interpolate;
+        globalProperties.$language = gettext;
+      }
 
-      globalProperties.$gettext = gettext.gettext;
-      globalProperties.$pgettext = gettext.pgettext;
-      globalProperties.$ngettext = gettext.ngettext;
-      globalProperties.$npgettext = gettext.npgettext;
-      globalProperties.$gettextInterpolate = gettext.gettextInterpolate;
-      globalProperties.$language = gettext;
-
-      app.directive("translate", Directive(gettext));
-      // eslint-disable-next-line vue/component-definition-name-casing
-      app.component("translate", Component);
+      if (mergedOptions.provideDirective) {
+        app.directive("translate", Directive(gettext));
+      }
+      if (mergedOptions.provideComponent) {
+        // eslint-disable-next-line vue/component-definition-name-casing
+        app.component("translate", Component);
+      }
     },
   }) as unknown) as Language;
 
-  Object.keys(mergedOptions.mixins).forEach((key) => (gettext[key] = mergedOptions.mixins[key](gettext)));
-
   const translate = translateRaw(gettext);
   const interpolate = interpolateRaw(gettext);
-  gettext.gettext = translate.gettext.bind(translate);
-  gettext.pgettext = translate.pgettext.bind(translate);
-  gettext.ngettext = translate.ngettext.bind(translate);
-  gettext.npgettext = translate.npgettext.bind(translate);
-  gettext.gettextInterpolate = interpolate.bind(interpolate);
+  gettext.$gettext = translate.gettext.bind(translate);
+  gettext.$pgettext = translate.pgettext.bind(translate);
+  gettext.$ngettext = translate.ngettext.bind(translate);
+  gettext.$npgettext = translate.npgettext.bind(translate);
+  gettext.interpolate = interpolate.bind(interpolate);
+
+  gettext.directive = Directive(gettext);
+  gettext.component = Component;
 
   return gettext;
 }

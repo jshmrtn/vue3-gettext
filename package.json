@@ -32,7 +32,8 @@
     "npm": ">= 3.0.0"
   },
   "peerDependencies": {
-    "vue": "^3.0.0"
+    "vue": "^3.0.0",
+    "easygettext": "^2.15.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.9",
@@ -49,7 +50,7 @@
     "prettier": "^2.1.2",
     "ts-jest": "^26.2.0",
     "typescript": "^3.9.7",
-    "vite": "^1.0.0-rc.4",
+    "vite": "^1.0.0-rc.8",
     "vue": "^3.0.0",
     "vue-loader": "^10.3.0"
   },
@@ -66,8 +67,5 @@
     "dist",
     "LICENSE",
     "README.md"
-  ],
-  "dependencies": {
-    "shelljs": "^0.8.4"
-  }
+  ]
 }

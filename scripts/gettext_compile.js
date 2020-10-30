@@ -2,7 +2,8 @@
 
 "use strict";
 
-const shell = require("shelljs");
+const fs = require("fs");
+
 const outIndex = process.argv.indexOf("--dir");
 let outDir = "./src/language";
 if (outIndex > -1) {
@@ -34,6 +35,6 @@ function execShellCommand(cmd) {
 const outputPath = locales.map((loc) => `${outDir}/${loc}/app.po`).join(" ");
 
 (async () => {
-  shell.mkdir("-p", outDir);
+  fs.mkdirSync(outDir, { recursive: true });
   const compile = await execShellCommand(`gettext-compile --output ${outDir}/translations.json ${outputPath}`);
 })();

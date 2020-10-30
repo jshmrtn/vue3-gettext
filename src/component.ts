@@ -1,14 +1,14 @@
 import translate from "./translate";
-import { Component, h, computed, SetupContext, ref, onMounted, Ref, getCurrentInstance } from "vue";
+import { Component, h, computed, SetupContext, ref, onMounted, Ref, getCurrentInstance, defineComponent } from "vue";
 import interpolate from "./interpolate";
 import { useGettext } from ".";
 
 /**
  * Translate content according to the current language.
  */
-export default {
+export default defineComponent({
+  // eslint-disable-next-line vue/component-definition-name-casing
   name: "translate",
-
   props: {
     tag: {
       type: String,
@@ -18,24 +18,24 @@ export default {
     // i.e.: `:translateN`.
     translateN: {
       type: Number,
-      required: false,
+      default: null,
     },
     translatePlural: {
       type: String,
-      required: false,
+      default: null,
     },
     translateContext: {
       type: String,
-      required: false,
+      default: null,
     },
     translateParams: {
       type: Object,
-      required: false,
+      default: null,
     },
     // `translateComment` is used exclusively by `easygettext`'s `gettext-extract`.
     translateComment: {
       type: String,
-      required: false,
+      default: null,
     },
   },
 
@@ -56,23 +56,20 @@ export default {
 
     onMounted(() => {
       if (!msgid.value) {
-        // console.log(JSON.stringify(getCurrentInstance().subTree.props.ref.value.innerHTML));
-        // console.log(getCurrentInstance().ctx.$options);
-        msgid.value = root.value.innerHTML.trim();
-        // msgid.value = getCurrentInstance().subTree.props.ref.value.innerHTML; //context.slots.default()[0].children as string;
+        msgid.value = root.value.innerHTML;
       }
     });
 
     const translation = computed(() => {
-      let translation = translate(plugin).getTranslation(
+      let translatedMsg = translate(plugin).getTranslation(
         msgid.value,
-        props.translateN,
+        props.translateN || undefined,
         props.translateContext,
         isPlural ? props.translatePlural : null,
         plugin.current,
       );
 
-      return interpolate(plugin)(translation, props.translateParams, getCurrentInstance()?.parent);
+      return interpolate(plugin)(translatedMsg, props.translateParams, getCurrentInstance()?.parent);
     });
 
     // The text must be wraped inside a root HTML element, so we use a <span> (by default).
@@ -84,4 +81,4 @@ export default {
       return h(props.tag, { ref: root, innerHTML: translation.value });
     };
   },
-} as Component;
+});

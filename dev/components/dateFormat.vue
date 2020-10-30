@@ -19,8 +19,7 @@ export default {
     dateFormat: (value, formatString) => {
       const gettext = useGettext();
       const locales = { en, fr, it };
-      // INFO: using the currentWithoutRegion mixin
-      const locale = locales[gettext.currentWithoutRegion];
+      const locale = locales[gettext.current.toLowerCase().split("_")[0]];
       return format(value, formatString ? formatString : "EEEE d LLLL HH:mm:ss", { locale });
     },
   },

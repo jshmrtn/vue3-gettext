@@ -64,7 +64,6 @@ export default function directive(language: Language): Directive {
         el.dataset.msgid = el.innerHTML;
       }
 
-      // TODO
       watch(language, () => {
         update(el, binding, vnode);
       });

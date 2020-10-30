@@ -159,22 +159,6 @@ Discard warnings for missing translations for all languages of the list. This is
 mutedLanguages: ['fr_FR', 'de'],
 ```
 
-### `mixins`
-
-Type: `{ [key: string]: (language: string) => any }`
-
-Default: `{}`
-
-Mixins allows extending the plugin instance with your own properties. This is helpful if you want to provide shared computed properties, e.g.
-
-#### Example
-
-```javascript
-mixins: {
-  upperCaseLang: (language) => computed(() => lang.toUpperCase()),
-},
-```
-
 ### `silent`
 
 Type: `boolean`
@@ -189,6 +173,30 @@ Enable or disable logs/warnings for missing translations and untranslated keys.
 silent: true,
 ```
 
+### `setGlobalProperties`
+
+Type: `boolean`
+
+Default: `false`
+
+Sets the options `$gettext` `$pgettext` `$ngettext` `$npgettext` `$gettextInterpolate` `$language` on `app.config.globalProperties`, making the globally available in your templates. This is a compatibility option meant for projects upgrading from `vue-gettext` and activating it is **not** recommended.
+
+### `provideDirective`
+
+Type: `boolean`
+
+Default: `true`
+
+Registers the `v-translate` directive on you application. If you disable this option and want to provide the directive yourself, you must make sure to name it `translate` otherwise extraction will fail.
+
+### `provideComponent`
+
+Type: `boolean`
+
+Default: `true`
+
+Registers the `<translate>` component on you application. If you disable this option and want to provide the component yourself, you must make sure to name it `translate` otherwise extraction will fail.
+
 ### Full configuration example:
 
 ```javascript
@@ -201,9 +209,6 @@ const gettext = createGettext({
     en_GB: "British English",
     fr_FR: "Français",
     it_IT: "Italiano",
-  },
-  mixins: {
-    languageWithoutRegion: (lang) => computed(() => lang.current.toLowerCase().split("_")[0]),
   },
   defaultLanguage: "en_GB",
   mutedLanguages: ["fr_FR"]
@@ -230,33 +235,6 @@ app.use(gettext);
   - [`msginit`](https://www.gnu.org/software/gettext/manual/html_node/msginit-Invocation.html#msginit-Invocation)
 
   - [`msgattrib`](https://www.gnu.org/software/gettext/manual/html_node/msgattrib-Invocation.html#msgattrib-Invocation)
-
-Those tools should be integrated in your build process. We'll show you an example later.
-
-## `vm.$language`
-
-After the plugin initialization, a `languageVm` Vue instance is injected
-into every component as `vm.$language`.
-
-It exposes the following properties:
-
-- `vm.$language.available`: an object that represents the list of the available languages (defined at configuration time)
-
-- `vm.$language.current`: the current language (defined at configuration time)
-
-- whatever you passed to the plugin mixin
-
-You can use `vm.$language.current` and `vm.$language.available` to e.g. easily build a language switch component with a single template:
-
-```html
-<template>
-  <div>
-    <select name="language" v-model="$language.current">
-      <option v-for="(language, key) in $language.available" :value="key">{{ language }}</option>
-    </select>
-  </div>
-</template>
-```
 
 # Message extraction and compilation
 
@@ -448,51 +426,52 @@ For example, this is _not supported_:
 
 ## 1b) Annotating strings in JavaScript code (`.js` or `.vue` files)
 
-> :warning: **TODO**: Section not updated
-
-Strings are marked as translatable in your Vue instances JavaScript code using methods attached to `Vue.prototype`.
+Strings are marked as translatable in your Vue instances JavaScript code using methods from the plugin.
 
 ### Singular
 
 ```javascript
-vm.$gettext(msgid);
+const { $gettext } = useGettext();
+
+$gettext(msgid);
 ```
 
 ### Plural
 
 ```javascript
-vm.$ngettext(msgid, plural, n);
+const { $ngettext } = useGettext();
+
+$ngettext(msgid, plural, n);
 ```
 
 ### Context
 
 ```javascript
-vm.$pgettext(context, msgid);
+const { $pgettext } = useGettext();
+
+$pgettext(context, msgid);
 ```
 
 ### Context + Plural
 
 ```javascript
-vm.$npgettext(context, msgid, plural, n);
+const { $npgettext } = useGettext();
+
+$npgettext(context, msgid, plural, n);
 ```
 
 ### Interpolation support
 
-You can use interpolation in your JavaScript using another method attached to `Vue.prototype`: `vm.$gettextInterpolate`.
+You can use interpolation in your JavaScript using the method `interpolate` in combination with one of the annotation functions.
 
 ```javascript
-...
-methods: {
-  alertPlural (n) {
-    let translated = this.$ngettext('%{ n } foo', '%{ n } foos', n)
-    let interpolated = this.$gettextInterpolate(translated, {n: n})
-    return window.alert(interpolated)
-  },
-},
-...
+const { $ngettext, interpolate } = useGettext();
+
+const translated = $ngettext("%{ n } foo", "%{ n } foos", n);
+const interpolated = interpolate(translated, { n: n });
 ```
 
-`vm.$gettextInterpolate` dynamically populates a translation string with a given context object.
+`interpolate` dynamically populates a translation string with a given context object.
 
 # Contribute
 

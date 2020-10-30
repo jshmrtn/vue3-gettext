@@ -6,6 +6,7 @@ import { Language } from "../src";
 const mount = mountWithPlugin({
   translations: translations,
   silent: true,
+  setGlobalProperties: true,
 });
 
 const wrapper = mount({ template: "<div></div>" });

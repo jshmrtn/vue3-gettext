@@ -12,11 +12,9 @@ const gettext = createGettext({
     fr_FR: "Français",
     it_IT: "Italiano",
   },
-  mixins: {
-    currentWithoutRegion: (lang) => computed(() => lang.current.toLowerCase().split("_")[0]),
-  },
   defaultLanguage: "en_GB",
   translations: translations,
+  setGlobalProperties: true,
 });
 
 app.use(gettext);

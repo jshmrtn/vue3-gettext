@@ -9,6 +9,7 @@ const mount = mountWithPlugin({
   defaultLanguage: "en_US",
   translations: translations,
   silent: false,
+  setGlobalProperties: true,
 });
 
 describe("translate directive tests", () => {
