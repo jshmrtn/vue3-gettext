@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "cd ./dev && vite",
-    "build": "npm run build:esm && npm run build:commonjs",
+    "build": "rm -rf dist && npm run build:esm && npm run build:commonjs",
     "build:esm": "tsc -m es2015 -d --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/esm",
     "build:commonjs": "tsc -m commonjs -d --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/commonjs",
     "test": "npm run test:lint && npm run test:unit",
@@ -54,14 +54,14 @@
     "vue": "^3.0.0",
     "vue-loader": "^10.3.0"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/commonjs/index.js",
   "exports": {
     ".": {
       "require": "./dist/commonjs/index.js",
       "default": "./dist/esm/index.js"
     }
   },
-  "types": "dist/esm/index.d.ts",
+  "types": "dist/commonjs/index.d.ts",
   "module": "./dist/esm/index.js",
   "files": [
     "dist",
