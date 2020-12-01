@@ -1,8 +1,9 @@
+import { App, computed, inject, reactive, UnwrapRef, Directive as VueDirective, WritableComputedRef } from "vue";
+
 import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { reactive, App, inject, computed, UnwrapRef, WritableComputedRef, Directive as VueDirective } from "vue";
 import { normalizeTranslations } from "./utils";
 
 export interface GetTextOptions {
@@ -22,7 +23,7 @@ const defaultOptions: GetTextOptions = {
   mutedLanguages: [],
   silent: false,
   translations: {},
-  setGlobalProperties: false,
+  setGlobalProperties: true,
   provideDirective: true,
   provideComponent: true,
 };

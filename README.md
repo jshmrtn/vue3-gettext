@@ -1,6 +1,6 @@
 # vue3-gettext
 
-> :warning: **WIP**: This project is based on the original [vue-gettext](https://github.com/Polyconseil/vue-gettext). It has not yet been used in production. Parts of the readme have not been updated yet.
+> :warning: This project is based on the original [vue-gettext](https://github.com/Polyconseil/vue-gettext). It has not yet been used in production.
 
 Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
@@ -177,9 +177,9 @@ silent: true,
 
 Type: `boolean`
 
-Default: `false`
+Default: `true`
 
-Sets the options `$gettext` `$pgettext` `$ngettext` `$npgettext` `$gettextInterpolate` `$language` on `app.config.globalProperties`, making the globally available in your templates. This is a compatibility option meant for projects upgrading from `vue-gettext` and activating it is **not** recommended.
+Sets the options `$gettext` `$pgettext` `$ngettext` `$npgettext` `$gettextInterpolate` `$language` on `app.config.globalProperties`, making the globally available in your templates. It is **not** recommended to disable this as `easygettext` will not extract strings if your functions are not named exactly like this.
 
 ### `provideDirective`
 
@@ -367,32 +367,9 @@ Dynamically rendering arbitrary HTML on your website can be very dangerous becau
 
 ### Caveats
 
-#### Caveat when using `v-translate` with interpolation
-
-> :warning: **TODO**: Section not updated
-
-It's not possible (yet) to detect changes on the parent component's data, so you have to add an expression to the directive to provide a changing binding value. This is so that it can do a comparison on old and current value before running the translation in its `update` hook.
-
-It is described in the [official guide](https://vuejs.org/v2/guide/custom-directive.html#Hook-Functions):
-
-> update: called after the containing component has updated, but possibly before its children have updated. The directive's value may or may not have changed, but you can skip unnecessary updates by comparing the binding's current and old values...
-
-```html
-<p
-  v-translate="{count: count, brand: brand}"
-  :translate-n="count"
-  translate-plural="<strong>%{ count }</strong> %{brand} cars"
-  translate-comment="My comment for translators"
->
-  <strong>%{ count }</strong> %{brand} car
-</p>
-```
-
 #### Caveat when using either the component `<translate>` or directive `v-translate` with interpolation inside `v-for`
 
-> :warning: **TODO**: Section not updated
-
-It's not possible (yet) to access the scope within `v-for`, example:
+It's not possible to access the scope within `v-for`, example:
 
 ```html
 <p>
@@ -414,9 +391,7 @@ You need to pass in custom parameters for it to work:
 
 #### Caveat when using `v-translate` with Vue components or Vue specific attributes
 
-> :warning: **TODO**: Section not updated
-
-It's not possible (yet) to support components or attributes like `v-bind` and `v-on`. So make sure that your HTML translations stay basic for now.
+It's not possible to support components or attributes like `v-bind` and `v-on`. So make sure that your HTML translations stay basic for now.
 
 For example, this is _not supported_:
 
