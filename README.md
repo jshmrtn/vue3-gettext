@@ -1,7 +1,5 @@
 # vue3-gettext
 
-> :warning: This project is based on the original [vue-gettext](https://github.com/Polyconseil/vue-gettext). It has not yet been used in production.
-
 Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
 ## Table of contents
