@@ -50,7 +50,7 @@ function execShellCommand(cmd) {
   const extracted = await execShellCommand(
     `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
   );
-  fs.chmodSync(potPath, 666);
+  fs.chmodSync(potPath, 0o666);
   console.log(extracted);
 
   locales.forEach(async (loc) => {
@@ -64,7 +64,7 @@ function execShellCommand(cmd) {
       await execShellCommand(
         `msginit --no-translator --locale=${loc} --input=${potPath} --output-file=${poFile} || break`,
       );
-      fs.chmodSync(poFile, 666);
+      fs.chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile} || break`);
     }
   });
