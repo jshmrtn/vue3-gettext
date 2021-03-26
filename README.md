@@ -1,4 +1,4 @@
-# vue3-gettext
+# vue3-gettext 💬
 
 Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
