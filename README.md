@@ -2,23 +2,26 @@
 
 Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
-## Table of contents
+## Table of Contents
 
-- [Installation](#installation)
-- [Basic usage](#basic-usage)
-- [Workflow](#workflow)
-- [Configuration](#configuration)
-- [Annotating strings](#annotating-strings-in-templates-html-or-vue-files)
-- [Message extraction and compilation](#message-extraction-and-compilation)
-- [Dependencies](#Dependencies)
-
-- [Dependencies](#what-does-vue3-gettext-depend-on)
+1. [Installation](#installation)
+1. [Basic usage](#basic-usage)
+1. [Workflow](#workflow)
+1. [Configuration](#configuration)
+1. [Annotating strings](#annotating-strings-in-templates-html-or-vue-files)
+1. [Message extraction and compilation](#message-extraction-and-compilation)
+1. [Dependencies](##Dependencies)
+1. [Contribute](#Contribute)
+1. [Credits](#Credits)
+1. [License](#License)
 
 ## Installation
 
 ```shell
 npm i @jshmrtn/vue3-gettext
 ```
+
+#### `main.js`
 
 ```javascript
 import { createGettext } from "@jshmrtn/vue3-gettext";
@@ -74,15 +77,15 @@ export default {
 
 ## Workflow
 
-1. **Annotating strings**: annotate all the translatable strings in your project using the `<translate>` component, the `v-translate` directive or by calling the gettext functions (`gettext`, `pgettext`, `ngettext`, `npgettext`) directly.
+1. **Annotate strings**: annotate all the translatable strings in your project using the `<translate>` component, the `v-translate` directive or by calling the gettext functions (`gettext`, `pgettext`, `ngettext`, `npgettext`) directly.
 
-2. **Extracting strings**: you can now extract all strings to create message files. A message file is just a plain-text file with a `.po` file extension, representing a single language, that contains all available translation strings as keys and how they should be represented in the given language.
+2. **Extract strings**: you can now extract all strings to create message files. A message file is just a plain-text file with a `.po` file extension, representing a single language, that contains all available translation strings as keys and how they should be represented in the given language.
 
    `vue3-gettext` provides scripts to make this straightforward. Take a look at the [Message extraction and compilation](#message-extraction-and-compilation) section.
 
-3. **Translating message files**: a translator needs to fill out the translations of each generated `.po` files. I recommend you use software like [poedit](https://poedit.net/) (some alternatives are listed on wikipedia [here](https://en.wikipedia.org/wiki/Gettext#See_also)).
+3. **Translate message files**: a translator needs to fill out the translations of each generated `.po` files. I recommend you use software like [poedit](https://poedit.net/) (some alternatives are listed on wikipedia [here](https://en.wikipedia.org/wiki/Gettext#See_also)).
 
-4. **Compiling translations**: once all message files have been translated, use [`gettext-compile`](https://github.com/Polyconseil/easygettext#gettext-compile) to make the translated `.po` files usable in a Vue app. This will merge all translated `.po` files into a `.json` file ready to be used by `vue3-gettext`.
+4. **Compile translations**: once all message files have been translated, use [`gettext-compile`](https://github.com/Polyconseil/easygettext#gettext-compile) to make the translated `.po` files usable in a Vue app. This will merge all translated `.po` files into a `.json` file ready to be used by `vue3-gettext`.
 
 ## Configuration
 
