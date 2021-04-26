@@ -1,6 +1,6 @@
 {
   "name": "@jshmrtn/vue3-gettext",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Translate your Vue.js applications with gettext",
   "author": "Leo Zurbriggen",
   "license": "MIT",
@@ -12,8 +12,8 @@
     "registry": "https://registry.npmjs.org"
   },
   "bin": {
-    "vue-gettext-extract": "./scripts/gettext_extract.js",
-    "vue-gettext-compile": "./scripts/gettext_compile.js"
+    "vue-gettext-extract": "scripts/gettext_extract.js",
+    "vue-gettext-compile": "scripts/gettext_compile.js"
   },
   "scripts": {
     "start": "cd ./dev && vite",
