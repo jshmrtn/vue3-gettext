@@ -28,7 +28,7 @@
     "dev:extract": "node ./scripts/gettext_extract.js --src ./dev --out ./dev/language --locales \"en_GB,fr_FR,it_IT\"",
     "dev:compile": "node ./scripts/gettext_compile.js --dir ./dev/language --locales \"en_GB,fr_FR,it_IT\"",
     "prepublish": "npm run test && npm run build",
-    "publish": "npm publish --access public"
+    "package:publish": "npm publish --access public"
   },
   "engines": {
     "npm": ">= 3.0.0"
