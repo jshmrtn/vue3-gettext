@@ -1,7 +1,7 @@
 {
   "name": "@jshmrtn/vue3-gettext",
   "version": "1.0.3",
-  "description": "Translate your Vue.js applications with gettext",
+  "description": "Translate your Vue.js 3 applications with gettext",
   "author": "Leo Zurbriggen",
   "license": "MIT",
   "repository": {
@@ -26,7 +26,9 @@
     "test:lint:prettier": "./node_modules/.bin/prettier --check '**/**.json' '!coverage/**' '!dist/**'",
     "test:unit": "jest",
     "dev:extract": "node ./scripts/gettext_extract.js --src ./dev --out ./dev/language --locales \"en_GB,fr_FR,it_IT\"",
-    "dev:compile": "node ./scripts/gettext_compile.js --dir ./dev/language --locales \"en_GB,fr_FR,it_IT\""
+    "dev:compile": "node ./scripts/gettext_compile.js --dir ./dev/language --locales \"en_GB,fr_FR,it_IT\"",
+    "prepublish": "npm run test && npm run build",
+    "publish": "npm publish --access public"
   },
   "engines": {
     "npm": ">= 3.0.0"
@@ -67,6 +69,5 @@
     "dist",
     "LICENSE",
     "README.md"
-  ],
-  "prepublish": "npm run test && npm run build"
+  ]
 }
