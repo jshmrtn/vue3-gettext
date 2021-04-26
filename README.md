@@ -21,6 +21,10 @@ Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wiki
 npm i @jshmrtn/vue3-gettext
 ```
 
+```shell
+npm i -D easygettext
+```
+
 #### `main.js`
 
 ```javascript
@@ -56,7 +60,7 @@ Or inject the plugin using `useGettext` (Example of a language switcher):
 <template>
   <div>
     <select v-model="language.current">
-      <option v-for="(language, key) in language.availableLanguages" :key="key" :value="key">{{ language }}</option>
+      <option v-for="(language, key) in language.available" :key="key" :value="key">{{ language }}</option>
     </select>
   </div>
 </template>
@@ -68,7 +72,7 @@ export default {
   setup() {
     const language = useGettext();
     return {
-      ...language,
+      language,
     };
   },
 };

@@ -67,5 +67,6 @@
     "dist",
     "LICENSE",
     "README.md"
-  ]
+  ],
+  "prepublish": "npm run test && npm run build"
 }
