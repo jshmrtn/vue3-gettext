@@ -42,7 +42,7 @@ function execShellCommand(cmd) {
 }
 
 (async () => {
-  const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.vue' 2> /dev/null`);
+  const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.ts' -o -name '*.vue' 2> /dev/null`);
 
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
@@ -50,22 +50,26 @@ function execShellCommand(cmd) {
   const extracted = await execShellCommand(
     `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
   );
+  try {
+    fs.writeFileSync(potPath, "", { flag: "wx" });
+  } catch {}
   fs.chmodSync(potPath, 0o666);
   console.log(extracted);
 
   locales.forEach(async (loc) => {
     const poDir = `${outDir}/${loc}/`;
+    try {
+      fs.writeFileSync(potPath, "", { flag: "wx" });
+    } catch {}
     const poFile = `${poDir}app.po`;
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
-      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potPath} || break`);
+      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potPath} --backup=off`);
     } else {
-      await execShellCommand(
-        `msginit --no-translator --locale=${loc} --input=${potPath} --output-file=${poFile} || break`,
-      );
+      await execShellCommand(`msginit --no-translator --locale=${loc} --input=${potPath} --output-file=${poFile}`);
       fs.chmodSync(poFile, 0o666);
-      await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile} || break`);
+      await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
     }
   });
 })();
