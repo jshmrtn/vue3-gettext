@@ -12,3 +12,4 @@ manifest.json
 ./coverage
 
 .tm_properties
+.idea/
