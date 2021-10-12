@@ -23,6 +23,12 @@ if (localesIndex > -1) {
 }
 locales = locales.split(",").map((l) => l.trim());
 
+const flatIndex = process.argv.indexOf("--flat");
+let flat = false;
+if (flatIndex > -1) {
+  flat = true;
+}
+
 const potPath = `${outDir}/messages.pot`;
 console.log(`Source directory directory: ${srcDir}`);
 console.log(`Output directory: ${srcDir}`);
@@ -57,11 +63,12 @@ function execShellCommand(cmd) {
   console.log(extracted);
 
   locales.forEach(async (loc) => {
-    const poDir = `${outDir}/${loc}/`;
+    const poDir = flat ? `${outDir}/` : `${outDir}/${loc}/`;
+
     try {
       fs.writeFileSync(potPath, "", { flag: "wx" });
     } catch {}
-    const poFile = `${poDir}app.po`;
+    const poFile = flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
