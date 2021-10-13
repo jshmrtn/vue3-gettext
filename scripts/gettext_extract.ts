@@ -1,52 +1,87 @@
+// import { Command } from "commander";
+import fs from "fs";
+import glob from "glob";
+import path from "path";
+
+import { loadConfig } from "./config";
 import { execShellCommand } from "./utils";
 
-const fs = require("fs");
+// const program = new Command();
+// program
+//   .option("-c, --config [path]", "path to the config file", "gettext.config.js")
+//   .option("-l, --locales <locales...>", "list of locales", ["en"]);
+// console.log(process.argv);
+// program.parse(process.argv);
+//
+// console.log(program.opts());
+const { srcDir, outDir, locales, flat, srcPatterns, excludePatterns, potName } = loadConfig();
 
-const srcIndex = process.argv.indexOf("--src");
-let srcDir = "./src";
-if (srcIndex > -1) {
-  srcDir = process.argv[srcIndex + 1];
-}
+// const potFileNameIndex = process.argv.indexOf("--pot-file");
+// let potFileName = "messages.pot";
+// if (potFileNameIndex > -1) {
+//   potFileName = process.argv[potFileNameIndex + 1];
+// }
+//
+// const localesIndex = process.argv.indexOf("--locales");
+// let locales = ["en_US"];
+// if (localesIndex > -1) {
+//   locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
+// }
 
-const outIndex = process.argv.indexOf("--out");
-let outDir = "./src/language";
-if (outIndex > -1) {
-  outDir = process.argv[outIndex + 1];
-}
+const globPromise = (pattern: string) =>
+  new Promise((resolve, reject) => {
+    try {
+      glob(pattern, {}, (er, res) => {
+        resolve(res);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 
-const potFileNameIndex = process.argv.indexOf("--pot-file");
-let potFileName = "messages.pot";
-if (potFileNameIndex > -1) {
-  potFileName = process.argv[potFileNameIndex + 1];
-}
+var getFiles = async () => {
+  const allFiles = await Promise.all(
+    srcPatterns.map((pattern) => {
+      const searchPath = path.join(srcDir, pattern);
+      console.log(`Searching: ${searchPath}`);
+      return globPromise(searchPath) as Promise<string[]>;
+    }),
+  );
+  const excludeFiles = await Promise.all(
+    excludePatterns.map((pattern) => {
+      const searchPath = path.join(srcDir, pattern);
+      console.log(`Excluding: ${searchPath}`);
+      return globPromise(searchPath) as Promise<string[]>;
+    }),
+  );
+  const filesFlat = allFiles.reduce((prev, curr) => [...prev, ...curr], [] as string[]);
+  const excludeFlat = excludeFiles.reduce((prev, curr) => [...prev, ...curr], [] as string[]);
+  excludeFlat.forEach((file) => {
+    const index = filesFlat.indexOf(file);
+    if (index !== -1) {
+      filesFlat.splice(index, 1);
+    }
+  });
+  return filesFlat;
+};
 
-const localesIndex = process.argv.indexOf("--locales");
-let locales = ["en_US"];
-if (localesIndex > -1) {
-  locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
-}
-
-const flatIndex = process.argv.indexOf("--flat");
-let flat = false;
-if (flatIndex > -1) {
-  flat = true;
-}
-
-const potFile = `${outDir}/${potFileName}`;
+const potFile = `${outDir}/${potName}`;
 console.log(`Source directory: ${srcDir}`);
 console.log(`Output directory: ${outDir}`);
 console.log(`Output POT file: ${potFile}`);
 console.log(`Locales: ${locales}`);
+
 console.log("");
 
 (async () => {
-  const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.ts' -o -name '*.vue' 2> /dev/null`);
+  const files = await getFiles();
+  console.log("");
 
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
   }
   const extracted = await execShellCommand(
-    `gettext-extract --attribute v-translate --output ${potFile} ${files.split("\n").join(" ")}`,
+    `gettext-extract --attribute v-translate --output ${potFile} ${files.join(" ")}`,
   );
   fs.chmodSync(potFile, 0o666);
   console.log(extracted);
@@ -54,6 +89,14 @@ console.log("");
   for (const loc of locales) {
     const poDir = flat ? `${outDir}/` : `${outDir}/${loc}/`;
     const poFile = flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
+
+    //   options.locales.forEach(async (loc) => {
+    //     const poDir = options.flat ? `${options.outDir}/` : `${options.outDir}/${loc}/`;
+    //
+    //     try {
+    //       fs.writeFileSync(potPath, "", { flag: "wx" });
+    //     } catch {}
+    //     const poFile = options.flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
 
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
