@@ -16,6 +16,12 @@ if (outIndex > -1) {
   outDir = process.argv[outIndex + 1];
 }
 
+const potFileNameIndex = process.argv.indexOf("--pot-file");
+let potFileName = "messages.pot";
+if (potFileNameIndex > -1) {
+  potFileName = process.argv[potFileNameIndex + 1];
+}
+
 const localesIndex = process.argv.indexOf("--locales");
 let locales = "en_US";
 if (localesIndex > -1) {
@@ -29,9 +35,10 @@ if (flatIndex > -1) {
   flat = true;
 }
 
-const potPath = `${outDir}/messages.pot`;
-console.log(`Source directory directory: ${srcDir}`);
-console.log(`Output directory: ${srcDir}`);
+const potFile = `${outDir}/${potFileName}`;
+console.log(`Source directory: ${srcDir}`);
+console.log(`Output directory: ${outDir}`);
+console.log(`Output POT file: ${potFile}`);
 console.log(`Locales: ${locales}`);
 console.log("");
 
@@ -54,9 +61,9 @@ function execShellCommand(cmd) {
     fs.mkdirSync(outDir, { recursive: true });
   }
   const extracted = await execShellCommand(
-    `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
+    `gettext-extract --attribute v-translate --output ${potFile} ${files.split("\n").join(" ")}`,
   );
-  fs.chmodSync(potPath, 0o666);
+  fs.chmodSync(potFile, 0o666);
   console.log(extracted);
 
   for (const loc of locales) {
@@ -66,9 +73,9 @@ function execShellCommand(cmd) {
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
-      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potPath} --backup=off`);
+      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potFile} --backup=off`);
     } else {
-      await execShellCommand(`msginit --no-translator --locale=${loc} --input=${potPath} --output-file=${poFile}`);
+      await execShellCommand(`msginit --no-translator --locale=${loc} --input=${potFile} --output-file=${poFile}`);
       fs.chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
     }
