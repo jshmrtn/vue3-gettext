@@ -17,6 +17,12 @@ if (localesIndex > -1) {
 }
 locales = locales.split(",").map((l) => l.trim());
 
+const flatIndex = process.argv.indexOf("--flat");
+let flat = false;
+if (flatIndex > -1) {
+  flat = true;
+}
+
 console.log(`Language directory: ${outDir}`);
 console.log(`Locales: ${locales}`);
 console.log("");
@@ -33,9 +39,9 @@ function execShellCommand(cmd) {
   });
 }
 
-const outputPath = locales.map((loc) => `${outDir}/${loc}/app.po`).join(" ");
+const outputPath = locales.map((loc) => flat ? `${outDir}/${loc}.po` :`${outDir}/${loc}/app.po`).join(" ");
 
 (async () => {
   fs.mkdirSync(outDir, { recursive: true });
-  const compile = await execShellCommand(`gettext-compile --output ${outDir}/translations.json ${outputPath}`);
+  await execShellCommand(`gettext-compile --output ${outDir}/translations.json ${outputPath}`);
 })();
