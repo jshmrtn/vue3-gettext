@@ -56,19 +56,13 @@ function execShellCommand(cmd) {
   const extracted = await execShellCommand(
     `gettext-extract --attribute v-translate --output ${potPath} ${files.split("\n").join(" ")}`,
   );
-  try {
-    fs.writeFileSync(potPath, "", { flag: "wx" });
-  } catch {}
   fs.chmodSync(potPath, 0o666);
   console.log(extracted);
 
-  locales.forEach(async (loc) => {
+  for (const loc of locales) {
     const poDir = flat ? `${outDir}/` : `${outDir}/${loc}/`;
-
-    try {
-      fs.writeFileSync(potPath, "", { flag: "wx" });
-    } catch {}
     const poFile = flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
+
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
@@ -78,5 +72,6 @@ function execShellCommand(cmd) {
       fs.chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
     }
-  });
+  }
+  fs.writeFileSync(`${outDir}/LINGUAS`, locales.join(" "));
 })();
