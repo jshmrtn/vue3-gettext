@@ -1,0 +1,11 @@
+changelog:
+  categories:
+    - title: BREAKING CHANGES 💣
+      labels:
+        - breaking-change
+    - title: Enhancements ✨
+      labels:
+        - enhancement
+    - title: Fixes
+      labels:
+        - bug
