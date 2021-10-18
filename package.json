@@ -12,14 +12,12 @@
     "registry": "https://registry.npmjs.org"
   },
   "bin": {
-    "vue-gettext-extract": "scripts/gettext_extract.js",
-    "vue-gettext-compile": "scripts/gettext_compile.js"
+    "vue-gettext-extract": "./dist/bin/gettext_extract.js",
+    "vue-gettext-compile": "./dist/bin/gettext_compile.js"
   },
   "scripts": {
     "start": "cd ./dev && vite",
-    "build": "rm -rf dist && npm run build:esm && npm run build:commonjs",
-    "build:esm": "tsc -m es2015 -d --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/esm",
-    "build:commonjs": "tsc -m commonjs -d --lib \"DOM\",\"ES5\",\"es2020.symbol.wellknown\" --outDir dist/commonjs",
+    "build": "rm -rf dist && rollup -c",
     "test": "npm run test:lint && npm run test:unit",
     "test:lint": "npm run test:lint:js && npm run test:lint:prettier",
     "test:lint:js": "./node_modules/.bin/eslint --ext .js,.ts,.vue .",
@@ -31,40 +29,43 @@
     "package:publish": "npm publish --access public"
   },
   "engines": {
-    "npm": ">= 3.0.0"
+    "npm": ">= 5.0.0"
   },
   "peerDependencies": {
-    "vue": "^3.0.0",
-    "easygettext": "^2.16.1"
+    "easygettext": "^2.17.0",
+    "vue": "^3.0.0"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.15",
-    "@types/node": "^14.14.10",
-    "@typescript-eslint/parser": "^4.9.0",
+    "@rollup/plugin-node-resolve": "^13.0.5",
+    "@rollup/plugin-typescript": "^8.3.0",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.11.1",
+    "@typescript-eslint/parser": "^5.0.0",
     "@vue/test-utils": "^2.0.0-beta.6",
-    "date-fns": "^2.16.1",
-    "easygettext": "^2.16.1",
-    "eslint": "^7.14.0",
-    "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-vue": "^7.1.0",
-    "jest": "^26.6.3",
+    "date-fns": "^2.25.0",
+    "easygettext": "^2.17.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-vue": "^7.19.1",
+    "jest": "^27.3.0",
     "json-loader": "^0.5.7",
-    "prettier": "^2.2.1",
-    "ts-jest": "^26.4.4",
-    "typescript": "^4.1.2",
+    "prettier": "^2.4.1",
+    "rollup": "^2.58.0",
+    "rollup-plugin-dts": "^4.0.0",
+    "ts-jest": "^27.0.7",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.4",
     "vite": "^1.0.0-rc.13",
     "vue": "^3.0.0",
-    "vue-loader": "^15.9.5"
+    "vue-loader": "^15.9.8"
   },
-  "main": "dist/commonjs/index.js",
   "exports": {
-    ".": {
-      "require": "./dist/commonjs/index.js",
-      "default": "./dist/esm/index.js"
-    }
+    "require": "./dist/cjs/index.js",
+    "import": "./dist/esm/index.js"
   },
-  "types": "dist/commonjs/index.d.ts",
-  "module": "./dist/esm/index.js",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist",
     "LICENSE",

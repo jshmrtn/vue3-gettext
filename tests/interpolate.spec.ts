@@ -1,7 +1,7 @@
 import rawInterpolate from "../src/interpolate";
 import translations from "./json/translate";
 import { mountWithPlugin } from "./utils";
-import { Language } from "../src";
+import type { Language } from "../src/typeDefs";
 
 const mount = mountWithPlugin({
   translations: translations,

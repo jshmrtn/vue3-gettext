@@ -1,12 +1,12 @@
-import translate from "./translate";
-import { Component, h, computed, SetupContext, ref, onMounted, Ref, getCurrentInstance, defineComponent } from "vue";
+import { computed, defineComponent, getCurrentInstance, h, onMounted, ref, Ref, SetupContext } from "vue";
 import interpolate from "./interpolate";
-import { useGettext } from ".";
+import translate from "./translate";
+import { useGettext } from "./utilities";
 
 /**
  * Translate content according to the current language.
  */
-export default defineComponent({
+export const Component = defineComponent({
   // eslint-disable-next-line vue/component-definition-name-casing
   name: "translate",
   props: {
@@ -82,3 +82,5 @@ export default defineComponent({
     };
   },
 });
+
+export default Component;

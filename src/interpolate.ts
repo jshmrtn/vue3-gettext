@@ -1,5 +1,5 @@
 import { ComponentInternalInstance } from "vue";
-import { Language } from ".";
+import { Language } from "./typeDefs";
 
 const EVALUATION_RE = /[[\].]{1,2}/g;
 

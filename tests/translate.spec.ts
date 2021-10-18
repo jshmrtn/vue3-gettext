@@ -1,4 +1,4 @@
-import { Language } from "../src";
+import type { Language } from "../src/typeDefs";
 import translateRaw from "../src/translate";
 import { mountWithPlugin } from "./utils";
 import translations from "./json/translate";

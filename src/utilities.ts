@@ -1,4 +1,5 @@
-import { GetTextOptions } from ".";
+import { inject } from "vue";
+import { GetTextOptions, GetTextSymbol, Language } from "./typeDefs";
 
 export function normalizeTranslationKey(key: string) {
   return key
@@ -19,3 +20,6 @@ export function normalizeTranslations(translations: GetTextOptions["translations
   });
   return newTranslations;
 }
+
+
+export const useGettext = (): Language => inject(GetTextSymbol);

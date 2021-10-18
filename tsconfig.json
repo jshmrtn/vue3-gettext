@@ -2,12 +2,13 @@
   "compilerOptions": {
     "target": "es5",
     "module": "esnext",
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
+    "sourceMap": false,
+    "strict": true,
+    "strictNullChecks": true,
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "types": ["node", "jest"]
+    "moduleResolution": "node",
+    "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"]
   },
   "exclude": ["node_modules", "**/node_modules/*"],
   "include": ["src/**/*"]

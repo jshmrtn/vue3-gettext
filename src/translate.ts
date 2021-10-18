@@ -1,5 +1,5 @@
 import plurals from "./plurals";
-import { Language } from ".";
+import { Language } from "./typeDefs";
 
 const SPACING_RE = /\s{2,}/g;
 
