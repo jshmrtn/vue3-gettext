@@ -1,6 +1,6 @@
 {
   "name": "@jshmrtn/vue3-gettext",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Translate your Vue.js 3 applications with gettext",
   "author": "Leo Zurbriggen",
   "license": "MIT",
