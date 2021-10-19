@@ -23,7 +23,6 @@ export default [
   },
   {
     input: "scripts/gettext_compile.ts",
-
     external: [],
     plugins: [resolve(), typescript()],
     output: [{ file: pkg.bin["vue-gettext-compile"], format: "cjs", banner: "#!/usr/bin/env node" }],
