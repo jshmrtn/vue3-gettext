@@ -23,14 +23,15 @@ export default [
   },
   {
     input: "scripts/gettext_compile.ts",
+
     external: [],
     plugins: [resolve(), typescript()],
-    output: [{ file: pkg.bin["vue-gettext-compile"], format: "cjs" }],
+    output: [{ file: pkg.bin["vue-gettext-compile"], format: "cjs", banner: "#!/usr/bin/env node" }],
   },
   {
     input: "scripts/gettext_extract.ts",
     external: [],
     plugins: [resolve(), typescript()],
-    output: [{ file: pkg.bin["vue-gettext-extract"], format: "cjs" }],
+    output: [{ file: pkg.bin["vue-gettext-extract"], format: "cjs", banner: "#!/usr/bin/env node" }],
   },
 ];
