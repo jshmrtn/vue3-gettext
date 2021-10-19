@@ -44,25 +44,25 @@ export const Component = defineComponent({
     if (!isPlural && (props.translateN || props.translatePlural)) {
       throw new Error(
         `\`translate-n\` and \`translate-plural\` attributes must be used together: ${
-          context.slots.default()[0]?.children
+          context.slots.default?.()[0]?.children
         }.`,
       );
     }
 
-    const root = ref(null);
+    const root = ref<HTMLElement>();
 
     const plugin = useGettext();
-    const msgid: Ref<string> = ref(null);
+    const msgid = ref<string | null>(null);
 
     onMounted(() => {
-      if (!msgid.value) {
+      if (!msgid.value && root.value) {
         msgid.value = root.value.innerHTML;
       }
     });
 
     const translation = computed(() => {
       let translatedMsg = translate(plugin).getTranslation(
-        msgid.value,
+        msgid.value!,
         props.translateN || undefined,
         props.translateContext,
         isPlural ? props.translatePlural : null,

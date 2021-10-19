@@ -47,7 +47,8 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
     }),
     current: mergedOptions.defaultLanguage,
     install(app: App) {
-      app[GetTextSymbol] = gettext;
+      // TODO: is this needed?
+      (app as any)[GetTextSymbol] = gettext;
       app.provide(GetTextSymbol, gettext);
 
       if (mergedOptions.setGlobalProperties) {
@@ -83,4 +84,3 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 
   return gettext;
 }
-

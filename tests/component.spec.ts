@@ -206,7 +206,7 @@ describe("translate component tests", () => {
           return { n: 2 };
         },
       });
-    } catch (e) {
+    } catch (e: any) {
       expect(e.message).toBe("`translate-n` and `translate-plural` attributes must be used together: %{ n } car.");
     }
   });
@@ -216,12 +216,12 @@ describe("translate component tests", () => {
       mount({
         template: '<p><translate translate-plural="%{ n }} cars">%{ n } car</translate></p>',
       });
-    } catch (e) {
+    } catch (e: any) {
       expect(e.message).toBe("`translate-n` and `translate-plural` attributes must be used together: %{ n } car.");
     }
   });
 
-  it("supports conditional rendering such as v-if, v-else-if, v-else", async (done) => {
+  it("supports conditional rendering such as v-if, v-else-if, v-else", async () => {
     const wrapper = mount({
       template: `
           <translate v-if="show">Pending</translate>
@@ -236,10 +236,8 @@ describe("translate component tests", () => {
     await vm.$nextTick();
     expect(vm.$el.innerHTML).toEqual("Pending");
     vm.show = false;
-    vm.$nextTick(function () {
-      expect(vm.$el.innerHTML).toEqual("Hello John Doe");
-      done();
-    });
+    await vm.$nextTick();
+    expect(vm.$el.innerHTML).toEqual("Hello John Doe");
   });
 });
 

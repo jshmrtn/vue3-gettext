@@ -1,5 +1,5 @@
 import plurals from "./plurals";
-import { Language } from "./typeDefs";
+import { MessageContext, Language } from "./typeDefs";
 
 const SPACING_RE = /\s{2,}/g;
 
@@ -15,7 +15,13 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  getTranslation: function (msgid: string, n: number = 1, context = null, defaultPlural = null, languageKey?: string) {
+  getTranslation: function (
+    msgid: string,
+    n: number | null = 1,
+    context: string | null = null,
+    defaultPlural: string | null = null,
+    languageKey?: string,
+  ) {
     if (languageKey === undefined) {
       languageKey = language.current;
     }
@@ -24,10 +30,10 @@ const translate = (language: Language) => ({
       return ""; // Allow empty strings.
     }
 
-    let silent = languageKey ? language.silent || language.muted.indexOf(languageKey) !== -1 : false;
+    const silent = languageKey ? language.silent || language.muted.indexOf(languageKey) !== -1 : false;
 
     // Default untranslated string, singular or plural.
-    let untranslated = defaultPlural && plurals.getTranslationIndex(languageKey, n) > 0 ? defaultPlural : msgid;
+    const untranslated = defaultPlural && plurals.getTranslationIndex(languageKey, n) > 0 ? defaultPlural : msgid;
 
     // `easygettext`'s `gettext-compile` generates a JSON version of a .po file based on its `Language` field.
     // But in this field, `ll_CC` combinations denoting a language’s main dialect are abbreviated as `ll`,
@@ -53,6 +59,7 @@ const translate = (language: Language) => ({
 
     let translated = translations[msgid];
 
+    // TODO: comment is outdated, test behavior with current implementation
     // Sometimes `msgid` may not have the same number of spaces than its translation key.
     // This could happen because we use the private attribute `_renderChildren` to access the raw uninterpolated
     // string to translate in the `created` hook of `component.js`: spaces are not exactly the same between the
@@ -68,7 +75,7 @@ const translate = (language: Language) => ({
     }
 
     if (translated && context) {
-      translated = translated[context];
+      translated = (translated as any as MessageContext)[context];
     }
 
     if (!translated) {
@@ -85,7 +92,7 @@ const translate = (language: Language) => ({
     // Avoid a crash when a msgid exists with and without a context, see #32.
     if (!(translated instanceof Array) && translated.hasOwnProperty("")) {
       // As things currently stand, the void key means a void context for easygettext.
-      translated = translated[""];
+      translated = (translated as any as MessageContext)[""] as any;
     }
 
     if (typeof translated === "string") {
@@ -100,10 +107,10 @@ const translate = (language: Language) => ({
       translationIndex = 0;
     }
 
-    if (!translated[translationIndex]) {
+    if (!(translated as string[])[translationIndex]) {
       throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
     }
-    return translated[translationIndex];
+    return (translated as string[])[translationIndex];
   },
 
   /*
@@ -114,7 +121,7 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  gettext: function (msgid) {
+  gettext: function (msgid: string) {
     return this.getTranslation(msgid);
   },
 
@@ -127,7 +134,7 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  pgettext: function (context, msgid) {
+  pgettext: function (context: string, msgid: string) {
     return this.getTranslation(msgid, 1, context);
   },
 
@@ -142,7 +149,7 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  ngettext: function (msgid, plural, n) {
+  ngettext: function (msgid: string, plural: string, n: number) {
     return this.getTranslation(msgid, n, null, plural);
   },
 
@@ -158,7 +165,7 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  npgettext: function (context, msgid, plural, n) {
+  npgettext: function (context: string, msgid: string, plural: string, n: number) {
     return this.getTranslation(msgid, n, context, plural);
   },
 });

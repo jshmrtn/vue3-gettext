@@ -35,7 +35,7 @@ const MUSTACHE_SYNTAX_RE = /\{\{((?:.|\n)+?)\}\}/g;
  * @return {String} The interpolated string
  */
 let interpolate: any = (plugin: Language) => (
-  msgid,
+  msgid: string,
   context: any = {},
   parent: ComponentInternalInstance | any,
   disableHtmlEscaping = false,
@@ -45,11 +45,11 @@ let interpolate: any = (plugin: Language) => (
     console.warn(`Mustache syntax cannot be used with vue-gettext. Please use "%{}" instead of "{{}}" in: ${msgid}`);
   }
 
-  let result = msgid.replace(INTERPOLATION_RE, (match, token) => {
+  let result = msgid.replace(INTERPOLATION_RE, (_match, token: string) => {
     const expression = token.trim();
-    let evaluated;
+    let evaluated: Object;
 
-    let escapeHtmlMap = {
+    const escapeHtmlMap = {
       "&": "&amp;",
       "<": "&lt;",
       ">": "&gt;",
@@ -58,15 +58,15 @@ let interpolate: any = (plugin: Language) => (
     };
 
     // Avoid eval() by splitting `expression` and looping through its different properties if any, see #55.
-    function getProps(obj, expression) {
+    function getProps(obj: any, expression: string) {
       const arr = expression.split(EVALUATION_RE).filter((x) => x);
       while (arr.length) {
-        obj = obj[arr.shift()];
+        obj = obj[arr.shift()!];
       }
       return obj;
     }
 
-    function evalInContext(context, expression, parent) {
+    function evalInContext(context: any, expression: string, parent: any): string {
       try {
         evaluated = getProps(context, expression);
       } catch (e) {
@@ -81,15 +81,13 @@ let interpolate: any = (plugin: Language) => (
           evaluated = expression;
         }
       }
-      let result = evaluated.toString();
+      const result = evaluated.toString();
       if (disableHtmlEscaping) {
         // Do not escape HTML, see #78.
         return result;
       }
       // Escape HTML, see #78.
-      return result.replace(/[&<>"']/g, function (m) {
-        return escapeHtmlMap[m];
-      });
+      return result.replace(/[&<>"']/g, (m: string) => escapeHtmlMap[m as keyof typeof escapeHtmlMap]);
     }
 
     return evalInContext(context, expression, parent);

@@ -24,13 +24,13 @@ export default [
   {
     input: "scripts/gettext_compile.ts",
     external: [],
-    plugins: [resolve(), typescript({ lib: ["node"] })],
+    plugins: [resolve(), typescript()],
     output: [{ file: pkg.bin["vue-gettext-compile"], format: "cjs" }],
   },
   {
     input: "scripts/gettext_extract.ts",
     external: [],
-    plugins: [resolve(), typescript({ lib: ["node"] })],
+    plugins: [resolve(), typescript()],
     output: [{ file: pkg.bin["vue-gettext-extract"], format: "cjs" }],
   },
 ];

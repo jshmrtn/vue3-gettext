@@ -8,6 +8,7 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"]
   },
   "exclude": ["node_modules", "**/node_modules/*"],

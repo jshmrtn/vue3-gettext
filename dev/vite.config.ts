@@ -1,11 +1,13 @@
 import * as path from "path";
+import vue from "@vitejs/plugin-vue";
+import { defineConfig } from "vite";
 
-export default {
-  alias: {
-    "/@/": path.resolve(__dirname, "./src"),
-    "/@gettext/": path.resolve(__dirname, "../src"),
+export default defineConfig({
+  plugins: [vue()],
+  resolve: {
+    alias: {
+      "/@/": path.resolve(__dirname, "./src"),
+      "/@gettext/": path.resolve(__dirname, "../src"),
+    },
   },
-  optimizeDeps: {
-    allowNodeBuiltins: true,
-  },
-};
+});

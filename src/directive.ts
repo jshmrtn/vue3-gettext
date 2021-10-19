@@ -3,9 +3,9 @@ import interpolate from "./interpolate";
 import translate from "./translate";
 import { Language } from "./typeDefs";
 
-const updateTranslation = (language: Language, el, binding: DirectiveBinding, vnode: VNode) => {
+const updateTranslation = (language: Language, el: HTMLElement, binding: DirectiveBinding, vnode: VNode) => {
   const attrs = vnode.props || {};
-  const msgid = el.dataset.msgid;
+  const msgid = el.dataset.msgid!;
   const translateContext = attrs["translate-context"];
   const translateN = attrs["translate-n"];
   const translatePlural = attrs["translate-plural"];
