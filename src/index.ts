@@ -1,21 +1,12 @@
-import { App, computed, inject, reactive, UnwrapRef, Directive as VueDirective, WritableComputedRef } from "vue";
-
+import { App, computed, reactive } from "vue";
 import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { normalizeTranslations } from "./utils";
+import { GetTextOptions, GetTextSymbol, Language } from "./typeDefs";
+import { normalizeTranslations } from "./utilities";
 
-export interface GetTextOptions {
-  availableLanguages: { [key: string]: string };
-  defaultLanguage: string;
-  mutedLanguages: Array<string>;
-  silent: boolean;
-  translations: { [key: string]: { [key: string]: any } };
-  setGlobalProperties: boolean;
-  provideDirective: boolean;
-  provideComponent: boolean;
-}
+export { useGettext } from "./utilities";
 
 const defaultOptions: GetTextOptions = {
   availableLanguages: { en_US: "English" },
@@ -27,24 +18,6 @@ const defaultOptions: GetTextOptions = {
   provideDirective: true,
   provideComponent: true,
 };
-
-export const GetTextSymbol = Symbol("GETTEXT");
-
-export type Language = UnwrapRef<{
-  available: GetTextOptions["availableLanguages"];
-  muted: GetTextOptions["mutedLanguages"];
-  silent: GetTextOptions["silent"];
-  translations: WritableComputedRef<WritableComputedRef<GetTextOptions["translations"]>>;
-  current: string;
-  $gettext: (msgid: string) => string;
-  $pgettext: (context: string, msgid: string) => string;
-  $ngettext: (msgid: string, plural: string, n: number) => string;
-  $npgettext: (context: string, msgid: string, plural: string, n: number) => string;
-  interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
-  install: (app: App) => void;
-  directive: VueDirective;
-  component: typeof Component;
-}>;
 
 export function createGettext(options: Partial<GetTextOptions> = {}) {
   Object.keys(options).forEach((key) => {
@@ -74,7 +47,8 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
     }),
     current: mergedOptions.defaultLanguage,
     install(app: App) {
-      app[GetTextSymbol] = gettext;
+      // TODO: is this needed?
+      (app as any)[GetTextSymbol] = gettext;
       app.provide(GetTextSymbol, gettext);
 
       if (mergedOptions.setGlobalProperties) {
@@ -110,5 +84,3 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 
   return gettext;
 }
-
-export const useGettext = (): Language => inject(GetTextSymbol);

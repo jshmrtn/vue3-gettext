@@ -1,4 +1,5 @@
-import { GetTextOptions } from ".";
+import { inject } from "vue";
+import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs";
 
 export function normalizeTranslationKey(key: string) {
   return key
@@ -8,10 +9,10 @@ export function normalizeTranslationKey(key: string) {
 }
 
 export function normalizeTranslations(translations: GetTextOptions["translations"]) {
-  const newTranslations = {};
+  const newTranslations: Translations = {};
   Object.keys(translations).forEach((lang) => {
     const langData = translations[lang];
-    const newLangData = {};
+    const newLangData: LanguageData = {};
     Object.keys(langData).forEach((key) => {
       newLangData[normalizeTranslationKey(key)] = langData[key];
     });
@@ -19,3 +20,11 @@ export function normalizeTranslations(translations: GetTextOptions["translations
   });
   return newTranslations;
 }
+
+export const useGettext = (): Language => {
+  const gettext = inject(GetTextSymbol, null) as Language | null;
+  if (!gettext) {
+    throw new Error("Failed to inject gettext. Make sure vue3-gettext is set up properly.");
+  }
+  return gettext;
+};

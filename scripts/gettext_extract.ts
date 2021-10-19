@@ -1,6 +1,4 @@
-#!/usr/bin/env node
-
-"use strict";
+import { execShellCommand } from "./utils";
 
 const fs = require("fs");
 
@@ -23,11 +21,10 @@ if (potFileNameIndex > -1) {
 }
 
 const localesIndex = process.argv.indexOf("--locales");
-let locales = "en_US";
+let locales = ["en_US"];
 if (localesIndex > -1) {
-  locales = process.argv[localesIndex + 1];
+  locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
 }
-locales = locales.split(",").map((l) => l.trim());
 
 const flatIndex = process.argv.indexOf("--flat");
 let flat = false;
@@ -41,18 +38,6 @@ console.log(`Output directory: ${outDir}`);
 console.log(`Output POT file: ${potFile}`);
 console.log(`Locales: ${locales}`);
 console.log("");
-
-function execShellCommand(cmd) {
-  const exec = require("child_process").exec;
-  return new Promise((resolve) => {
-    exec(cmd, (error, stdout, stderr) => {
-      if (error) {
-        console.warn(error);
-      }
-      resolve(stdout ? stdout : stderr);
-    });
-  });
-}
 
 (async () => {
   const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.ts' -o -name '*.vue' 2> /dev/null`);

@@ -1,5 +1,4 @@
-import Vue from "vue/types/vue";
-import { Language } from "../src";
+import { Language } from "../src/typeDefs";
 
 declare module "vue/types/vue" {
   interface Vue {

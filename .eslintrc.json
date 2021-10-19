@@ -3,7 +3,7 @@
   "env": {
     "node": true
   },
-  "extends": ["plugin:vue/vue3-recommended", "prettier", "prettier/vue"],
+  "extends": ["plugin:vue/vue3-recommended", "prettier"],
   "rules": {},
   "parserOptions": {
     "parser": "@typescript-eslint/parser",

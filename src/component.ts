@@ -1,12 +1,12 @@
-import translate from "./translate";
-import { Component, h, computed, SetupContext, ref, onMounted, Ref, getCurrentInstance, defineComponent } from "vue";
+import { computed, defineComponent, getCurrentInstance, h, onMounted, ref, Ref, SetupContext } from "vue";
 import interpolate from "./interpolate";
-import { useGettext } from ".";
+import translate from "./translate";
+import { useGettext } from "./utilities";
 
 /**
  * Translate content according to the current language.
  */
-export default defineComponent({
+export const Component = defineComponent({
   // eslint-disable-next-line vue/component-definition-name-casing
   name: "translate",
   props: {
@@ -44,25 +44,25 @@ export default defineComponent({
     if (!isPlural && (props.translateN || props.translatePlural)) {
       throw new Error(
         `\`translate-n\` and \`translate-plural\` attributes must be used together: ${
-          context.slots.default()[0]?.children
+          context.slots.default?.()[0]?.children
         }.`,
       );
     }
 
-    const root = ref(null);
+    const root = ref<HTMLElement>();
 
     const plugin = useGettext();
-    const msgid: Ref<string> = ref(null);
+    const msgid = ref<string | null>(null);
 
     onMounted(() => {
-      if (!msgid.value) {
+      if (!msgid.value && root.value) {
         msgid.value = root.value.innerHTML;
       }
     });
 
     const translation = computed(() => {
       let translatedMsg = translate(plugin).getTranslation(
-        msgid.value,
+        msgid.value!,
         props.translateN || undefined,
         props.translateContext,
         isPlural ? props.translatePlural : null,
@@ -82,3 +82,5 @@ export default defineComponent({
     };
   },
 });
+
+export default Component;
