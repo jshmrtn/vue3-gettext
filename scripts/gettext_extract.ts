@@ -1,32 +1,22 @@
-// import { Command } from "commander";
+import commandLineArgs, { OptionDefinition } from "command-line-args";
 import fs from "fs";
 import glob from "glob";
 import path from "path";
-
 import { loadConfig } from "./config";
 import { execShellCommand } from "./utils";
 
-// const program = new Command();
-// program
-//   .option("-c, --config [path]", "path to the config file", "gettext.config.js")
-//   .option("-l, --locales <locales...>", "list of locales", ["en"]);
-// console.log(process.argv);
-// program.parse(process.argv);
-//
-// console.log(program.opts());
-const { srcDir, outDir, locales, flat, srcPatterns, excludePatterns, potName } = loadConfig();
+const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
+let options;
+try {
+  options = commandLineArgs(optionDefinitions) as {
+    config?: string;
+  };
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}
 
-// const potFileNameIndex = process.argv.indexOf("--pot-file");
-// let potFileName = "messages.pot";
-// if (potFileNameIndex > -1) {
-//   potFileName = process.argv[potFileNameIndex + 1];
-// }
-//
-// const localesIndex = process.argv.indexOf("--locales");
-// let locales = ["en_US"];
-// if (localesIndex > -1) {
-//   locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
-// }
+const config = loadConfig(options);
 
 const globPromise = (pattern: string) =>
   new Promise((resolve, reject) => {
@@ -41,16 +31,16 @@ const globPromise = (pattern: string) =>
 
 var getFiles = async () => {
   const allFiles = await Promise.all(
-    srcPatterns.map((pattern) => {
-      const searchPath = path.join(srcDir, pattern);
-      console.log(`Searching: ${searchPath}`);
+    config.input?.include.map((pattern) => {
+      const searchPath = path.join(config.input.path, pattern);
+      console.info(`Searching: ${searchPath}`);
       return globPromise(searchPath) as Promise<string[]>;
     }),
   );
   const excludeFiles = await Promise.all(
-    excludePatterns.map((pattern) => {
-      const searchPath = path.join(srcDir, pattern);
-      console.log(`Excluding: ${searchPath}`);
+    config.input.exclude.map((pattern) => {
+      const searchPath = path.join(config.input.path, pattern);
+      console.info(`Excluding: ${searchPath}`);
       return globPromise(searchPath) as Promise<string[]>;
     }),
   );
@@ -65,48 +55,52 @@ var getFiles = async () => {
   return filesFlat;
 };
 
-const potFile = `${outDir}/${potName}`;
-console.log(`Source directory: ${srcDir}`);
-console.log(`Output directory: ${outDir}`);
-console.log(`Output POT file: ${potFile}`);
-console.log(`Locales: ${locales}`);
+console.info(`Input directory: ${config.input.path}`);
+console.info(`Output directory: ${config.output.path}`);
+console.info(`Output POT file: ${config.output.potPath}`);
+console.info(`Locales: ${config.output.locales}`);
 
-console.log("");
+console.info("");
 
 (async () => {
   const files = await getFiles();
-  console.log("");
+  console.info("");
 
-  if (!fs.existsSync(outDir)) {
-    fs.mkdirSync(outDir, { recursive: true });
+  if (!fs.existsSync(config.output.path)) {
+    fs.mkdirSync(config.output.path, { recursive: true });
   }
-  const extracted = await execShellCommand(
-    `gettext-extract --attribute v-translate --output ${potFile} ${files.join(" ")}`,
-  );
-  fs.chmodSync(potFile, 0o666);
-  console.log(extracted);
+  try {
+    const extracted = await execShellCommand(
+      `gettext-extract --attribute v-translate --output ${config.output.potPath} ${files.join(" ")}`,
+    );
+    fs.chmodSync(config.output.potPath, 0o666);
+    console.info(extracted);
+    console.info(`Extraction successful, ${config.output.potPath} created.`);
+  } catch (e) {
+    console.error("gettext-extract failed: ", e);
+  }
 
-  for (const loc of locales) {
-    const poDir = flat ? `${outDir}/` : `${outDir}/${loc}/`;
-    const poFile = flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
-
-    //   options.locales.forEach(async (loc) => {
-    //     const poDir = options.flat ? `${options.outDir}/` : `${options.outDir}/${loc}/`;
-    //
-    //     try {
-    //       fs.writeFileSync(potPath, "", { flag: "wx" });
-    //     } catch {}
-    //     const poFile = options.flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
+  for (const loc of config.output.locales) {
+    const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
+    const poFile = config.output.flat ? path.join(poDir, `${loc}.po`) : path.join(poDir, `app.po`);
 
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
-      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potFile} --backup=off`);
+      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} --backup=off`);
+      console.info(`Merged: ${poFile}`);
     } else {
-      await execShellCommand(`msginit --no-translator --locale=${loc} --input=${potFile} --output-file=${poFile}`);
+      await execShellCommand(
+        `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
+      );
       fs.chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
+      console.info(`Created: ${poFile}`);
     }
   }
-  fs.writeFileSync(`${outDir}/LINGUAS`, locales.join(" "));
+  if (config.output.linguas === true) {
+    const linguasPath = path.join(config.output.path, "LINGUAS");
+    fs.writeFileSync(linguasPath, config.output.locales.join(" "));
+    console.info(`Created: ${linguasPath}`);
+  }
 })();

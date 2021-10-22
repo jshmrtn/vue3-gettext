@@ -1,84 +1,50 @@
 import { cosmiconfigSync } from "cosmiconfig";
-const moduleName = "gettext";
+import path from "path";
+import TypeScriptLoader from "@endemolshinegroup/cosmiconfig-typescript-loader";
+import { GettextConfig, GettextConfigOptions } from "../src/typeDefs";
 
-export interface GettextConfig {
-  srcDir: string;
-  outDir: string;
-  locales: string[];
-  srcPatterns: string[];
-  excludePatterns: string[];
-  flat: boolean;
-  potName: string;
-}
-
-export const loadConfig = (configPath?: string): GettextConfig => {
+export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
+  const moduleName = "gettext";
   const explorer = cosmiconfigSync(moduleName, {
-    searchPlaces: [`${moduleName}.config.js`],
+    searchPlaces: [`${moduleName}.config.ts`, `${moduleName}.config.js`],
+    loaders: {
+      ".ts": TypeScriptLoader,
+    },
   });
 
   let configRes;
-  if (configPath) {
-    configRes = explorer.load(configPath);
+  if (cliArgs?.config) {
+    configRes = explorer.load(cliArgs.config);
+    if (!configRes) {
+      throw new Error(`Config not found: ${cliArgs.config}`);
+    }
   } else {
     configRes = explorer.search();
   }
 
-  if (!configRes) {
-    throw new Error("No config found. Create a gettext.config.js file in your project.");
-  }
+  const config = configRes?.config as GettextConfigOptions;
 
-  const config = configRes.config;
-
+  const languagePath = config.output?.path || "./src/language";
+  const joinPath = (inputPath: string) => path.join(languagePath, inputPath);
+  const joinPathIfRelative = (inputPath?: string) => {
+    if (!inputPath) {
+      return undefined;
+    }
+    return path.isAbsolute(inputPath) ? inputPath : path.join(languagePath, inputPath);
+  };
   return {
-    srcDir: config.srcDir || "./src",
-    outDir: config.outDir || "./src/language",
-    locales: config.locales || ["en"],
-    srcPatterns: config.srcPatterns || ["**/*.js", "**/*.ts", "**/*.vue"],
-    excludePatterns: config.excludePatterns || [],
-    flat: config.flat === undefined ? false : config.flat,
-    potName: config.potName || "messages.pot",
+    input: {
+      path: config.input?.path || "./src",
+      include: config.input?.include || ["**/*.js", "**/*.ts", "**/*.vue"],
+      exclude: config.input?.exclude || [],
+    },
+    output: {
+      path: languagePath,
+      potPath: joinPathIfRelative(config.output?.potPath) || joinPath("./messages.pot"),
+      jsonPath: joinPathIfRelative(config.output?.jsonPath) || joinPath("./translations.json"),
+      locales: config.output?.locales || ["en"],
+      flat: config.output?.flat === undefined ? false : config.output?.flat,
+      linguas: config.output?.linguas === undefined ? true : config.output?.linguas,
+    },
   };
 };
-
-export const configOptions = [
-  // {
-  //   flags: "-c, --config [path]",
-  //   description: "path to the config file",
-  //   defaultValue: "gettext.config.js",
-  // },
-  {
-    flags: "-s, --srcDir [path]",
-    description: "path to the source directory",
-    defaultValue: "./src",
-  },
-  {
-    flags: "-o, --outDir [path]",
-    description: "path to the output directory",
-    defaultValue: "./src/language",
-  },
-  {
-    flags: "-l, --locales [locales...]",
-    description: "list of locales",
-    defaultValue: ["en"],
-  },
-  {
-    flags: "-p, --srcPatterns [patterns...]",
-    description: "patterns for input files",
-    defaultValue: ["**/*.js", "**/*.ts", "**/*.vue"],
-  },
-  {
-    flags: "-ep, --excludePatterns [patterns...]",
-    description: "patterns to exclude files",
-    defaultValue: [],
-  },
-  {
-    flags: "-f, --flat",
-    description: "extract locale files directly to outDir",
-    defaultValue: "false",
-  },
-  {
-    flags: "-p, --potName [file name]",
-    description: "sets the file name of the extracted pot file",
-    defaultValue: "messages.pot",
-  },
-];

@@ -1,43 +1,36 @@
-// import { Command } from "commander";
-
+import commandLineArgs, { OptionDefinition } from "command-line-args";
+import path from "path";
 import { loadConfig } from "./config";
 import { execShellCommand } from "./utils";
 
 const fs = require("fs");
 
-// const program = new Command();
-// program.option("-c, --config [path]", "path to the config file", "gettext.config.js");
-// program.parse(process.argv);
-//
-// console.log(program.opts());
+const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
+let options;
+try {
+  options = commandLineArgs(optionDefinitions) as {
+    config?: string;
+  };
+} catch (e) {
+  console.error(e);
+  process.exit(1);
+}
 
-const { outDir, locales, flat } = loadConfig();
+const config = loadConfig(options);
 
-// const outIndex = process.argv.indexOf("--dir");
-// let outDir = "./src/language";
-// if (outIndex > -1) {
-//   outDir = process.argv[outIndex + 1];
-// }
-//
-// const localesIndex = process.argv.indexOf("--locales");
-// let locales = ["en_US"];
-// if (localesIndex > -1) {
-//   locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
-// }
-//
-// const flatIndex = process.argv.indexOf("--flat");
-// let flat = false;
-// if (flatIndex > -1) {
-//   flat = true;
-// }
+console.info(`Language directory: ${config.output.path}`);
+console.info(`Locales: ${config.output.locales}`);
+console.info("");
 
-console.log(`Language directory: ${outDir}`);
-console.log(`Locales: ${locales}`);
-console.log("");
-
-const outputPath = locales.map((loc) => (flat ? `${outDir}/${loc}.po` : `${outDir}/${loc}/app.po`)).join(" ");
+const localesPaths = config.output.locales
+  .map((loc) =>
+    config.output.flat ? path.join(config.output.path, `${loc}.po`) : path.join(config.output.path, `${loc}/app.po`),
+  )
+  .join(" ");
 
 (async () => {
-  fs.mkdirSync(outDir, { recursive: true });
-  await execShellCommand(`gettext-compile --output ${outDir}/translations.json ${outputPath}`);
+  fs.mkdirSync(config.output.path, { recursive: true });
+  const outputPath = config.output.jsonPath;
+  await execShellCommand(`gettext-compile --output ${outputPath} ${localesPaths}`);
+  console.info(`Created: ${outputPath}`);
 })();

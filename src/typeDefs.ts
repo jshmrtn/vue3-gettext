@@ -44,3 +44,24 @@ export type Language = UnwrapRef<{
   directive: Directive;
   component: ComponentType;
 }>;
+
+export interface GettextConfig {
+  input: {
+    path: string;
+    include: string[];
+    exclude: string[];
+  };
+  output: {
+    path: string;
+    locales: string[];
+    potPath: string;
+    jsonPath: string;
+    flat: boolean;
+    linguas: boolean;
+  };
+}
+
+export interface GettextConfigOptions {
+  input?: Partial<GettextConfig["input"]>;
+  output?: Partial<GettextConfig["output"]>;
+}
