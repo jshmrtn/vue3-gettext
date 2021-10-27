@@ -1,11 +1,11 @@
 module.exports = {
   input: {
-    path: "./dev",
-    include: ["**/*.js", "**/*.ts", "**/*.vue"],
+    path: "./docs/.vuepress",
+    include: ["**/*.html", "**/*.vue"],
     exclude: [],
   },
   output: {
-    path: "./dev/language",
+    path: "./docs/language",
     locales: ["en_GB", "fr_FR", "it_IT"],
     flat: false,
     linguas: true,

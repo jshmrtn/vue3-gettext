@@ -13,3 +13,6 @@ manifest.json
 
 .tm_properties
 .idea/
+
+docs/.vuepress/.cache
+docs/.vuepress/.temp

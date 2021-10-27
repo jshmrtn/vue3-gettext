@@ -3,6 +3,7 @@ import fs from "fs";
 import glob from "glob";
 import path from "path";
 import { loadConfig } from "./config";
+import extractFromFiles from "./extract";
 import { execShellCommand } from "./utils";
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
@@ -64,21 +65,10 @@ console.info("");
 
 (async () => {
   const files = await getFiles();
-  console.info("");
-
-  if (!fs.existsSync(config.output.path)) {
-    fs.mkdirSync(config.output.path, { recursive: true });
-  }
-  try {
-    const extracted = await execShellCommand(
-      `gettext-extract --attribute v-translate --output ${config.output.potPath} ${files.join(" ")}`,
-    );
-    fs.chmodSync(config.output.potPath, 0o666);
-    console.info(extracted);
-    console.info(`Extraction successful, ${config.output.potPath} created.`);
-  } catch (e) {
-    console.error("gettext-extract failed: ", e);
-  }
+  console.info();
+  files.forEach((f) => console.info(f));
+  console.info();
+  await extractFromFiles(files, config.output.potPath);
 
   for (const loc of config.output.locales) {
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
@@ -101,6 +91,7 @@ console.info("");
   if (config.output.linguas === true) {
     const linguasPath = path.join(config.output.path, "LINGUAS");
     fs.writeFileSync(linguasPath, config.output.locales.join(" "));
+    console.info();
     console.info(`Created: ${linguasPath}`);
   }
 })();

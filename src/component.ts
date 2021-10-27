@@ -1,4 +1,16 @@
-import { computed, defineComponent, getCurrentInstance, h, onMounted, ref, Ref, SetupContext } from "vue";
+import {
+  computed,
+  defineComponent,
+  getCurrentInstance,
+  h,
+  onMounted,
+  onUpdated,
+  ref,
+  Ref,
+  SetupContext,
+  watch,
+  watchEffect,
+} from "vue";
 import interpolate from "./interpolate";
 import translate from "./translate";
 import { useGettext } from "./utilities";
@@ -15,7 +27,7 @@ export const Component = defineComponent({
       default: "span",
     },
     // Always use v-bind for dynamically binding the `translateN` prop to data on the parent,
-    // i.e.: `:translateN`.
+    // i.e.: `:translate-n`.
     translateN: {
       type: Number,
       default: null,
@@ -63,7 +75,7 @@ export const Component = defineComponent({
     const translation = computed(() => {
       let translatedMsg = translate(plugin).getTranslation(
         msgid.value!,
-        props.translateN || undefined,
+        props.translateN,
         props.translateContext,
         isPlural ? props.translatePlural : null,
         plugin.current,

@@ -1,0 +1,10 @@
+let count = 0;
+<button
+  @click="count--"
+>-</button>
+{{ count }}
+<button
+  @click="count++"
+>+</button>
+
+<translate tag="p" :translate-params="{ n: count }" :translate-n="count" translate-plural="%{ n } cars">%{ n } car</translate>
