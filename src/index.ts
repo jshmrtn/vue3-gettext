@@ -86,5 +86,5 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 }
 
 export const defineGettextConfig = (config: GettextConfigOptions) => {
-  return {};
+  return config;
 };

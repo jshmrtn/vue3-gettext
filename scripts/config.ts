@@ -1,15 +1,11 @@
 import { cosmiconfigSync } from "cosmiconfig";
 import path from "path";
-import TypeScriptLoader from "@endemolshinegroup/cosmiconfig-typescript-loader";
 import { GettextConfig, GettextConfigOptions } from "../src/typeDefs";
 
 export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
   const moduleName = "gettext";
   const explorer = cosmiconfigSync(moduleName, {
-    searchPlaces: [`${moduleName}.config.ts`, `${moduleName}.config.js`],
-    loaders: {
-      ".ts": TypeScriptLoader,
-    },
+    searchPlaces: [`${moduleName}.config.js`, `${moduleName}.config.json`],
   });
 
   let configRes;
