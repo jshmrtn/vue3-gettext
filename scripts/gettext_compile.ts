@@ -1,9 +1,9 @@
+import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
+import fsPromises from "fs/promises";
 import path from "path";
+import { compilePoFiles } from "./compile";
 import { loadConfig } from "./config";
-import { execShellCommand } from "./utils";
-
-const fs = require("fs");
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
 let options;
@@ -18,19 +18,20 @@ try {
 
 const config = loadConfig(options);
 
-console.info(`Language directory: ${config.output.path}`);
-console.info(`Locales: ${config.output.locales}`);
-console.info("");
+console.info(`Language directory: ${chalk.blueBright(config.output.path)}`);
+console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+console.info();
 
-const localesPaths = config.output.locales
-  .map((loc) =>
-    config.output.flat ? path.join(config.output.path, `${loc}.po`) : path.join(config.output.path, `${loc}/app.po`),
-  )
-  .join(" ");
+const localesPaths = config.output.locales.map((loc) =>
+  config.output.flat ? path.join(config.output.path, `${loc}.po`) : path.join(config.output.path, `${loc}/app.po`),
+);
 
 (async () => {
-  fs.mkdirSync(config.output.path, { recursive: true });
+  await fsPromises.mkdir(config.output.path, { recursive: true });
   const outputPath = config.output.jsonPath;
-  await execShellCommand(`gettext-compile --output ${outputPath} ${localesPaths}`);
-  console.info(`Created: ${outputPath}`);
+  const jsonRes = JSON.stringify(await compilePoFiles(localesPaths));
+  console.info(`${chalk.green("Compiled json")}: ${chalk.grey(jsonRes)}`);
+  await fsPromises.writeFile(outputPath, jsonRes);
+  console.info();
+  console.info(`${chalk.green("Created")}: ${chalk.blueBright(outputPath)}`);
 })();

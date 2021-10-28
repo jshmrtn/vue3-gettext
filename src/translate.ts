@@ -1,7 +1,5 @@
 import plurals from "./plurals";
-import { MessageContext, Language } from "./typeDefs";
-
-const SPACING_RE = /\s{2,}/g;
+import { MessageContext, Language, LanguageData } from "./typeDefs";
 
 const translate = (language: Language) => ({
   /*
@@ -42,7 +40,7 @@ const translate = (language: Language) => ({
     // So try `ll_CC` first, or the `ll` abbreviation which can be three-letter sometimes:
     // https://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes
     const pluginTranslations = language.translations;
-    let translations = pluginTranslations[languageKey] || pluginTranslations[languageKey.split("_")[0]];
+    let translations: LanguageData = pluginTranslations[languageKey] || pluginTranslations[languageKey.split("_")[0]];
 
     if (!translations) {
       if (!silent) {
@@ -51,28 +49,10 @@ const translate = (language: Language) => ({
       return untranslated;
     }
 
-    // Currently easygettext trims entries since it needs to output consistent PO translation content
-    // even if a web template designer added spaces between lines (which are ignored in HTML or jade,
-    // but are significant in text). See #65.
-    // Replicate the same behaviour here.
+    // spacing needs to be consistent even if a web template designer adds spaces between lines
     msgid = msgid.trim();
 
     let translated = translations[msgid];
-
-    // TODO: comment is outdated, test behavior with current implementation
-    // Sometimes `msgid` may not have the same number of spaces than its translation key.
-    // This could happen because we use the private attribute `_renderChildren` to access the raw uninterpolated
-    // string to translate in the `created` hook of `component.js`: spaces are not exactly the same between the
-    // HTML and the content of `_renderChildren`, e.g. 6 spaces becomes 4 etc. See #15, #38.
-    // In such cases, we need to compare the translation keys and `msgid` with the same number of spaces.
-    if (!translated && SPACING_RE.test(msgid)) {
-      Object.keys(translations).some((key) => {
-        if (key.replace(SPACING_RE, " ") === msgid.replace(SPACING_RE, " ")) {
-          translated = translations[key];
-          return translated;
-        }
-      });
-    }
 
     if (translated && context) {
       translated = (translated as any as MessageContext)[context];
@@ -96,13 +76,12 @@ const translate = (language: Language) => ({
     }
 
     if (typeof translated === "string") {
-      translated = [translated];
+      return translated;
     }
 
     let translationIndex = plurals.getTranslationIndex(languageKey, n);
 
-    // Do not assume that the default value of n is 1 for the singular form of all languages.
-    // E.g. Arabic, see #69.
+    // Do not assume that the default value of n is 1 for the singular form of all languages. E.g. Arabic
     if (translated.length === 1 && n === 1) {
       translationIndex = 0;
     }

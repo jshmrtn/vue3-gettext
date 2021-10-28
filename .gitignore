@@ -1,6 +1,7 @@
 /.tmp/
 /node_modules/
 dist
+distDocs
 npm-debug.log
 manifest.json
 *.DS_Store

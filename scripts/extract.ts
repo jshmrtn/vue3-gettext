@@ -1,6 +1,7 @@
 import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
 import { parse } from "@vue/compiler-sfc";
 import fs from "fs";
+import chalk from "chalk";
 
 const extractFromFiles = async (filePaths: string[], potPath: string) => {
   const extr = new GettextExtractor();
@@ -79,7 +80,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
   );
 
   extr.savePotFile(potPath);
-  console.info(`Extraction successful, ${potPath} created.`);
+  console.info(`${chalk.green("Extraction successful")}, ${chalk.blueBright(potPath)} created.`);
 
   extr.printStats();
 };

@@ -1,3 +1,10 @@
+# Setup
+
+## Installation
+
+## Configuration
+
+```javascript
 module.exports = {
   input: {
     path: "./docs/.vuepress",
@@ -6,8 +13,9 @@ module.exports = {
   },
   output: {
     path: "./docs/language",
-    locales: ["en", "de"],
+    locales: ["en_GB", "fr_FR", "it_IT"],
     flat: false,
     linguas: true,
   },
 };
+```

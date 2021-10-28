@@ -1,16 +1,4 @@
-import {
-  computed,
-  defineComponent,
-  getCurrentInstance,
-  h,
-  onMounted,
-  onUpdated,
-  ref,
-  Ref,
-  SetupContext,
-  watch,
-  watchEffect,
-} from "vue";
+import { computed, defineComponent, getCurrentInstance, h, onMounted, ref } from "vue";
 import interpolate from "./interpolate";
 import translate from "./translate";
 import { useGettext } from "./utilities";
@@ -19,7 +7,6 @@ import { useGettext } from "./utilities";
  * Translate content according to the current language.
  */
 export const Component = defineComponent({
-  // eslint-disable-next-line vue/component-definition-name-casing
   name: "translate",
   props: {
     tag: {
@@ -44,14 +31,13 @@ export const Component = defineComponent({
       type: Object,
       default: null,
     },
-    // `translateComment` is used exclusively by `easygettext`'s `gettext-extract`.
     translateComment: {
       type: String,
       default: null,
     },
   },
 
-  setup(props: any, context: SetupContext<any>) {
+  setup(props, context) {
     const isPlural = props.translateN !== undefined && props.translatePlural !== undefined;
     if (!isPlural && (props.translateN || props.translatePlural)) {
       throw new Error(
@@ -84,8 +70,7 @@ export const Component = defineComponent({
       return interpolate(plugin)(translatedMsg, props.translateParams, getCurrentInstance()?.parent);
     });
 
-    // The text must be wraped inside a root HTML element, so we use a <span> (by default).
-    // https://github.com/vuejs/vue/blob/a4fcdb/src/compiler/parser/index.js#L209
+    // The text must be wraped inside a root HTML element, so we use a <span> by default.
     return () => {
       if (!msgid.value) {
         return h(props.tag, { ref: root }, context.slots.default ? context.slots.default() : "");

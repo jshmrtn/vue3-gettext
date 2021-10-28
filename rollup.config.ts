@@ -23,13 +23,21 @@ export default [
   },
   {
     input: "scripts/gettext_compile.ts",
-    external: ["glob", "cosmiconfig", "command-line-args", "@endemolshinegroup/cosmiconfig-typescript-loader"],
+    external: ["fs/promises", "@vue/compiler-sfc", "glob", "cosmiconfig", "command-line-args", "gettext-extractor"],
     plugins: [resolve({ preferBuiltins: true }), typescript()],
     output: [{ file: pkg.bin["vue-gettext-compile"], format: "cjs", banner: "#!/usr/bin/env node" }],
   },
   {
     input: "scripts/gettext_extract.ts",
-    external: ["glob", "cosmiconfig", "command-line-args", "@endemolshinegroup/cosmiconfig-typescript-loader"],
+    external: [
+      "fs/promises",
+      "@vue/compiler-sfc",
+      "cosmiconfig",
+      "gettext-extractor",
+      "chalk",
+      "command-line-args",
+      "glob",
+    ],
     plugins: [resolve({ preferBuiltins: true }), typescript()],
     output: [{ file: pkg.bin["vue-gettext-extract"], format: "cjs", banner: "#!/usr/bin/env node" }],
   },

@@ -2,3 +2,10 @@ node_modules
 dist
 coverage
 dev/language
+docs/language/translations.json
+docs/.vuepress/.cache
+docs/.vuepress/.temp
+.vscode
+.eslintrc.json
+package.json
+tsconfig.json

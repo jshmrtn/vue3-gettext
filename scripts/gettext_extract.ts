@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import fs from "fs";
 import glob from "glob";
@@ -34,14 +35,14 @@ var getFiles = async () => {
   const allFiles = await Promise.all(
     config.input?.include.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
-      console.info(`Searching: ${searchPath}`);
+      console.info(`Searching: ${chalk.blueBright(searchPath)}`);
       return globPromise(searchPath) as Promise<string[]>;
     }),
   );
   const excludeFiles = await Promise.all(
     config.input.exclude.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
-      console.info(`Excluding: ${searchPath}`);
+      console.info(`Excluding: ${chalk.blueBright(searchPath)}`);
       return globPromise(searchPath) as Promise<string[]>;
     }),
   );
@@ -56,17 +57,16 @@ var getFiles = async () => {
   return filesFlat;
 };
 
-console.info(`Input directory: ${config.input.path}`);
-console.info(`Output directory: ${config.output.path}`);
-console.info(`Output POT file: ${config.output.potPath}`);
-console.info(`Locales: ${config.output.locales}`);
-
-console.info("");
+console.info(`Input directory: ${chalk.blueBright(config.input.path)}`);
+console.info(`Output directory: ${chalk.blueBright(config.output.path)}`);
+console.info(`Output POT file: ${chalk.blueBright(config.output.potPath)}`);
+console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+console.info();
 
 (async () => {
   const files = await getFiles();
   console.info();
-  files.forEach((f) => console.info(f));
+  files.forEach((f) => console.info(chalk.grey(f)));
   console.info();
   await extractFromFiles(files, config.output.potPath);
 
@@ -78,20 +78,20 @@ console.info("");
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
       await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} --backup=off`);
-      console.info(`Merged: ${poFile}`);
+      console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
       await execShellCommand(
         `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
       );
       fs.chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
-      console.info(`Created: ${poFile}`);
+      console.info(`${chalk.green("Created")}: ${chalk.blueBright(poFile)}`);
     }
   }
   if (config.output.linguas === true) {
     const linguasPath = path.join(config.output.path, "LINGUAS");
     fs.writeFileSync(linguasPath, config.output.locales.join(" "));
     console.info();
-    console.info(`Created: ${linguasPath}`);
+    console.info(`${chalk.green("Created")}: ${chalk.blueBright(linguasPath)}`);
   }
 })();

@@ -9,8 +9,8 @@ import { normalizeTranslations } from "./utilities";
 export { useGettext } from "./utilities";
 
 const defaultOptions: GetTextOptions = {
-  availableLanguages: { en_US: "English" },
-  defaultLanguage: "en_US",
+  availableLanguages: { en: "English" },
+  defaultLanguage: "en",
   mutedLanguages: [],
   silent: false,
   translations: {},
