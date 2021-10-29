@@ -4,7 +4,15 @@ import dts from "rollup-plugin-dts";
 import pkg from "./package.json";
 
 const extensions = [".js", ".ts"];
-
+const htmlPlugin = {
+  name: "vite-html",
+  transform(code, id) {
+    if (!id.endsWith(".html")) {
+      return;
+    }
+    return `export default ${JSON.stringify(code)};`;
+  },
+};
 export default [
   {
     input: "src/index.ts",

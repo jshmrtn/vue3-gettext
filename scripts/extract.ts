@@ -1,46 +1,66 @@
-import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
 import { parse } from "@vue/compiler-sfc";
-import fs from "fs";
 import chalk from "chalk";
+import fs from "fs";
+import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
+import { attributeEmbeddedJsExtractor } from "./attributeEmbeddedJsExtractor";
+import { embeddedJsExtractor } from "./embeddedJsExtractor";
 
 const extractFromFiles = async (filePaths: string[], potPath: string) => {
   const extr = new GettextExtractor();
 
-  const htmlParser = extr.createHtmlParser([
-    HtmlExtractors.elementContent("translate, [v-translate]", {
-      attributes: {
-        textPlural: "translate-plural",
-        context: "translate-context",
-        comment: "translate-comment",
-      },
-    }),
-  ]);
-
   const jsParser = extr.createJsParser([
     JsExtractors.callExpression("$gettext", {
+      content: {
+        replaceNewLines: "\n",
+      },
       arguments: {
         text: 0,
       },
     }),
     JsExtractors.callExpression("$ngettext", {
+      content: {
+        replaceNewLines: "\n",
+      },
       arguments: {
         text: 0,
         textPlural: 1,
       },
     }),
     JsExtractors.callExpression("$pgettext", {
+      content: {
+        replaceNewLines: "\n",
+      },
       arguments: {
         context: 0,
         text: 1,
       },
     }),
     JsExtractors.callExpression("$npgettext", {
+      content: {
+        replaceNewLines: "\n",
+      },
       arguments: {
         context: 0,
         text: 1,
         textPlural: 2,
       },
     }),
+  ]);
+
+  const htmlParser = extr.createHtmlParser([
+    HtmlExtractors.elementContent("translate, [v-translate]", {
+      content: {
+        trimWhiteSpace: true,
+        replaceNewLines: "\n",
+      },
+      attributes: {
+        textPlural: "translate-plural",
+        context: "translate-context",
+        comment: "translate-comment",
+      },
+    }),
+    attributeEmbeddedJsExtractor("[*=*]", jsParser),
+    embeddedJsExtractor("*", jsParser),
   ]);
 
   await Promise.all(

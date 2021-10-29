@@ -1,69 +1,42 @@
 # `v-translate` directive
 
-<LanguageSwitch style="margin-top: 2rem" />
+## Basic usage
 
-```vue live
+```vue
 <span v-translate>Hello</span>
 ```
 
-### Toggle visibility
-
-<!-- prettier-ignore-start -->
-```vue live
-let yes = true;
-<button
-  @click="yes = !yes"
-  style="margin-right: 0.5rem"
->
-  Toggle
-</button>
-
-<span v-if="yes" v-translate="yes">Yes</span>
-<span v-else v-translate>No</span>
-```
-<!-- prettier-ignore-end -->
-
 ### Parameters
 
-Variables can be used directly or set as parameters of `v-translate`.
+Variables for message interpolation must be passed as value to the `v-translate` directive directly.
 
 <!-- prettier-ignore-start -->
-```vue live
-let name = "Peter";
-<input v-model="name" type="text" />
-
-<p v-translate>Hello %{ name }!</p>
-```
-<!-- prettier-ignore-end -->
-
-<!-- prettier-ignore-start -->
-```vue live
-let inputValue = "Peter";
-<input v-model="inputValue" type="text" />
-
-<p v-translate="{ name: inputValue }">Hello %{ name }!</p>
+```vue
+<p v-translate="{ name: "Jessica" }">Hello %{ name }!</p>
 ```
 <!-- prettier-ignore-end -->
 
 ### Pluralization
 
 <!-- prettier-ignore-start -->
-```vue live
-let count = 0;
-<button
-  @click="count--"
->-</button>
-{{ count }}
-<button
-  @click="count++"
->+</button>
-
+```vue
 <p 
- v-translate="{ n: count }"
- :translate-n="count"
- translate-plural="%{ n } cars"
+ v-translate="{ amount: 2 }"
+ :translate-n="2"
+ translate-plural="%{ amount } cars"
 >
-  %{ n } car
+  %{ amount } car
 </p>
 ```
 <!-- prettier-ignore-end -->
+
+## Attributes
+
+| Prop              | Description                                                                                  | Type    | Default |
+| ----------------- | -------------------------------------------------------------------------------------------- | ------- | ------- |
+| v-translate       | **Required**. You can optionally provide an object with parameters for message interpolation | object  | null    |
+| translate-n       | Determines what plural form to apply to the message                                          | number  | null    |
+| translate-plural  | Pluralized message                                                                           | string  | null    |
+| translate-context | Gettext translation context                                                                  | string  | null    |
+| translate-comment | Comment for the message id                                                                   | string  | null    |
+| render-html       | Will disable HTML escaping and render it directly                                            | boolean | false   |

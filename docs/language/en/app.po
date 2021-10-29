@@ -15,6 +15,38 @@ msgid_plural "%{ n } cars"
 msgstr[0] "%{ n } car"
 msgstr[1] "%{ n } cars"
 
+#: docs/.vuepress/vueLiveMarkdownPlugin/VueLiveWrapper.vue:4
+msgid "asdfasdfasdfasdf"
+msgstr ""
+
+#: docs/.vuepress/vueLiveMarkdownPlugin/VueLiveWrapper.vue:6
+msgid "ATTRasdfasdfasdf"
+msgstr ""
+
+#: docs/.vuepress/snippets/component/default.html:2
+msgid "embedattr"
+msgstr ""
+
+#: docs/.vuepress/snippets/component/default.html:3
+msgid "embedattr2"
+msgstr ""
+
+#: docs/.vuepress/snippets/component/default.html:4
+msgid "embedattr3"
+msgstr ""
+
+#: docs/.vuepress/snippets/component/default.html:2
+msgid "embeddedjs"
+msgstr ""
+
+#: docs/.vuepress/snippets/component/default.html:3
+msgid "embeddedjs2"
+msgstr ""
+
+#: docs/.vuepress/snippets/component/default.html:4
+msgid "embeddedjs3"
+msgstr ""
+
 #: docs/.vuepress/snippets/component/default.html:1
 #: docs/.vuepress/snippets/component/tag.html:1
 msgid "Hello"
@@ -27,6 +59,10 @@ msgstr "Hello %{ name }!"
 #: docs/.vuepress/snippets/component/visibility.html:10
 msgid "No"
 msgstr "No"
+
+#: docs/.vuepress/vueLiveMarkdownPlugin/VueLiveWrapper.vue:5
+msgid "VueLiveasdf"
+msgstr ""
 
 #: docs/.vuepress/snippets/component/visibility.html:9
 msgid "Yes"
