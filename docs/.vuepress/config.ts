@@ -30,9 +30,24 @@ export default defineUserConfig<DefaultThemeOptions>({
       },
     },
     sidebar: [
-      { link: "/setup.md", text: "Setup" },
-      { link: "/component.md", text: "Component: <translate>" },
-      { link: "/directive.md", text: "Directive: v-translate" },
+      {
+        text: "Setup",
+        link: "/setup.md",
+        children: [
+          { link: "/setup.md", text: "Installation" },
+          { link: "/extraction.md", text: "Message extraction" },
+          { link: "/configuration.md", text: "Configuration" },
+        ],
+      },
+      {
+        text: "Usage",
+        link: "/functions.md",
+        children: [
+          { link: "/functions.md", text: "Functions" },
+          { link: "/component.md", text: "Component" },
+          { link: "/directive.md", text: "Directive" },
+        ],
+      },
     ],
   },
 });

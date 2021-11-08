@@ -1,4 +1,4 @@
-# `v-translate` directive
+# `v-translate`
 
 ## Basic usage
 
@@ -12,7 +12,7 @@ Variables for message interpolation must be passed as value to the `v-translate`
 
 <!-- prettier-ignore-start -->
 ```vue
-<p v-translate="{ name: "Jessica" }">Hello %{ name }!</p>
+<p v-translate="{ name: 'Jessica' }">Hello %{ name }!</p>
 ```
 <!-- prettier-ignore-end -->
 

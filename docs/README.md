@@ -10,6 +10,9 @@ actions:
   - text: Setup
     link: /setup.html
     type: secondary
+  - text: Docs
+    link: /setup.html
+    type: secondary
 # features:
 #   - title:
 #     details:
