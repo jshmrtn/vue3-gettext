@@ -19,6 +19,18 @@ export default defineUserConfig<DefaultThemeOptions>({
         },
       },
     },
+    vuePluginOptions: {
+      template: {
+        compilerOptions: {
+          directiveTransforms: {
+            // TODO: implement ssr directive
+            translate: () => ({
+              props: [],
+            }),
+          },
+        },
+      },
+    },
   },
   clientAppEnhanceFiles: [path.resolve(__dirname, "./enhanceAppFile.ts")],
   themeConfig: {
