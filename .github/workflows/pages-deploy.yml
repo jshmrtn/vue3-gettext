@@ -2,7 +2,7 @@ name: pages
 on:
   push:
     branches:
-      - feat/config
+      - next
 jobs:
   build-and-deploy:
     runs-on: ubuntu-20.04

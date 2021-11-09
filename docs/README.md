@@ -1,6 +1,5 @@
 ---
 home: true
-# heroImage: /hero.png
 heroText: Vue 3 Gettext
 tagline: Translate your Vue 3 applications with Gettext
 actions:
@@ -13,23 +12,19 @@ actions:
   - text: Docs
     link: /setup.html
     type: secondary
-# features:
-#   - title:
-#     details:
-# sidebar: true
 footer: MIT Licensed | Copyright © 2020-present JOSHMARTIN GmbH
 ---
 
 # Quick Start
 
 ```sh
-npm i @jshmrtn/vue3-gettext
+npm i vue3-gettext@next
 ```
 
 Set up gettext in your `main.ts`/`main.js`:
 
 ```javascript {main.ts/main.js}
-import { createGettext } from "@jshmrtn/vue3-gettext";
+import { createGettext } from "vue3-gettext";
 import { createApp } from "vue";
 import translations from "./src/language/translations.json";
 
