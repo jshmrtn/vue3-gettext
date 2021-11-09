@@ -44,3 +44,27 @@ export type Language = UnwrapRef<{
   directive: Directive;
   component: ComponentType;
 }>;
+
+export interface GettextConfig {
+  input: {
+    /** only files in this directory are considered for extraction */
+    path: string;
+    /** glob patterns to select files for extraction */
+    include: string[];
+    /** glob patterns to exclude files from extraction */
+    exclude: string[];
+  };
+  output: {
+    path: string;
+    locales: string[];
+    potPath: string;
+    jsonPath: string;
+    flat: boolean;
+    linguas: boolean;
+  };
+}
+
+export interface GettextConfigOptions {
+  input?: Partial<GettextConfig["input"]>;
+  output?: Partial<GettextConfig["output"]>;
+}

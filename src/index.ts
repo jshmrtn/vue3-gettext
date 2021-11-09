@@ -3,14 +3,15 @@ import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { GetTextOptions, GetTextSymbol, Language } from "./typeDefs";
+import { GettextConfigOptions, GetTextOptions, GetTextSymbol, Language } from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
 export { useGettext } from "./utilities";
 
 const defaultOptions: GetTextOptions = {
-  availableLanguages: { en_US: "English" },
-  defaultLanguage: "en_US",
+  /** all the available languages of your application. Keys must match locale names */
+  availableLanguages: { en: "English" },
+  defaultLanguage: "en",
   mutedLanguages: [],
   silent: false,
   translations: {},
@@ -33,7 +34,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 
   let translations = reactive({ value: normalizeTranslations(mergedOptions.translations) });
 
-  const gettext: Language = (reactive({
+  const gettext: Language = reactive({
     available: mergedOptions.availableLanguages,
     muted: mergedOptions.mutedLanguages,
     silent: mergedOptions.silent,
@@ -69,7 +70,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
         app.component("translate", Component);
       }
     },
-  }) as unknown) as Language;
+  }) as unknown as Language;
 
   const translate = translateRaw(gettext);
   const interpolate = interpolateRaw(gettext);
@@ -84,3 +85,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 
   return gettext;
 }
+
+export const defineGettextConfig = (config: GettextConfigOptions) => {
+  return config;
+};

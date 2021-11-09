@@ -1,0 +1,5 @@
+# Demo
+
+<ClientOnly>
+  <Demo />
+</ClientOnly>

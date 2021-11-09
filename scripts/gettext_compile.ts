@@ -1,32 +1,37 @@
-import { execShellCommand } from "./utils";
+import chalk from "chalk";
+import commandLineArgs, { OptionDefinition } from "command-line-args";
+import fsPromises from "fs/promises";
+import path from "path";
+import { compilePoFiles } from "./compile";
+import { loadConfig } from "./config";
 
-const fs = require("fs");
-
-const outIndex = process.argv.indexOf("--dir");
-let outDir = "./src/language";
-if (outIndex > -1) {
-  outDir = process.argv[outIndex + 1];
+const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
+let options;
+try {
+  options = commandLineArgs(optionDefinitions) as {
+    config?: string;
+  };
+} catch (e) {
+  console.error(e);
+  process.exit(1);
 }
 
-const localesIndex = process.argv.indexOf("--locales");
-let locales = ["en_US"];
-if (localesIndex > -1) {
-  locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
-}
+const config = loadConfig(options);
 
-const flatIndex = process.argv.indexOf("--flat");
-let flat = false;
-if (flatIndex > -1) {
-  flat = true;
-}
+console.info(`Language directory: ${chalk.blueBright(config.output.path)}`);
+console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+console.info();
 
-console.log(`Language directory: ${outDir}`);
-console.log(`Locales: ${locales}`);
-console.log("");
-
-const outputPath = locales.map((loc) => (flat ? `${outDir}/${loc}.po` : `${outDir}/${loc}/app.po`)).join(" ");
+const localesPaths = config.output.locales.map((loc) =>
+  config.output.flat ? path.join(config.output.path, `${loc}.po`) : path.join(config.output.path, `${loc}/app.po`),
+);
 
 (async () => {
-  fs.mkdirSync(outDir, { recursive: true });
-  await execShellCommand(`gettext-compile --output ${outDir}/translations.json ${outputPath}`);
+  await fsPromises.mkdir(config.output.path, { recursive: true });
+  const outputPath = config.output.jsonPath;
+  const jsonRes = JSON.stringify(await compilePoFiles(localesPaths));
+  console.info(`${chalk.green("Compiled json")}: ${chalk.grey(jsonRes)}`);
+  await fsPromises.writeFile(outputPath, jsonRes);
+  console.info();
+  console.info(`${chalk.green("Created")}: ${chalk.blueBright(outputPath)}`);
 })();

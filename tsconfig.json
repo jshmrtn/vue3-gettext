@@ -9,8 +9,14 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"]
+    "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"],
+    "rootDir": "."
+  },
+  "ts-node": {
+    "compilerOptions": {
+      "module": "commonjs"
+    }
   },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "scripts/**/*.ts"]
 }

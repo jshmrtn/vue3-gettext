@@ -1,5 +1,6 @@
-export function execShellCommand(cmd) {
-  const exec = require("child_process").exec;
+import { exec } from "child_process";
+
+export function execShellCommand(cmd: string) {
   return new Promise((resolve) => {
     exec(cmd, (error, stdout, stderr) => {
       if (error) {

@@ -1,0 +1,22 @@
+name: pages
+on:
+  push:
+    branches:
+      - feat/config
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2.3.5
+
+      - name: build
+        run: |
+          npm ci
+          npm run docs:build
+
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.5
+        with:
+          branch: pages
+          folder: distDocs

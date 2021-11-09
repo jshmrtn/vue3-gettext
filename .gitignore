@@ -1,10 +1,10 @@
 /.tmp/
 /node_modules/
 dist
+distDocs
 npm-debug.log
 manifest.json
 *.DS_Store
-*.pot
 *~
 .*.swp
 .*.pid
@@ -13,3 +13,6 @@ manifest.json
 
 .tm_properties
 .idea/
+
+docs/.vuepress/.cache
+docs/.vuepress/.temp

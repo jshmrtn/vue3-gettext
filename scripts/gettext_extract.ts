@@ -1,69 +1,97 @@
+import chalk from "chalk";
+import commandLineArgs, { OptionDefinition } from "command-line-args";
+import fs from "fs";
+import glob from "glob";
+import path from "path";
+import { loadConfig } from "./config";
+import extractFromFiles from "./extract";
 import { execShellCommand } from "./utils";
 
-const fs = require("fs");
-
-const srcIndex = process.argv.indexOf("--src");
-let srcDir = "./src";
-if (srcIndex > -1) {
-  srcDir = process.argv[srcIndex + 1];
+const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
+let options;
+try {
+  options = commandLineArgs(optionDefinitions) as {
+    config?: string;
+  };
+} catch (e) {
+  console.error(e);
+  process.exit(1);
 }
 
-const outIndex = process.argv.indexOf("--out");
-let outDir = "./src/language";
-if (outIndex > -1) {
-  outDir = process.argv[outIndex + 1];
-}
+const config = loadConfig(options);
 
-const potFileNameIndex = process.argv.indexOf("--pot-file");
-let potFileName = "messages.pot";
-if (potFileNameIndex > -1) {
-  potFileName = process.argv[potFileNameIndex + 1];
-}
+const globPromise = (pattern: string) =>
+  new Promise((resolve, reject) => {
+    try {
+      glob(pattern, {}, (er, res) => {
+        resolve(res);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
 
-const localesIndex = process.argv.indexOf("--locales");
-let locales = ["en_US"];
-if (localesIndex > -1) {
-  locales = process.argv[localesIndex + 1].split(",").map((l) => l.trim());
-}
+var getFiles = async () => {
+  const allFiles = await Promise.all(
+    config.input?.include.map((pattern) => {
+      const searchPath = path.join(config.input.path, pattern);
+      console.info(`Searching: ${chalk.blueBright(searchPath)}`);
+      return globPromise(searchPath) as Promise<string[]>;
+    }),
+  );
+  const excludeFiles = await Promise.all(
+    config.input.exclude.map((pattern) => {
+      const searchPath = path.join(config.input.path, pattern);
+      console.info(`Excluding: ${chalk.blueBright(searchPath)}`);
+      return globPromise(searchPath) as Promise<string[]>;
+    }),
+  );
+  const filesFlat = allFiles.reduce((prev, curr) => [...prev, ...curr], [] as string[]);
+  const excludeFlat = excludeFiles.reduce((prev, curr) => [...prev, ...curr], [] as string[]);
+  excludeFlat.forEach((file) => {
+    const index = filesFlat.indexOf(file);
+    if (index !== -1) {
+      filesFlat.splice(index, 1);
+    }
+  });
+  return filesFlat;
+};
 
-const flatIndex = process.argv.indexOf("--flat");
-let flat = false;
-if (flatIndex > -1) {
-  flat = true;
-}
-
-const potFile = `${outDir}/${potFileName}`;
-console.log(`Source directory: ${srcDir}`);
-console.log(`Output directory: ${outDir}`);
-console.log(`Output POT file: ${potFile}`);
-console.log(`Locales: ${locales}`);
-console.log("");
+console.info(`Input directory: ${chalk.blueBright(config.input.path)}`);
+console.info(`Output directory: ${chalk.blueBright(config.output.path)}`);
+console.info(`Output POT file: ${chalk.blueBright(config.output.potPath)}`);
+console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+console.info();
 
 (async () => {
-  const files = await execShellCommand(`find ${srcDir} -name '*.js' -o -name '*.ts' -o -name '*.vue' 2> /dev/null`);
+  const files = await getFiles();
+  console.info();
+  files.forEach((f) => console.info(chalk.grey(f)));
+  console.info();
+  await extractFromFiles(files, config.output.potPath);
 
-  if (!fs.existsSync(outDir)) {
-    fs.mkdirSync(outDir, { recursive: true });
-  }
-  const extracted = await execShellCommand(
-    `gettext-extract --attribute v-translate --output ${potFile} ${files.split("\n").join(" ")}`,
-  );
-  fs.chmodSync(potFile, 0o666);
-  console.log(extracted);
-
-  for (const loc of locales) {
-    const poDir = flat ? `${outDir}/` : `${outDir}/${loc}/`;
-    const poFile = flat ? `${poDir}${loc}.po` : `${poDir}app.po`;
+  for (const loc of config.output.locales) {
+    const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
+    const poFile = config.output.flat ? path.join(poDir, `${loc}.po`) : path.join(poDir, `app.po`);
 
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
-      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${potFile} --backup=off`);
+      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} --backup=off`);
+      console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
-      await execShellCommand(`msginit --no-translator --locale=${loc} --input=${potFile} --output-file=${poFile}`);
+      await execShellCommand(
+        `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
+      );
       fs.chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
+      console.info(`${chalk.green("Created")}: ${chalk.blueBright(poFile)}`);
     }
   }
-  fs.writeFileSync(`${outDir}/LINGUAS`, locales.join(" "));
+  if (config.output.linguas === true) {
+    const linguasPath = path.join(config.output.path, "LINGUAS");
+    fs.writeFileSync(linguasPath, config.output.locales.join(" "));
+    console.info();
+    console.info(`${chalk.green("Created")}: ${chalk.blueBright(linguasPath)}`);
+  }
 })();

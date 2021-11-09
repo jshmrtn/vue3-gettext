@@ -1,4 +1,4 @@
-import { computed, defineComponent, getCurrentInstance, h, onMounted, ref, Ref, SetupContext } from "vue";
+import { computed, defineComponent, getCurrentInstance, h, onMounted, ref } from "vue";
 import interpolate from "./interpolate";
 import translate from "./translate";
 import { useGettext } from "./utilities";
@@ -15,7 +15,7 @@ export const Component = defineComponent({
       default: "span",
     },
     // Always use v-bind for dynamically binding the `translateN` prop to data on the parent,
-    // i.e.: `:translateN`.
+    // i.e.: `:translate-n`.
     translateN: {
       type: Number,
       default: null,
@@ -32,14 +32,13 @@ export const Component = defineComponent({
       type: Object,
       default: null,
     },
-    // `translateComment` is used exclusively by `easygettext`'s `gettext-extract`.
     translateComment: {
       type: String,
       default: null,
     },
   },
 
-  setup(props: any, context: SetupContext<any>) {
+  setup(props, context) {
     const isPlural = props.translateN !== undefined && props.translatePlural !== undefined;
     if (!isPlural && (props.translateN || props.translatePlural)) {
       throw new Error(
@@ -56,14 +55,14 @@ export const Component = defineComponent({
 
     onMounted(() => {
       if (!msgid.value && root.value) {
-        msgid.value = root.value.innerHTML;
+        msgid.value = root.value.innerHTML.trim();
       }
     });
 
     const translation = computed(() => {
       let translatedMsg = translate(plugin).getTranslation(
         msgid.value!,
-        props.translateN || undefined,
+        props.translateN,
         props.translateContext,
         isPlural ? props.translatePlural : null,
         plugin.current,
@@ -72,8 +71,7 @@ export const Component = defineComponent({
       return interpolate(plugin)(translatedMsg, props.translateParams, getCurrentInstance()?.parent);
     });
 
-    // The text must be wraped inside a root HTML element, so we use a <span> (by default).
-    // https://github.com/vuejs/vue/blob/a4fcdb/src/compiler/parser/index.js#L209
+    // The text must be wraped inside a root HTML element, so we use a <span> by default.
     return () => {
       if (!msgid.value) {
         return h(props.tag, { ref: root }, context.slots.default ? context.slots.default() : "");
