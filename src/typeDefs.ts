@@ -47,8 +47,11 @@ export type Language = UnwrapRef<{
 
 export interface GettextConfig {
   input: {
+    /** only files in this directory are considered for extraction */
     path: string;
+    /** glob patterns to select files for extraction */
     include: string[];
+    /** glob patterns to exclude files from extraction */
     exclude: string[];
   };
   output: {

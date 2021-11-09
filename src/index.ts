@@ -9,6 +9,7 @@ import { normalizeTranslations } from "./utilities";
 export { useGettext } from "./utilities";
 
 const defaultOptions: GetTextOptions = {
+  /** all the available languages of your application. Keys must match locale names */
   availableLanguages: { en: "English" },
   defaultLanguage: "en",
   mutedLanguages: [],
