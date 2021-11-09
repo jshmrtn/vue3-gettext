@@ -9,7 +9,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
   const extr = new GettextExtractor();
 
   const jsParser = extr.createJsParser([
-    JsExtractors.callExpression("$gettext", {
+    JsExtractors.callExpression(["$gettext", "[this].$gettext"], {
       content: {
         replaceNewLines: "\n",
       },
@@ -17,7 +17,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
         text: 0,
       },
     }),
-    JsExtractors.callExpression("$ngettext", {
+    JsExtractors.callExpression(["$ngettext", "[this].$ngettext"], {
       content: {
         replaceNewLines: "\n",
       },
@@ -26,7 +26,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
         textPlural: 1,
       },
     }),
-    JsExtractors.callExpression("$pgettext", {
+    JsExtractors.callExpression(["$pgettext", "[this].$pgettext"], {
       content: {
         replaceNewLines: "\n",
       },
@@ -35,7 +35,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
         text: 1,
       },
     }),
-    JsExtractors.callExpression("$npgettext", {
+    JsExtractors.callExpression(["$npgettext", "[this].$npgettext"], {
       content: {
         replaceNewLines: "\n",
       },
@@ -51,7 +51,8 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
     HtmlExtractors.elementContent("translate, [v-translate]", {
       content: {
         trimWhiteSpace: true,
-        replaceNewLines: "\n",
+        // TODO: figure out newlines for component
+        replaceNewLines: " ",
       },
       attributes: {
         textPlural: "translate-plural",
@@ -73,6 +74,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
           res(data);
         }),
       );
+      // TODO: make file extensions and parsers configurable
       if (fp.endsWith(".vue")) {
         const { descriptor, errors } = parse(buffer, {
           filename: fp,

@@ -1,13 +1,9 @@
 module.exports = {
   input: {
-    path: "./docs/.vuepress",
-    include: ["**/*.html", "**/*.vue"],
-    exclude: [],
+    path: "./dev",
   },
   output: {
-    path: "./docs/language",
-    locales: ["en", "de"],
-    flat: false,
-    linguas: true,
+    path: "./dev/language",
+    locales: ["en_GB", "fr_FR", "it_IT"],
   },
 };

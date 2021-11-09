@@ -5,7 +5,6 @@ distDocs
 npm-debug.log
 manifest.json
 *.DS_Store
-*.pot
 *~
 .*.swp
 .*.pid

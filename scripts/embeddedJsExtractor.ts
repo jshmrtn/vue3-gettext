@@ -23,7 +23,6 @@ export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtml
         preserveIndentation: true,
         replaceNewLines: false,
       });
-      console.log(source);
       jsParser.parseString(source, fileName, {
         scriptKind: 1,
         lineNumberStart: (element.sourceCodeLocation && element.sourceCodeLocation.startLine) || 0,

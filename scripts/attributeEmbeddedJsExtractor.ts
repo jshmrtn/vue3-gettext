@@ -14,7 +14,6 @@ export function attributeEmbeddedJsExtractor(selector: string, jsParser: JsParse
     let element = node as Element;
 
     element.attrs.forEach((attr) => {
-      console.log(attr);
       jsParser.parseString(attr.value, fileName, {
         lineNumberStart: element.sourceCodeLocation?.attrs[attr.name].startLine,
       });

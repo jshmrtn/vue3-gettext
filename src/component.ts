@@ -7,6 +7,7 @@ import { useGettext } from "./utilities";
  * Translate content according to the current language.
  */
 export const Component = defineComponent({
+  // eslint-disable-next-line vue/component-definition-name-casing
   name: "translate",
   props: {
     tag: {
@@ -54,7 +55,7 @@ export const Component = defineComponent({
 
     onMounted(() => {
       if (!msgid.value && root.value) {
-        msgid.value = root.value.innerHTML;
+        msgid.value = root.value.innerHTML.trim();
       }
     });
 

@@ -30,6 +30,7 @@ export default defineUserConfig<DefaultThemeOptions>({
       },
     },
     sidebar: [
+      { link: "/demo.md", text: "Demo" },
       {
         text: "Setup",
         link: "/setup.md",
