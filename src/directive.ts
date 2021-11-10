@@ -1,4 +1,4 @@
-import { Directive, DirectiveBinding, VNode, watch } from "vue";
+import { DirectiveBinding, ObjectDirective, VNode, watch } from "vue";
 import interpolate from "./interpolate";
 import translate from "./translate";
 import { Language } from "./typeDefs";
@@ -51,7 +51,7 @@ const updateTranslation = (language: Language, el: HTMLElement, binding: Directi
  * context variable:
  * `<p v-translate="fullName + location">I am %{ fullName } and from %{ location }</p>`
  */
-export default function directive(language: Language): Directive {
+export default function directive(language: Language): ObjectDirective<HTMLElement, any> {
   const update = (el: HTMLElement, binding: DirectiveBinding, vnode: VNode) => {
     // Store the current language in the element's dataset.
     el.dataset.currentLanguage = language.current;

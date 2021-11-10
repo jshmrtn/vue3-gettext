@@ -1,7 +1,9 @@
-import { App, Directive, UnwrapRef, WritableComputedRef } from "vue";
-import type { Component } from "./component";
+import { App, UnwrapRef, WritableComputedRef } from "vue";
+import type { Component as ComponentType } from "./component";
+import directive from "./directive";
 
-export type ComponentType = typeof Component;
+export type TranslateComponent = typeof ComponentType;
+export type TranslateDirective = ReturnType<typeof directive>;
 
 export const GetTextSymbol = Symbol("GETTEXT");
 
@@ -18,6 +20,7 @@ export type LanguageData = {
 export type Translations = {
   [language: string]: LanguageData;
 };
+
 export interface GetTextOptions {
   availableLanguages: { [key: string]: string };
   defaultLanguage: string;
@@ -41,8 +44,8 @@ export type Language = UnwrapRef<{
   $npgettext: (context: string, msgid: string, plural: string, n: number) => string;
   interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
   install: (app: App) => void;
-  directive: Directive;
-  component: ComponentType;
+  directive: TranslateDirective;
+  component: TranslateComponent;
 }>;
 
 export interface GettextConfig {
@@ -67,4 +70,18 @@ export interface GettextConfig {
 export interface GettextConfigOptions {
   input?: Partial<GettextConfig["input"]>;
   output?: Partial<GettextConfig["output"]>;
+}
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
+    $gettextInterpolate: Language["interpolate"];
+  }
+
+  interface GlobalComponents {
+    translate: TranslateComponent;
+  }
+
+  interface GlobalDirectives {
+    vTranslate: TranslateDirective;
+  }
 }
