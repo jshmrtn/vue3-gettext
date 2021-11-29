@@ -15,7 +15,7 @@ export function attributeEmbeddedJsExtractor(selector: string, jsParser: JsParse
 
     element.attrs.forEach((attr) => {
       jsParser.parseString(attr.value, fileName, {
-        lineNumberStart: element.sourceCodeLocation?.attrs[attr.name].startLine,
+        lineNumberStart: element.sourceCodeLocation?.attrs[attr.name]?.startLine,
       });
     });
   };
