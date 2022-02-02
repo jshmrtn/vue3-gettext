@@ -3,13 +3,31 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="generator" content="VuePress 2.0.0-beta.27">
+    <meta name="generator" content="VuePress 2.0.0-beta.35">
+    <style>
+      :root {
+        --c-bg: #fff;
+      }
+      html.dark {
+        --c-bg: #22272e;
+      }
+      html, body {
+        background-color: var(--c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme');
+			const systemDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+			if (userMode === 'dark' || (userMode !== 'light' && systemDarkMode)) {
+				document.documentElement.classList.toggle('dark', true);
+			}
+    </script>
     <title>Vue 3 Gettext</title><meta name="description" content="">
-    <link rel="modulepreload" href="/vue3-gettext/assets/app.0f95e636.js"><link rel="modulepreload" href="/vue3-gettext/assets/404.html.8c6ace21.js"><link rel="modulepreload" href="/vue3-gettext/assets/404.html.4f8e6760.js">
-    <link rel="stylesheet" href="/vue3-gettext/assets/style.bddb5e20.css">
+    <link rel="modulepreload" href="/vue3-gettext/assets/app.5429d6a3.js"><link rel="modulepreload" href="/vue3-gettext/assets/404.html.f166316b.js"><link rel="modulepreload" href="/vue3-gettext/assets/404.html.9413ae9e.js">
+    <link rel="stylesheet" href="/vue3-gettext/assets/style.f43d5ef5.css">
   </head>
   <body>
-    <div id="app"><!--[--><div class="theme-container"><div class="theme-default-content"><h1>404</h1><blockquote>That&#39;s a Four-Oh-Four.</blockquote><a href="/vue3-gettext/" class="">Take me home</a></div></div><!----><!--]--></div>
-    <script type="module" src="/vue3-gettext/assets/app.0f95e636.js" defer></script>
+    <div id="app"><!--[--><div class="theme-container"><div class="theme-default-content"><h1>404</h1><blockquote>Looks like we&#39;ve got some broken links.</blockquote><a href="/vue3-gettext/" class="">Take me home</a></div></div><!----><!--]--></div>
+    <script type="module" src="/vue3-gettext/assets/app.5429d6a3.js" defer></script>
   </body>
 </html>
