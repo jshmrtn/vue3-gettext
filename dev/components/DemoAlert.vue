@@ -15,8 +15,6 @@
 </template>
 
 <script>
-import { useGettext } from "/@gettext/";
-
 export default {
   data: () => ({
     n: 2,

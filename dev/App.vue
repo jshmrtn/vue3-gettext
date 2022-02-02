@@ -4,58 +4,58 @@
   <div :class="$style.container">
     <div :class="$style.tile">
       <h2>Alert</h2>
-      <Alert></Alert>
+      <DemoAlert></DemoAlert>
     </div>
 
     <div :class="$style.tile">
       <h2>Plural</h2>
-      <Plural></Plural>
+      <DemoPlural></DemoPlural>
     </div>
 
     <div :class="$style.tile">
       <h2>Filter</h2>
-      <DateFormat></DateFormat>
+      <DemoDateFormat></DemoDateFormat>
     </div>
     <div :class="$style.tile">
       <h2>Custom tags</h2>
-      <CustomTags></CustomTags>
+      <DemoCustomTags></DemoCustomTags>
     </div>
     <div :class="$style.tile">
       <h2>Multilines</h2>
-      <Multilines></Multilines>
+      <DemoMultilines></DemoMultilines>
     </div>
     <div :class="$style.tile">
       <h2>Directive</h2>
-      <Directive></Directive>
+      <DemoDirective></DemoDirective>
     </div>
     <div :class="$style.tile">
       <h2>If</h2>
-      <If></If>
+      <DemoIf></DemoIf>
     </div>
   </div>
 </template>
 
 <script>
-import Alert from "./components/alert.vue";
-import CustomTags from "./components/customTags.vue";
-import Directive from "./components/directive.vue";
-import If from "./components/if.vue";
+import DemoAlert from "./components/DemoAlert.vue";
+import DemoCustomTags from "./components/DemoCustomTags.vue";
+import DemoDateFormat from "./components/DemoDateFormat.vue";
+import DemoDirective from "./components/DemoDirective.vue";
+import DemoIf from "./components/DemoIf.vue";
+import DemoMultilines from "./components/DemoMultilines.vue";
+import DemoPlural from "./components/DemoPlural.vue";
 import LanguageSelect from "./components/languageSelect.vue";
-import DateFormat from "./components/dateFormat.vue";
-import Multilines from "./components/multilines.vue";
-import Plural from "./components/plural.vue";
 
 export default {
   name: "App",
   components: {
-    Alert,
-    CustomTags,
-    Directive,
-    If,
+    DemoAlert,
+    DemoCustomTags,
+    DemoDirective,
+    DemoIf,
+    DemoDateFormat,
+    DemoMultilines,
+    DemoPlural,
     LanguageSelect,
-    DateFormat,
-    Multilines,
-    Plural,
   },
 };
 </script>

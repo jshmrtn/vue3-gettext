@@ -66,7 +66,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
         app.directive("translate", Directive(gettext));
       }
       if (mergedOptions.provideComponent) {
-        // eslint-disable-next-line vue/component-definition-name-casing
+        // eslint-disable-next-line vue/multi-word-component-names, vue/component-definition-name-casing
         app.component("translate", Component);
       }
     },
