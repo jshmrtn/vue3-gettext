@@ -8,7 +8,7 @@ Translation functions are made available globally in `<template>` sections but c
 
 Simple message translation
 
-```vue
+```ts
 <template>
   {{ $gettext("My message") }}
 </template>
@@ -20,11 +20,19 @@ const { $gettext } = useGettext();
 $gettext("My message");
 ```
 
+#### Interpolation
+
+```ts
+<template>
+  {{ $gettext("My message for %{ name }", { name: "Rudi" }) }}
+</template>
+```
+
 ### `$pgettext`
 
 Takes a translation context as the first argument
 
-```vue
+```ts
 <template>
   {{ $pgettext("my_context", "My message") }}
 </template>
@@ -34,6 +42,14 @@ Takes a translation context as the first argument
 const { $pgettext } = useGettext();
 
 $pgettext("my_context", "My message");
+```
+
+#### Interpolation
+
+```ts
+<template>
+  {{ $pgettext("my_context", "My message for %{ name }", { name: "Rudi" }) }}
+</template>
 ```
 
 ### `$ngettext`
@@ -52,6 +68,14 @@ const { $ngettext } = useGettext();
 $ngettext("apple", "apples", 5);
 ```
 
+#### Interpolation
+
+```ts
+<template>
+  {{ $ngettext("apple for %{ name }", "apples for %{ name }", 5, { name: "Rudi" }) }}
+</template>
+```
+
 ### `$npgettext`
 
 Can be used to pluralize messages with a translation context
@@ -68,20 +92,12 @@ const { $npgettext } = useGettext();
 $npgettext("my_context", "apple", "apples", 5);
 ```
 
-### `$gettextInterpolate`
-
-This is a helper if you use parameters within your messages
-
-```vue
-<template>
-  {{ $gettextInterpolate($pgettext("My message for %{ name }"), { name: "Rudi" }) }}
-</template>
-```
+#### Interpolation
 
 ```ts
-const { interpolate } = useGettext();
-
-interpolate($gettext("My message for %{ name }"), { name: "Rudi" });
+<template>
+  {{ $npgettext("my_context", "apple for %{ name }", "apples for %{ name }", 5, { name: "Rudi" }) }}
+</template>
 ```
 
 ### `$language`
@@ -98,4 +114,24 @@ Provides access to the whole plugin, for example if you want to access the curre
 const gettext = useGettext();
 
 console.log(gettext.current);
+```
+
+### `$gettextInterpolate`
+
+<div style="margin-top: 1rem;" class="warning">
+  This helper function has been made redundant since the translate functions now directly take interpolation parameters.
+</div>
+
+This is a helper function if you use parameters within your messages.
+
+```vue
+<template>
+  {{ $gettextInterpolate($pgettext("My message for %{ name }"), { name: "Rudi" }) }}
+</template>
+```
+
+```ts
+const { interpolate } = useGettext();
+
+interpolate($gettext("My message for %{ name }"), { name: "Rudi" });
 ```

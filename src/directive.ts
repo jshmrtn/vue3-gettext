@@ -50,6 +50,7 @@ const updateTranslation = (language: Language, el: HTMLElement, binding: Directi
  * If you need interpolation, you must add an expression that outputs binding value that changes with each of the
  * context variable:
  * `<p v-translate="fullName + location">I am %{ fullName } and from %{ location }</p>`
+ * @deprecated
  */
 export default function directive(language: Language): ObjectDirective<HTMLElement, any> {
   const update = (el: HTMLElement, binding: DirectiveBinding, vnode: VNode) => {

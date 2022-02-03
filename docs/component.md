@@ -1,5 +1,12 @@
 # `<translate>`
 
+<div class="warning">
+  <b>Deprecated</b>
+  <p>The <code>&lt;translate&gt;</code> component and <code>v-translate</code> directive have been deprecated, use the functions instead.</p>
+  <p>Since Vue 3, extracting messages from within components is awkward and error-prone as well as cause issues with server-side rendering.</p>
+  To make the transition easier, they will keep working until a future major release.
+</div>
+
 ## Usage
 
 <!-- prettier-ignore-start -->

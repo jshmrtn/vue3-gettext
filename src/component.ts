@@ -5,6 +5,7 @@ import { useGettext } from "./utilities";
 
 /**
  * Translate content according to the current language.
+ * @deprecated
  */
 export const Component = defineComponent({
   // eslint-disable-next-line vue/multi-word-component-names, vue/component-definition-name-casing

@@ -25,9 +25,8 @@ const translate = (language: Language) => ({
     if (languageKey === undefined) {
       languageKey = language.current;
     }
-    const interpolateLang = interpolate(language.current);
     const interp = (message: string, parameters?: { [key: string]: string }) =>
-      parameters ? interpolateLang(message, parameters) : message;
+      parameters ? language.interpolate(message, parameters) : message;
 
     if (!msgid) {
       return ""; // Allow empty strings.
