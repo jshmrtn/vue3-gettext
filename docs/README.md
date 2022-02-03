@@ -3,8 +3,8 @@ home: true
 heroText: Vue 3 Gettext
 tagline: Translate your Vue 3 applications with Gettext
 actions:
-  - text: Quick Start
-    link: /#quick-start
+  - text: Demo
+    link: /demo.html
     type: primary
   - text: Setup
     link: /setup.html
@@ -32,12 +32,10 @@ const app = createApp(App);
 app.use(createGettext({ translations }));
 ```
 
-Use gettext functions, the `<translate>` component and `v-translate` directive in your application:
+Use gettext functions in your application:
 
 ```jsx
 <span>{{ $gettext("Translate me") }}</span>
-<translate>Translate me</translate>
-<span v-translate>Translate me</span>
 ```
 
 Add scripts to your `package.json`:
