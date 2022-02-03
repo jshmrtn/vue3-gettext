@@ -2,7 +2,6 @@ import { createGettext } from "../../src";
 
 import translations from "../../dev/language/translations.json";
 
-import LanguageSelect from "./components/LanguageSelect.vue";
 import Demo from "../../dev/App.vue";
 
 const gettext = createGettext({
@@ -18,6 +17,5 @@ const gettext = createGettext({
 export default ({ app }) => {
   app.use(gettext);
 
-  app.component("LanguageSwitch", LanguageSelect);
   app.component("Demo", Demo);
 };

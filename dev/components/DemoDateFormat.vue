@@ -1,5 +1,5 @@
 <template>
-  <p>
+  <p class="translated">
     {{ dateFormat(dateNow) }}
   </p>
 </template>

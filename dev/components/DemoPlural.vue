@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      <translate>In English, '0' (zero) is always plural.</translate>
+      <translate class="translated">In English, '0' (zero) is always plural.</translate>
     </p>
     <p>
       <button @click="decrease()">-</button>
@@ -10,20 +10,23 @@
     </p>
     <p>
       data:
-      <translate :translate-n="n" translate-plural="%{ n } books">%{ n } book</translate>
+      <translate class="translated" :translate-n="n" translate-plural="%{ n } books">%{ n } book</translate>
     </p>
     <p>
       computed:
-      <translate :translate-n="nComputed" translate-plural="%{ nComputed } books"> %{ nComputed } book </translate>
+      <translate class="translated" :translate-n="nComputed" translate-plural="%{ nComputed } books">
+        %{ nComputed } book
+      </translate>
     </p>
 
     <p>
-      <translate>
+      <translate class="translated">
         Use default singular or plural form when there is no translation. This is left untranslated on purpose.
       </translate>
     </p>
     <p>
       <translate
+        class="translated"
         :translate-n="countForUntranslated"
         translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose."
       >

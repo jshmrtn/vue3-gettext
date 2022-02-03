@@ -1,5 +1,5 @@
 <template>
-  <language-select></language-select>
+  <LanguageSelect></LanguageSelect>
 
   <div :class="$style.container">
     <div :class="$style.tile">
@@ -13,7 +13,7 @@
     </div>
 
     <div :class="$style.tile">
-      <h2>Filter</h2>
+      <h2>Date</h2>
       <DemoDateFormat></DemoDateFormat>
     </div>
     <div :class="$style.tile">
@@ -43,7 +43,7 @@ import DemoDirective from "./components/DemoDirective.vue";
 import DemoIf from "./components/DemoIf.vue";
 import DemoMultilines from "./components/DemoMultilines.vue";
 import DemoPlural from "./components/DemoPlural.vue";
-import LanguageSelect from "./components/languageSelect.vue";
+import LanguageSelect from "./components/LanguageSelect.vue";
 
 export default {
   name: "App",
@@ -60,19 +60,24 @@ export default {
 };
 </script>
 
-<style module>
+<style lang="scss" module>
 .container {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-auto-rows: auto;
   grid-gap: 15px;
+
+  button {
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+  }
 }
 
 .tile {
-  background-color: white;
-  padding: 15px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.02);
-  border-radius: 2px;
+  margin-top: 2rem;
+  margin-right: 2rem;
 }
 
 h2 {

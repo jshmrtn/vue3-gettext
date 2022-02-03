@@ -2,7 +2,6 @@ import path from "path";
 
 import type { DefaultThemeOptions } from "vuepress";
 import { defineUserConfig } from "vuepress";
-import { noopDirectiveTransform } from "@vue/compiler-dom";
 
 export default defineUserConfig<DefaultThemeOptions>({
   base: "/vue3-gettext/",
@@ -17,16 +16,6 @@ export default defineUserConfig<DefaultThemeOptions>({
         alias: {
           vue: "vue/dist/vue.esm-bundler.js",
           "/@gettext/": path.resolve(__dirname, "../../src"),
-        },
-      },
-    },
-    vuePluginOptions: {
-      template: {
-        compilerOptions: {
-          directiveTransforms: {
-            // TODO: implement ssr directive
-            translate: noopDirectiveTransform,
-          },
         },
       },
     },

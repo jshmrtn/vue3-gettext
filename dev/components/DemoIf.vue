@@ -2,7 +2,7 @@
   <div>
     <p>
       <button @click="toggleShow()">Toggle: {{ show }}</button>
-      <translate v-if="show">Welcome %{ obj.name }</translate>
+      <translate v-if="show" class="translated">Welcome %{ obj.name }</translate>
     </p>
     <div>
       <p>
@@ -11,9 +11,9 @@
         <button @click="setName3()">3</button>
         [{{ obj.name }}]
       </p>
-      <p v-if="obj.name === 'Group1'" v-translate="obj.name">This is %{ obj.name }</p>
-      <p v-else-if="obj.name === 'Group2'" v-translate="obj.name">This is %{ obj.name }</p>
-      <p v-else v-translate="obj.name">This is %{ obj.name }</p>
+      <p v-if="obj.name === 'Group1'" v-translate="obj.name" class="translated">This is %{ obj.name }</p>
+      <p v-else-if="obj.name === 'Group2'" v-translate="obj.name" class="translated">This is %{ obj.name }</p>
+      <p v-else v-translate="obj.name" class="translated">This is %{ obj.name }</p>
     </div>
   </div>
 </template>
