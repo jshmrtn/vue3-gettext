@@ -1,3 +1,4 @@
+import interpolate from "./interpolate";
 import plurals from "./plurals";
 import { MessageContext, Language, LanguageData } from "./typeDefs";
 
@@ -19,10 +20,14 @@ const translate = (language: Language) => ({
     context: string | null = null,
     defaultPlural: string | null = null,
     languageKey?: string,
+    parameters?: { [key: string]: string },
   ) {
     if (languageKey === undefined) {
       languageKey = language.current;
     }
+    const interpolateLang = interpolate(language.current);
+    const interp = (message: string, parameters?: { [key: string]: string }) =>
+      parameters ? interpolateLang(message, parameters) : message;
 
     if (!msgid) {
       return ""; // Allow empty strings.
@@ -46,7 +51,7 @@ const translate = (language: Language) => ({
       if (!silent) {
         console.warn(`No translations found for ${languageKey}`);
       }
-      return untranslated;
+      return interp(untranslated, parameters);
     }
 
     // spacing needs to be consistent even if a web template designer adds spaces between lines
@@ -66,7 +71,7 @@ const translate = (language: Language) => ({
         }
         console.warn(msg);
       }
-      return untranslated;
+      return interp(untranslated, parameters);
     }
 
     // Avoid a crash when a msgid exists with and without a context, see #32.
@@ -76,7 +81,7 @@ const translate = (language: Language) => ({
     }
 
     if (typeof translated === "string") {
-      return translated;
+      return interp(translated, parameters);
     }
 
     let translationIndex = plurals.getTranslationIndex(languageKey, n);
@@ -89,7 +94,7 @@ const translate = (language: Language) => ({
     if (!(translated as string[])[translationIndex]) {
       throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
     }
-    return (translated as string[])[translationIndex];
+    return interp((translated as string[])[translationIndex], parameters);
   },
 
   /*
@@ -100,8 +105,8 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  gettext: function (msgid: string) {
-    return this.getTranslation(msgid);
+  gettext: function (msgid: string, parameters?: { [key: string]: string }) {
+    return this.getTranslation(msgid, undefined, undefined, undefined, undefined, parameters);
   },
 
   /*
@@ -113,8 +118,8 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  pgettext: function (context: string, msgid: string) {
-    return this.getTranslation(msgid, 1, context);
+  pgettext: function (context: string, msgid: string, parameters?: { [key: string]: string }) {
+    return this.getTranslation(msgid, 1, context, undefined, undefined, parameters);
   },
 
   /*
@@ -128,8 +133,8 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  ngettext: function (msgid: string, plural: string, n: number) {
-    return this.getTranslation(msgid, n, null, plural);
+  ngettext: function (msgid: string, plural: string, n: number, parameters?: { [key: string]: string }) {
+    return this.getTranslation(msgid, n, null, plural, undefined, parameters);
   },
 
   /*
@@ -144,8 +149,14 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  npgettext: function (context: string, msgid: string, plural: string, n: number) {
-    return this.getTranslation(msgid, n, context, plural);
+  npgettext: function (
+    context: string,
+    msgid: string,
+    plural: string,
+    n: number,
+    parameters?: { [key: string]: string },
+  ) {
+    return this.getTranslation(msgid, n, context, plural, undefined, parameters);
   },
 });
 
