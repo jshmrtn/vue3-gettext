@@ -1,6 +1,6 @@
 {
   "name": "vue3-gettext",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0-beta.2",
   "description": "Translate your Vue.js 3 applications with gettext",
   "author": "Leo Zurbriggen",
   "license": "MIT",
