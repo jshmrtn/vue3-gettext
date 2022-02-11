@@ -23,7 +23,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   clientAppEnhanceFiles: [path.resolve(__dirname, "./enhanceAppFile.ts")],
   themeConfig: {
     repo: "https://github.com/jshmrtn/vue3-gettext",
-    navbar: [],
+    navbar: [{ text: "npm", link: "https://npmjs.com/package/vue-haystack" }],
     locales: {
       "/": {
         selectLanguageName: "English",
