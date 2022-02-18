@@ -82,6 +82,7 @@ export interface GettextConfig {
     jsonPath: string;
     flat: boolean;
     linguas: boolean;
+    splitJson: boolean;
   };
 }
 

@@ -5,5 +5,6 @@ module.exports = {
   output: {
     path: "./dev/language",
     locales: ["en_GB", "fr_FR", "it_IT"],
+    splitJson: false,
   },
 };

@@ -37,10 +37,13 @@ export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
     output: {
       path: languagePath,
       potPath: joinPathIfRelative(config.output?.potPath) || joinPath("./messages.pot"),
-      jsonPath: joinPathIfRelative(config.output?.jsonPath) || joinPath("./translations.json"),
+      jsonPath:
+        joinPathIfRelative(config.output?.jsonPath) ||
+        (config.output?.splitJson ? joinPath("./") : joinPath("./translations.json")),
       locales: config.output?.locales || ["en"],
-      flat: config.output?.flat === undefined ? false : config.output?.flat,
-      linguas: config.output?.linguas === undefined ? true : config.output?.linguas,
+      flat: config.output?.flat === undefined ? false : config.output.flat,
+      linguas: config.output?.linguas === undefined ? true : config.output.linguas,
+      splitJson: config.output?.splitJson === undefined ? false : config.output.splitJson,
     },
   };
 };

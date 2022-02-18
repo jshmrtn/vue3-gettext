@@ -28,10 +28,25 @@ const localesPaths = config.output.locales.map((loc) =>
 
 (async () => {
   await fsPromises.mkdir(config.output.path, { recursive: true });
-  const outputPath = config.output.jsonPath;
-  const jsonRes = JSON.stringify(await compilePoFiles(localesPaths));
-  console.info(`${chalk.green("Compiled json")}: ${chalk.grey(jsonRes)}`);
-  await fsPromises.writeFile(outputPath, jsonRes);
+  const jsonRes = await compilePoFiles(localesPaths);
+  console.info(`${chalk.green("Compiled json")}: ${chalk.grey(JSON.stringify(jsonRes))}`);
   console.info();
-  console.info(`${chalk.green("Created")}: ${chalk.blueBright(outputPath)}`);
+  if (config.output.splitJson) {
+    await Promise.all(
+      config.output.locales.map(async (locale) => {
+        const outputPath = path.join(config.output.jsonPath, `${locale}.json`);
+        await fsPromises.writeFile(
+          outputPath,
+          JSON.stringify({
+            [locale]: jsonRes[locale],
+          }),
+        );
+        console.info(`${chalk.green("Created")}: ${chalk.blueBright(outputPath)}`);
+      }),
+    );
+  } else {
+    const outputPath = config.output.jsonPath;
+    await fsPromises.writeFile(outputPath, JSON.stringify(jsonRes));
+    console.info(`${chalk.green("Created")}: ${chalk.blueBright(outputPath)}`);
+  }
 })();

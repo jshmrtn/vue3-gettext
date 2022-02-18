@@ -1,4 +1,4 @@
-import { App, computed, reactive } from "vue";
+import { App, computed, reactive, ref } from "vue";
 import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
@@ -32,7 +32,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
     ...options,
   };
 
-  const translations = reactive({ value: normalizeTranslations(mergedOptions.translations) });
+  const translations = ref(normalizeTranslations(mergedOptions.translations));
 
   const gettext: Language = reactive({
     available: mergedOptions.availableLanguages,
