@@ -11,7 +11,7 @@ export function attributeEmbeddedJsExtractor(selector: string, jsParser: JsParse
       return;
     }
 
-    let element = node as Element;
+    const element = node as Element;
 
     element.attrs.forEach((attr) => {
       jsParser.parseString(attr.value, fileName, {

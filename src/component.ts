@@ -61,7 +61,7 @@ export const Component = defineComponent({
     });
 
     const translation = computed(() => {
-      let translatedMsg = translate(plugin).getTranslation(
+      const translatedMsg = translate(plugin).getTranslation(
         msgid.value!,
         props.translateN,
         props.translateContext,
@@ -69,7 +69,7 @@ export const Component = defineComponent({
         plugin.current,
       );
 
-      return interpolate(plugin)(translatedMsg, props.translateParams, getCurrentInstance()?.parent);
+      return interpolate(plugin)(translatedMsg, props.translateParams, undefined, getCurrentInstance()?.parent);
     });
 
     // The text must be wraped inside a root HTML element, so we use a <span> by default.

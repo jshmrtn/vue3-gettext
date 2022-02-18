@@ -154,8 +154,8 @@ describe("translate directive tests", () => {
     }).vm;
     (vm as any).$language.current = "fr_FR";
     await vm.$nextTick();
-    let html = vm.$el.innerHTML.trim();
-    let missedName = names.some((name) => {
+    const html = vm.$el.innerHTML.trim();
+    const missedName = names.some((name) => {
       if (html.indexOf(name) === -1) {
         return true;
       }

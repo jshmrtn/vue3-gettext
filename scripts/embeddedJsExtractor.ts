@@ -8,17 +8,17 @@ export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtml
   Validate.required.nonEmptyString({ selector });
   Validate.required.argument({ jsParser });
 
-  let selectors = new ElementSelectorSet(selector);
+  const selectors = new ElementSelectorSet(selector);
 
   return (node: any, fileName: string) => {
     if (typeof (node as Element).tagName !== "string") {
       return;
     }
 
-    let element = node as Element;
+    const element = node as Element;
 
     if (selectors.anyMatch(element)) {
-      let source = HtmlUtils.getElementContent(element, {
+      const source = HtmlUtils.getElementContent(element, {
         trimWhiteSpace: false,
         preserveIndentation: true,
         replaceNewLines: false,

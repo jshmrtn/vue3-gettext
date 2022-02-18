@@ -34,67 +34,64 @@ const MUSTACHE_SYNTAX_RE = /\{\{((?:.|\n)+?)\}\}/g;
  *
  * @return {String} The interpolated string
  */
-let interpolate: any = (plugin: Language) => (
-  msgid: string,
-  context: any = {},
-  parent: ComponentInternalInstance | any,
-  disableHtmlEscaping = false,
-) => {
-  const silent = plugin.silent;
-  if (!silent && MUSTACHE_SYNTAX_RE.test(msgid)) {
-    console.warn(`Mustache syntax cannot be used with vue-gettext. Please use "%{}" instead of "{{}}" in: ${msgid}`);
-  }
-
-  let result = msgid.replace(INTERPOLATION_RE, (_match, token: string) => {
-    const expression = token.trim();
-    let evaluated: Object;
-
-    const escapeHtmlMap = {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;",
-    };
-
-    // Avoid eval() by splitting `expression` and looping through its different properties if any, see #55.
-    function getProps(obj: any, expression: string) {
-      const arr = expression.split(EVALUATION_RE).filter((x) => x);
-      while (arr.length) {
-        obj = obj[arr.shift()!];
-      }
-      return obj;
+const interpolate =
+  (plugin: Language) =>
+  (msgid: string, context: any = {}, disableHtmlEscaping = false, parent?: ComponentInternalInstance | any) => {
+    const silent = plugin.silent;
+    if (!silent && MUSTACHE_SYNTAX_RE.test(msgid)) {
+      console.warn(`Mustache syntax cannot be used with vue-gettext. Please use "%{}" instead of "{{}}" in: ${msgid}`);
     }
 
-    function evalInContext(context: any, expression: string, parent: any): string {
-      try {
-        evaluated = getProps(context, expression);
-      } catch (e) {
-        // Ignore errors, because this function may be called recursively later.
-      }
-      if (evaluated === undefined) {
-        if (parent) {
-          // Recursively climb the parent chain to allow evaluation inside nested components, see #23 and #24.
-          return evalInContext(parent.ctx, expression, parent.parent);
-        } else {
-          console.warn(`Cannot evaluate expression: ${expression}`);
-          evaluated = expression;
+    const result = msgid.replace(INTERPOLATION_RE, (_match, token: string) => {
+      const expression = token.trim();
+      let evaluated: Object;
+
+      const escapeHtmlMap = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;",
+      };
+
+      // Avoid eval() by splitting `expression` and looping through its different properties if any, see #55.
+      function getProps(obj: any, expression: string) {
+        const arr = expression.split(EVALUATION_RE).filter((x) => x);
+        while (arr.length) {
+          obj = obj[arr.shift()!];
         }
+        return obj;
       }
-      const result = evaluated.toString();
-      if (disableHtmlEscaping) {
-        // Do not escape HTML, see #78.
-        return result;
+
+      function evalInContext(context: any, expression: string, parent: any): string {
+        try {
+          evaluated = getProps(context, expression);
+        } catch (e) {
+          // Ignore errors, because this function may be called recursively later.
+        }
+        if (evaluated === undefined) {
+          if (parent) {
+            // Recursively climb the parent chain to allow evaluation inside nested components, see #23 and #24.
+            return evalInContext(parent.ctx, expression, parent.parent);
+          } else {
+            console.warn(`Cannot evaluate expression: ${expression}`);
+            evaluated = expression;
+          }
+        }
+        const result = evaluated.toString();
+        if (disableHtmlEscaping) {
+          // Do not escape HTML, see #78.
+          return result;
+        }
+        // Escape HTML, see #78.
+        return result.replace(/[&<>"']/g, (m: string) => escapeHtmlMap[m as keyof typeof escapeHtmlMap]);
       }
-      // Escape HTML, see #78.
-      return result.replace(/[&<>"']/g, (m: string) => escapeHtmlMap[m as keyof typeof escapeHtmlMap]);
-    }
 
-    return evalInContext(context, expression, parent);
-  });
+      return evalInContext(context, expression, parent);
+    });
 
-  return result;
-};
+    return result;
+  };
 
 // Store this values as function attributes for easy access elsewhere to bypass a Rollup
 // weak point with `export`:

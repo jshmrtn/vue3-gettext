@@ -22,7 +22,7 @@ const updateTranslation = (language: Language, el: HTMLElement, binding: Directi
     );
   }
 
-  let translation = translate(language).getTranslation(
+  const translation = translate(language).getTranslation(
     msgid,
     translateN,
     translateContext,
@@ -31,7 +31,7 @@ const updateTranslation = (language: Language, el: HTMLElement, binding: Directi
   );
 
   const context = Object.assign(binding.instance, binding.value);
-  let msg = interpolate(language)(translation, context, null, disableHtmlEscaping);
+  const msg = interpolate(language)(translation, context, disableHtmlEscaping, null);
 
   el.innerHTML = msg;
 };

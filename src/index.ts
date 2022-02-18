@@ -32,7 +32,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
     ...options,
   };
 
-  let translations = reactive({ value: normalizeTranslations(mergedOptions.translations) });
+  const translations = reactive({ value: normalizeTranslations(mergedOptions.translations) });
 
   const gettext: Language = reactive({
     available: mergedOptions.availableLanguages,

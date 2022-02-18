@@ -85,27 +85,45 @@ describe("Translate tests", () => {
   });
 
   it("tests the gettext() method", () => {
-    let undetectableGettext = translate.gettext.bind(translate); // Hide from gettext-extract.
+    const gettext = translate.gettext.bind(translate) as Language["$gettext"];
 
     setLanguage("fr_FR");
-    expect(undetectableGettext("Pending")).toEqual("En cours");
+    expect(gettext("Pending")).toEqual("En cours");
 
     setLanguage("en_US");
-    expect(undetectableGettext("Pending")).toEqual("Pending");
+    expect(gettext("Pending")).toEqual("Pending");
+
+    expect(gettext("Interpolated: %{param1}", { param1: "success" })).toEqual("Interpolated: success");
+    expect(gettext("Interpolated escaped: %{param1}", { param1: "<b>success</b>" })).toEqual(
+      "Interpolated escaped: &lt;b&gt;success&lt;/b&gt;",
+    );
+    expect(gettext("Interpolated unescaped: %{param1}", { param1: "<b>success</b>" }, true)).toEqual(
+      "Interpolated unescaped: <b>success</b>",
+    );
   });
 
   it("tests the pgettext() method", () => {
-    let undetectablePgettext = translate.pgettext.bind(translate); // Hide from gettext-extract.
+    const undetectablePgettext = translate.pgettext.bind(translate) as Language["$pgettext"]; // Hide from gettext-extract.
 
     setLanguage("fr_FR");
     expect(undetectablePgettext("Noun", "Answer")).toEqual("Réponse (nom)");
 
     setLanguage("en_US");
     expect(undetectablePgettext("Noun", "Answer")).toEqual("Answer (noun)");
+
+    expect(undetectablePgettext("ctx", "Interpolated: %{param1}", { param1: "success" })).toEqual(
+      "Interpolated: success",
+    );
+    expect(undetectablePgettext("ctx", "Interpolated escaped: %{param1}", { param1: "<b>success</b>" })).toEqual(
+      "Interpolated escaped: &lt;b&gt;success&lt;/b&gt;",
+    );
+    expect(
+      undetectablePgettext("ctx", "Interpolated unescaped: %{param1}", { param1: "<b>success</b>" }, true),
+    ).toEqual("Interpolated unescaped: <b>success</b>");
   });
 
   it("tests the ngettext() method", () => {
-    let undetectableNgettext = translate.ngettext.bind(translate); // Hide from gettext-extract.
+    const undetectableNgettext = translate.ngettext.bind(translate) as Language["$ngettext"]; // Hide from gettext-extract.
 
     setLanguage("fr_FR");
     expect(undetectableNgettext("%{ carCount } car", "%{ carCount } cars", 2)).toEqual("%{ carCount } véhicules");
@@ -124,10 +142,28 @@ describe("Translate tests", () => {
     expect(undetectableNgettext("Untranslated %{ n } item", "Untranslated %{ n } items", 2)).toEqual(
       "Untranslated %{ n } items",
     );
+
+    expect(
+      undetectableNgettext("Interpolated: %{param1}", "Interpolated plural: %{param1}", 1, { param1: "success" }),
+    ).toEqual("Interpolated: success");
+    expect(
+      undetectableNgettext("Interpolated escaped: %{param1}", "Interpolated escaped plural: %{param1}", 1, {
+        param1: "<b>success</b>",
+      }),
+    ).toEqual("Interpolated escaped: &lt;b&gt;success&lt;/b&gt;");
+    expect(
+      undetectableNgettext(
+        "Interpolated unescaped: %{param1}",
+        "Interpolated unescaped plural: %{param1}",
+        1,
+        { param1: "<b>success</b>" },
+        true,
+      ),
+    ).toEqual("Interpolated unescaped: <b>success</b>");
   });
 
   it("tests the npgettext() method", () => {
-    let undetectableNpgettext = translate.npgettext.bind(translate); // Hide from gettext-extract
+    const undetectableNpgettext = translate.npgettext.bind(translate) as Language["$npgettext"]; // Hide from gettext-extract
 
     setLanguage("fr_FR");
     expect(undetectableNpgettext("Noun", "%{ carCount } car (noun)", "%{ carCount } cars (noun)", 2)).toEqual(
@@ -160,6 +196,27 @@ describe("Translate tests", () => {
     expect(
       undetectableNpgettext("Noun", "Untranslated %{ n } item (noun)", "Untranslated %{ n } items (noun)", 2),
     ).toEqual("Untranslated %{ n } items (noun)");
+
+    expect(
+      undetectableNpgettext("ctx", "Interpolated: %{param1}", "Interpolated plural: %{param1}", 1, {
+        param1: "success",
+      }),
+    ).toEqual("Interpolated: success");
+    expect(
+      undetectableNpgettext("ctx", "Interpolated escaped: %{param1}", "Interpolated escaped plural: %{param1}", 1, {
+        param1: "<b>success</b>",
+      }),
+    ).toEqual("Interpolated escaped: &lt;b&gt;success&lt;/b&gt;");
+    expect(
+      undetectableNpgettext(
+        "ctx",
+        "Interpolated unescaped: %{param1}",
+        "Interpolated unescaped plural: %{param1}",
+        1,
+        { param1: "<b>success</b>" },
+        true,
+      ),
+    ).toEqual("Interpolated unescaped: <b>success</b>");
   });
 
   it("works when a msgid exists with and without a context, but the one with the context has not been translated", () => {

@@ -21,12 +21,14 @@ const translate = (language: Language) => ({
     defaultPlural: string | null = null,
     languageKey?: string,
     parameters?: { [key: string]: string },
+    disableHtmlEscaping = false,
   ) {
     if (languageKey === undefined) {
       languageKey = language.current;
     }
+
     const interp = (message: string, parameters?: { [key: string]: string }) =>
-      parameters ? language.interpolate(message, parameters) : message;
+      parameters ? language.interpolate(message, parameters, disableHtmlEscaping) : message;
 
     if (!msgid) {
       return ""; // Allow empty strings.
@@ -44,7 +46,7 @@ const translate = (language: Language) => ({
     // So try `ll_CC` first, or the `ll` abbreviation which can be three-letter sometimes:
     // https://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes
     const pluginTranslations = language.translations;
-    let translations: LanguageData = pluginTranslations[languageKey] || pluginTranslations[languageKey.split("_")[0]];
+    const translations: LanguageData = pluginTranslations[languageKey] || pluginTranslations[languageKey.split("_")[0]];
 
     if (!translations) {
       if (!silent) {
@@ -101,11 +103,13 @@ const translate = (language: Language) => ({
    * Also makes the string discoverable by gettext-extract.
    *
    * @param {String} msgid - The translation key
+   * @param {Object} parameters - The interpolation parameters
+   * @param {Boolean} disableHtmlEscaping - Disable html escaping
    *
    * @return {String} The translated string
    */
-  gettext: function (msgid: string, parameters?: { [key: string]: string }) {
-    return this.getTranslation(msgid, undefined, undefined, undefined, undefined, parameters);
+  gettext: function (msgid: string, parameters?: { [key: string]: string }, disableHtmlEscaping = false) {
+    return this.getTranslation(msgid, undefined, undefined, undefined, undefined, parameters, disableHtmlEscaping);
   },
 
   /*
@@ -114,11 +118,18 @@ const translate = (language: Language) => ({
    *
    * @param {String} context - The context of the string to translate
    * @param {String} msgid - The translation key
+   * @param {Object} parameters - The interpolation parameters
+   * @param {Boolean} disableHtmlEscaping - Disable html escaping
    *
    * @return {String} The translated string
    */
-  pgettext: function (context: string, msgid: string, parameters?: { [key: string]: string }) {
-    return this.getTranslation(msgid, 1, context, undefined, undefined, parameters);
+  pgettext: function (
+    context: string,
+    msgid: string,
+    parameters?: { [key: string]: string },
+    disableHtmlEscaping = false,
+  ) {
+    return this.getTranslation(msgid, 1, context, undefined, undefined, parameters, disableHtmlEscaping);
   },
 
   /*
@@ -129,11 +140,19 @@ const translate = (language: Language) => ({
    * @param {String} msgid - The translation key
    * @param {String} plural - The plural form of the translation key
    * @param {Number} n - The number to switch between singular and plural
+   * @param {Object} parameters - The interpolation parameters
+   * @param {Boolean} disableHtmlEscaping - Disable html escaping
    *
    * @return {String} The translated string
    */
-  ngettext: function (msgid: string, plural: string, n: number, parameters?: { [key: string]: string }) {
-    return this.getTranslation(msgid, n, null, plural, undefined, parameters);
+  ngettext: function (
+    msgid: string,
+    plural: string,
+    n: number,
+    parameters?: { [key: string]: string },
+    disableHtmlEscaping = false,
+  ) {
+    return this.getTranslation(msgid, n, null, plural, undefined, parameters, disableHtmlEscaping);
   },
 
   /*
@@ -145,6 +164,8 @@ const translate = (language: Language) => ({
    * @param {String} msgid - The translation key
    * @param {String} plural - The plural form of the translation key
    * @param {Number} n - The number to switch between singular and plural
+   * @param {Object} parameters - The interpolation parameters
+   * @param {Boolean} disableHtmlEscaping - Disable html escaping
    *
    * @return {String} The translated string
    */
@@ -154,8 +175,9 @@ const translate = (language: Language) => ({
     plural: string,
     n: number,
     parameters?: { [key: string]: string },
+    disableHtmlEscaping = false,
   ) {
-    return this.getTranslation(msgid, n, context, plural, undefined, parameters);
+    return this.getTranslation(msgid, n, context, plural, undefined, parameters, disableHtmlEscaping);
   },
 });
 

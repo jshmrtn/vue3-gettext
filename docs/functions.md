@@ -135,3 +135,15 @@ const { interpolate } = useGettext();
 
 interpolate($gettext("My message for %{ name }"), { name: "Rudi" });
 ```
+
+## Html escaping
+
+All the translation functions escape html by default and take a `disableHtmlEscaping` as their last parameter. If your translation messages or parameters contain html tags, you will have to set this to `true` and render the message using [`v-html`](https://vuejs.org/api/built-in-directives.html#v-html):
+
+```vue
+<template>
+  <span v-html="$gettext('My %{name}', { name: '<b>Rudi</b>' }, true)"></span>
+</template>
+```
+
+Be careful when using [`v-html`](https://vuejs.org/api/built-in-directives.html#v-html). Don't use it for user-provided content so you're not vulnerable for XSS attacks.

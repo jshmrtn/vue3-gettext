@@ -13,7 +13,7 @@ const mount = mountWithPlugin({
 
 describe("translate arabic directive tests", () => {
   it("translates singular", () => {
-    let vm = mount({
+    const vm = mount({
       template: "<p v-translate>Orange</p>",
       data() {
         return { count: 1 };
@@ -24,7 +24,7 @@ describe("translate arabic directive tests", () => {
 
   it("translates plural form 0", async () => {
     const count = 0;
-    let vm = mount({
+    const vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
       data() {
         return { count };
@@ -36,7 +36,7 @@ describe("translate arabic directive tests", () => {
 
   it("translates plural form 1", () => {
     const count = 1;
-    let vm = mount({
+    const vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
       data() {
         return { count };
@@ -47,7 +47,7 @@ describe("translate arabic directive tests", () => {
 
   it("translates plural form 2", () => {
     const count = 2;
-    let vm = mount({
+    const vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
       data() {
         return { count };
@@ -58,7 +58,7 @@ describe("translate arabic directive tests", () => {
 
   it("translates plural form 3", () => {
     const count = 9;
-    let vm = mount({
+    const vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
       data() {
         return { count };
@@ -69,7 +69,7 @@ describe("translate arabic directive tests", () => {
 
   it("translates plural form 4", () => {
     const count = 11;
-    let vm = mount({
+    const vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
       data() {
         return { count };
@@ -80,7 +80,7 @@ describe("translate arabic directive tests", () => {
 
   it("translates plural form 5", async () => {
     const count = 3000;
-    let vm = mount({
+    const vm = mount({
       template: '<p v-translate :translate-n="count" translate-plural="%{ count } days">%{ count } day</p>',
       data() {
         return { count };

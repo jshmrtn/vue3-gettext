@@ -2,7 +2,7 @@
   <div>
     <p>
       <button @click="toggleShow()">Toggle: {{ show }}</button>
-      <translate v-if="show" class="translated">Welcome %{ obj.name }</translate>
+      <span v-if="show" class="translated">{{ $gettext("Welcome %{ name }", { name: obj.name }) }}</span>
     </p>
     <div>
       <p>

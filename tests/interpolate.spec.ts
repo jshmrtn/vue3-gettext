@@ -16,84 +16,84 @@ const interpolate = rawInterpolate(plugin);
 
 describe("Interpolate tests", () => {
   it("without placeholders", () => {
-    let msgid = "Foo bar baz";
-    let interpolated = interpolate(msgid);
+    const msgid = "Foo bar baz";
+    const interpolated = interpolate(msgid);
     expect(interpolated).toEqual("Foo bar baz");
   });
 
   it("with a placeholder", () => {
-    let msgid = "Foo %{ placeholder } baz";
-    let context = { placeholder: "bar" };
-    let interpolated = interpolate(msgid, context);
+    const msgid = "Foo %{ placeholder } baz";
+    const context = { placeholder: "bar" };
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo bar baz");
   });
 
   it("with HTML in var (should be escaped)", () => {
-    let msgid = "Foo %{ placeholder } baz";
-    let context = { placeholder: "<p>bar</p>" };
-    let interpolated = interpolate(msgid, context);
+    const msgid = "Foo %{ placeholder } baz";
+    const context = { placeholder: "<p>bar</p>" };
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo &lt;p&gt;bar&lt;/p&gt; baz");
   });
 
   it("with HTML in var (should NOT be escaped)", () => {
-    let msgid = "Foo %{ placeholder } baz";
-    let context = { placeholder: "<p>bar</p>" };
-    let disableHtmlEscaping = true;
-    let interpolated = interpolate(msgid, context, undefined, disableHtmlEscaping);
+    const msgid = "Foo %{ placeholder } baz";
+    const context = { placeholder: "<p>bar</p>" };
+    const disableHtmlEscaping = true;
+    const interpolated = interpolate(msgid, context, disableHtmlEscaping, undefined);
     expect(interpolated).toEqual("Foo <p>bar</p> baz");
   });
 
   it("with multiple spaces in the placeholder", () => {
-    let msgid = "Foo %{              placeholder                              } baz";
-    let context = { placeholder: "bar" };
-    let interpolated = interpolate(msgid, context);
+    const msgid = "Foo %{              placeholder                              } baz";
+    const context = { placeholder: "bar" };
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo bar baz");
   });
 
   it("with the same placeholder multiple times", () => {
-    let msgid = "Foo %{ placeholder } baz %{ placeholder } foo";
-    let context = { placeholder: "bar" };
-    let interpolated = interpolate(msgid, context);
+    const msgid = "Foo %{ placeholder } baz %{ placeholder } foo";
+    const context = { placeholder: "bar" };
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo bar baz bar foo");
   });
 
   it("with multiple placeholders", () => {
-    let msgid = "%{foo}%{bar}%{baz}%{bar}%{foo}";
-    let context = { foo: 1, bar: 2, baz: 3 };
-    let interpolated = interpolate(msgid, context);
+    const msgid = "%{foo}%{bar}%{baz}%{bar}%{foo}";
+    const context = { foo: 1, bar: 2, baz: 3 };
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("12321");
   });
 
   it("with new lines", () => {
-    let msgid = "%{       \n    \n\n\n\n  foo} %{bar}!";
-    let context = { foo: "Hello", bar: "world" };
-    let interpolated = interpolate(msgid, context);
+    const msgid = "%{       \n    \n\n\n\n  foo} %{bar}!";
+    const context = { foo: "Hello", bar: "world" };
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Hello world!");
   });
 
   it("with an object", () => {
-    let msgid = "Foo %{ foo.bar } baz";
-    let context = {
+    const msgid = "Foo %{ foo.bar } baz";
+    const context = {
       foo: {
         bar: "baz",
       },
     };
-    let interpolated = interpolate(msgid, context);
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo baz baz");
   });
 
   it("with an array", () => {
-    let msgid = "Foo %{ foo[1] } baz";
-    let context = {
+    const msgid = "Foo %{ foo[1] } baz";
+    const context = {
       foo: ["bar", "baz"],
     };
-    let interpolated = interpolate(msgid, context);
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo baz baz");
   });
 
   it("with a multi level object", () => {
-    let msgid = "Foo %{ a.b.x } %{ a.c.y[1].title }";
-    let context = {
+    const msgid = "Foo %{ a.b.x } %{ a.c.y[1].title }";
+    const context = {
       a: {
         b: {
           x: "foo",
@@ -103,13 +103,13 @@ describe("Interpolate tests", () => {
         },
       },
     };
-    let interpolated = interpolate(msgid, context);
+    const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo foo baz");
   });
 
   it("with a failing expression", () => {
-    let msgid = 'Foo %{ alert("foobar") } baz';
-    let context = {
+    const msgid = 'Foo %{ alert("foobar") } baz';
+    const context = {
       foo: "bar",
     };
     const warnSpy = jest.spyOn(console, "warn");
@@ -120,8 +120,8 @@ describe("Interpolate tests", () => {
   });
 
   it("should warn of the usage of mustache syntax", () => {
-    let msgid = "Foo {{ foo }} baz";
-    let context = {
+    const msgid = "Foo {{ foo }} baz";
+    const context = {
       foo: "bar",
     };
     const warnSpy = jest.spyOn(console, "warn");

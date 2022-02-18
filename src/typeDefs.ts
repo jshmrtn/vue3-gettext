@@ -38,15 +38,27 @@ export type Language = UnwrapRef<{
   silent: GetTextOptions["silent"];
   translations: WritableComputedRef<GetTextOptions["translations"]>;
   current: string;
-  $gettext: (msgid: string, parameters?: { [key: string]: string }) => string;
-  $pgettext: (context: string, msgid: string, parameters?: { [key: string]: string }) => string;
-  $ngettext: (msgid: string, plural: string, n: number, parameters?: { [key: string]: string }) => string;
+  $gettext: (msgid: string, parameters?: { [key: string]: string }, disableHtmlEscaping?: boolean) => string;
+  $pgettext: (
+    context: string,
+    msgid: string,
+    parameters?: { [key: string]: string },
+    disableHtmlEscaping?: boolean,
+  ) => string;
+  $ngettext: (
+    msgid: string,
+    plural: string,
+    n: number,
+    parameters?: { [key: string]: string },
+    disableHtmlEscaping?: boolean,
+  ) => string;
   $npgettext: (
     context: string,
     msgid: string,
     plural: string,
     n: number,
     parameters?: { [key: string]: string },
+    disableHtmlEscaping?: boolean,
   ) => string;
   interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
   install: (app: App) => void;
