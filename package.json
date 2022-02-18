@@ -1,6 +1,6 @@
 {
   "name": "vue3-gettext",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Translate Vue 3 applications with gettext",
   "homepage": "https://jshmrtn.github.io/vue3-gettext/",
   "author": "Leo Zurbriggen",
