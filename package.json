@@ -9,6 +9,16 @@
     "type": "git",
     "url": "https://github.com/jshmrtn/vue3-gettext"
   },
+  "keywords": [
+    "gettext",
+    "vue",
+    "vue3",
+    "internationalization",
+    "i18n",
+    "translation",
+    "l10n",
+    "typescript"
+  ],
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
   },
