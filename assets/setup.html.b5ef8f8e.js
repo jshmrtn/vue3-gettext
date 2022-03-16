@@ -1,0 +1,1 @@
+const e={key:"v-0d2d5c35",path:"/setup.html",title:"Setup",lang:"en-US",frontmatter:{},excerpt:"",headers:[{level:2,title:"Prerequisites",slug:"prerequisites",children:[]},{level:2,title:"Installation",slug:"installation",children:[]}],git:{updatedTime:1647437837e3,contributors:[{name:"LeSuisse",email:"thomas@gerbet.me",commits:1}]},filePathRelative:"setup.md"};export{e as data};
