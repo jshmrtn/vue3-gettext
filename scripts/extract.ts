@@ -93,6 +93,11 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
             lineNumberStart: descriptor.script.loc.start.line,
           });
         }
+        if (descriptor.scriptSetup) {
+          jsParser.parseString(descriptor.scriptSetup.content, descriptor.filename, {
+            lineNumberStart: descriptor.scriptSetup.loc.start.line,
+          });
+        }
       } else if (fp.endsWith(".html")) {
         htmlParser.parseString(buffer, fp);
       } else if (fp.endsWith(".js") || fp.endsWith(".ts") || fp.endsWith(".cjs") || fp.endsWith(".mjs")) {
