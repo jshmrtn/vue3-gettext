@@ -69,7 +69,7 @@ const interpolate =
         } catch (e) {
           // Ignore errors, because this function may be called recursively later.
         }
-        if (evaluated === undefined) {
+        if (evaluated === undefined || evaluated === null) {
           if (parent) {
             // Recursively climb the parent chain to allow evaluation inside nested components, see #23 and #24.
             return evalInContext(parent.ctx, expression, parent.parent);
