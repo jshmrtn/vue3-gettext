@@ -3,10 +3,20 @@ import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { GettextConfigOptions, GetTextOptions, GetTextSymbol, Language } from "./typeDefs";
+import { GetTextSymbol } from "./typeDefs";
+import type {
+  Language,
+  Message,
+  LanguageData,
+  Translations,
+  GettextConfig,
+  GettextConfigOptions,
+  GetTextOptions,
+} from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
 export { useGettext } from "./utilities";
+export type { Language, Message, LanguageData, Translations, GettextConfig, GettextConfigOptions, GetTextOptions };
 
 const defaultOptions: GetTextOptions = {
   /** all the available languages of your application. Keys must match locale names */

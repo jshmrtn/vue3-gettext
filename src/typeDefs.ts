@@ -93,6 +93,7 @@ export interface GettextConfigOptions {
 
 declare module "vue" {
   interface ComponentCustomProperties extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
+    $language: Language;
     $gettextInterpolate: Language["interpolate"];
   }
 
