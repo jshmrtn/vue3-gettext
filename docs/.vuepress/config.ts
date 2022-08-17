@@ -1,14 +1,14 @@
 import path from "path";
 
-import { defaultTheme, viteBundler } from "vuepress";
-import { defineUserConfig } from "vuepress";
+import searchPlugin from "@vuepress/plugin-search";
+import { defaultTheme, defineUserConfig, viteBundler } from "vuepress";
 
 export default defineUserConfig({
   base: "/vue3-gettext/",
   port: 8080,
   lang: "en-US",
   title: "Vue 3 Gettext",
-  // plugins:  ["@vuepress/plugin-search"],
+  plugins: [searchPlugin()],
   bundler: viteBundler({
     viteOptions: {
       resolve: {
@@ -19,7 +19,6 @@ export default defineUserConfig({
       },
     },
   }),
-  // clientConfigFile: path.resolve(__dirname, "./enhanceAppFile.ts"),
   theme: defaultTheme({
     repo: "https://github.com/jshmrtn/vue3-gettext",
     navbar: [{ text: "npm", link: "https://npmjs.com/package/vue-haystack" }],
