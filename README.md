@@ -7,15 +7,19 @@
 
 Translate [Vue 3](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
-# [Quick Start](https://jshmrtn.github.io/vue3-gettext/) | [Demo](https://jshmrtn.github.io/vue3-gettext/demo.html) | [Docs](https://jshmrtn.github.io/vue3-gettext/setup.html)
+<br>
+<p align="center">
+ <a href="https://jshmrtn.github.io/vue3-gettext/">Getting started</a> | <a href="https://jshmrtn.github.io/vue3-gettext/demo.html">Demo</a> | <a href="https://jshmrtn.github.io/vue3-gettext/setup.html">Documentation</a>
+</p>
+<br>
 
-# Basic usage
+## Basic usage
 
 In templates:
 
 ```jsx
 <span>
-  {{ $gettext("I'm %{age} old!", { age: 32 }) }}
+  {{ $gettext("I'm %{age} years old!", { age: 32 }) }}
 </span>
 ```
 
@@ -27,23 +31,23 @@ const { $gettext } = useGettext();
 console.log($gettext("Hello World!"));
 ```
 
-# Features
+## Features
 
 - simple, ergonomic API
 - reactive translations in Vue templates and TypeScript/JavaScript code
 - CLI to automatically extract messages from code files
 - support for pluralization and message contexts
 
-# Contribute
+## Contribute
 
 Please make sure your code is properly formatted (the project contains a `prettier` config) and all the tests run successfully (`npm run test`) when opening a pull request.
 
 Please specify clearly what you changed and why.
 
-# Credits
+## Credits
 
-This plugin heavily relies on the work of the original [`vue-gettext`](https://github.com/Polyconseil/vue-gettext/).
+This plugin relies heavily on the work of the original [`vue-gettext`](https://github.com/Polyconseil/vue-gettext/).
 
-# License
+## License
 
 [MIT](http://opensource.org/licenses/MIT)
