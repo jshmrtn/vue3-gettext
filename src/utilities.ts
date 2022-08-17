@@ -1,5 +1,15 @@
 import { inject } from "vue";
-import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs";
+import {
+  GetTextOptions,
+  GetTextSymbol,
+  Language,
+  LanguageData,
+  LanguageDataNormalized,
+  Message,
+  MessageContext,
+  Translations,
+  TranslationsNormalized,
+} from "./typeDefs";
 
 export function normalizeTranslationKey(key: string) {
   return key
@@ -9,16 +19,24 @@ export function normalizeTranslationKey(key: string) {
 }
 
 export function normalizeTranslations(translations: GetTextOptions["translations"]) {
-  const newTranslations: Translations = {};
+  const newTranslations: TranslationsNormalized = {};
   Object.keys(translations).forEach((lang) => {
     const langData = translations[lang];
-    const newLangData: LanguageData = {};
+    const newLangData: LanguageDataNormalized = {};
     Object.keys(langData).forEach((key) => {
-      newLangData[normalizeTranslationKey(key)] = langData[key];
+      newLangData[normalizeTranslationKey(key)] = normalizeMessageData(langData[key]);
     });
     newTranslations[lang] = newLangData;
   });
   return newTranslations;
+}
+
+export function normalizeMessageData(message: Message | MessageContext): MessageContext {
+  if (message instanceof Object && !Array.isArray(message)) {
+    // message is already a context object
+    return message;
+  }
+  return { "": message };
 }
 
 export const useGettext = (): Language => {

@@ -1,5 +1,5 @@
 import plurals from "./plurals";
-import { Language, LanguageData, Message, MessageContext } from "./typeDefs";
+import { Language } from "./typeDefs";
 
 const translate = (language: Language) => ({
   /*
@@ -48,7 +48,7 @@ const translate = (language: Language) => ({
     // So try `ll_CC` first, or the `ll` abbreviation which can be three-letter sometimes:
     // https://www.gnu.org/software/gettext/manual/html_node/Language-Codes.html#Language-Codes
     const pluginTranslations = language.translations;
-    const translations: LanguageData = pluginTranslations[languageKey] || pluginTranslations[languageKey.split("_")[0]];
+    const translations = pluginTranslations[languageKey] || pluginTranslations[languageKey.split("_")[0]];
 
     if (!translations) {
       if (!silent) {
@@ -57,17 +57,17 @@ const translate = (language: Language) => ({
       return interp(untranslated, parameters);
     }
 
-    const getTranslationFromArray = (arr: string[]) => {
+    const getTranslationFromArray = (translations: string[]) => {
       let translationIndex = plurals.getTranslationIndex(languageKey!, n);
 
       // Do not assume that the default value of n is 1 for the singular form of all languages. E.g. Arabic
-      if (arr.length === 1 && n === 1) {
+      if (translations.length === 1 && n === 1) {
         translationIndex = 0;
       }
-      if (!(arr as string[])[translationIndex]) {
+      if (!(translations as string[])[translationIndex]) {
         throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
       }
-      return interp(arr[translationIndex], parameters);
+      return interp(translations[translationIndex], parameters);
     };
 
     const getUntranslatedMsg = () => {
@@ -81,26 +81,19 @@ const translate = (language: Language) => ({
       return interp(untranslated, parameters);
     };
 
-    const translateMsg = (msg: Message | MessageContext, context: string | null = null): string => {
-      if (msg instanceof Object) {
-        if (Array.isArray(msg)) {
-          return getTranslationFromArray(msg);
-        }
-        const msgContext = context ?? "";
-        const ctxVal = msg[msgContext];
-        return translateMsg(ctxVal);
-      }
-      if (context) {
-        return getUntranslatedMsg();
-      }
-      if (!msg) {
-        return getUntranslatedMsg();
-      }
-      return msg as string;
-    };
-
-    const translated = translations[msgid];
-    return translateMsg(translated, context);
+    const contextObject = translations[msgid];
+    if (!contextObject) {
+      return getUntranslatedMsg();
+    }
+    const contextKey = context ?? "";
+    const translation = contextObject[contextKey];
+    if (!translation) {
+      return getUntranslatedMsg();
+    }
+    if (Array.isArray(translation)) {
+      return getTranslationFromArray(translation);
+    }
+    return interp(translation, parameters);
   },
 
   /*

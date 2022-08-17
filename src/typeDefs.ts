@@ -21,6 +21,14 @@ export type Translations = {
   [language: string]: LanguageData;
 };
 
+export type LanguageDataNormalized = {
+  [messageId: string]: MessageContext;
+};
+
+export type TranslationsNormalized = {
+  [language: string]: LanguageDataNormalized;
+};
+
 export interface GetTextOptions {
   availableLanguages: { [key: string]: string };
   defaultLanguage: string;
@@ -36,7 +44,7 @@ export type Language = UnwrapRef<{
   available: GetTextOptions["availableLanguages"];
   muted: GetTextOptions["mutedLanguages"];
   silent: GetTextOptions["silent"];
-  translations: WritableComputedRef<GetTextOptions["translations"]>;
+  translations: WritableComputedRef<TranslationsNormalized>;
   current: string;
   $gettext: (msgid: string, parameters?: { [key: string]: string }, disableHtmlEscaping?: boolean) => string;
   $pgettext: (
