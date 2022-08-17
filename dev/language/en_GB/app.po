@@ -106,6 +106,5 @@ msgstr ""
 "left untranslated on purpose."
 
 #: dev/components/DemoIf.vue:5
-#, fuzzy
 msgid "Welcome %{ name }"
-msgstr "Welcome %{ obj.name }"
+msgstr "Welcome %{ name }"

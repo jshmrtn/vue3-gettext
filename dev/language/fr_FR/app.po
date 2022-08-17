@@ -109,6 +109,5 @@ msgid ""
 msgstr ""
 
 #: dev/components/DemoIf.vue:5
-#, fuzzy
 msgid "Welcome %{ name }"
-msgstr "Bienvenue %{ obj.name }"
+msgstr "Bienvenue %{ name }"
