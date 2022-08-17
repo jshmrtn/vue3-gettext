@@ -221,7 +221,7 @@ describe("Translate tests", () => {
 
   it("works when a msgid exists with and without a context, but the one with the context has not been translated", () => {
     expect(plugin.silent).toEqual(false);
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
 
     translated = translate.getTranslation("May", null, null, null, "fr_FR");
     expect(translated).toEqual("Pourrait");

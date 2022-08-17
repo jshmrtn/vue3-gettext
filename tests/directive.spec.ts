@@ -19,7 +19,7 @@ describe("translate directive tests", () => {
   });
 
   it("returns an unchanged string when no translation is available for a language", () => {
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     const vm = mount({ template: "<div v-translate>Unchanged string</div>" }).vm;
     (vm as any).$language.current = "fr_BE";
     expect(vm.$el.innerHTML).toEqual("Unchanged string");
@@ -28,7 +28,7 @@ describe("translate directive tests", () => {
   });
 
   it("returns an unchanged string when no translation key is available", () => {
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     const vm = mount({ template: "<div v-translate>Untranslated string</div>" }).vm;
     expect(vm.$el.innerHTML).toEqual("Untranslated string");
     expect(warnSpy).toHaveBeenCalledTimes(1);
@@ -164,7 +164,7 @@ describe("translate directive tests", () => {
   });
 
   it("logs a warning in the console if translate-params is used", async () => {
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     const vm = mount({
       template: '<p v-translate :translate-params="{name: someNewNameVar}">Hello <strong>%{ name }</strong></p>',
       data() {

@@ -5,9 +5,34 @@
 </p>
 <br/>
 
-Translate [Vue.js](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
+Translate [Vue 3](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
-## [Quick Start](https://jshmrtn.github.io/vue3-gettext/) | [Demo](https://jshmrtn.github.io/vue3-gettext/demo.html) | [Docs](https://jshmrtn.github.io/vue3-gettext/setup.html)
+# [Quick Start](https://jshmrtn.github.io/vue3-gettext/) | [Demo](https://jshmrtn.github.io/vue3-gettext/demo.html) | [Docs](https://jshmrtn.github.io/vue3-gettext/setup.html)
+
+# Basic usage
+
+In templates:
+
+```jsx
+<span>
+  {{ $gettext("I'm %{age} old!", { age: 32 }) }}
+</span>
+```
+
+In code:
+
+```ts
+const { $gettext } = useGettext();
+
+console.log($gettext("Hello World!"));
+```
+
+# Features
+
+- simple, ergonomic API
+- reactive translations in Vue templates and TypeScript/JavaScript code
+- CLI to automatically extract messages from code files
+- support for pluralization and message contexts
 
 # Contribute
 

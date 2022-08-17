@@ -10,7 +10,8 @@
     "moduleResolution": "node",
     "skipLibCheck": true,
     "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"],
-    "rootDir": "."
+    "rootDir": ".",
+    "types": ["vitest/globals"]
   },
   "ts-node": {
     "compilerOptions": {
@@ -18,5 +19,5 @@
     }
   },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["src/**/*", "scripts/**/*.ts"]
+  "include": ["src/**/*", "scripts/**/*.ts", "tests/**/*.ts"]
 }

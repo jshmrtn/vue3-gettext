@@ -73,14 +73,19 @@ export default {
     cursor: pointer;
     padding: 0.25rem 0.5rem;
   }
-}
 
-.tile {
-  margin-top: 2rem;
-  margin-right: 2rem;
-}
+  .tile {
+    margin-top: 2rem;
+    margin-right: 2rem;
 
-h2 {
-  margin-top: 0;
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
+  }
 }
 </style>

@@ -30,7 +30,7 @@ const updateTranslation = (language: Language, el: HTMLElement, binding: Directi
     language.current,
   );
 
-  const context = Object.assign(binding.instance, binding.value);
+  const context = Object.assign(binding.instance ?? {}, binding.value);
   const msg = interpolate(language)(translation, context, disableHtmlEscaping, null);
 
   el.innerHTML = msg;

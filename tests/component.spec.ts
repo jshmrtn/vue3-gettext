@@ -1,5 +1,6 @@
 import { mountWithPlugin } from "./utils";
 import translations from "./json/component";
+import { nextTick } from "vue";
 
 const mount = mountWithPlugin({
   availableLanguages: {
@@ -20,7 +21,7 @@ describe("translate component tests", () => {
   });
 
   it("returns an unchanged string when no translation is available for a language", async () => {
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     const wrapper = mount({ template: "<div><translate>Unchanged string</translate></div>" });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_BE";
@@ -31,7 +32,7 @@ describe("translate component tests", () => {
   });
 
   it("returns an unchanged string when no translation key is available", async () => {
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     const wrapper = mount({ template: "<div><translate>Untranslated string</translate></div>" });
     const vm = wrapper.vm as any;
     await vm.$nextTick();
@@ -242,7 +243,7 @@ describe("translate component tests", () => {
 });
 
 describe("translate component tests for interpolation", () => {
-  it("goes up the parent chain of a nested component to evaluate `name`", (done) => {
+  it("goes up the parent chain of a nested component to evaluate `name`", async () => {
     const wrapper = mount({
       template: `<div><inner-component><translate>Hello %{ name }</translate></inner-component></div>`,
       data() {
@@ -258,14 +259,12 @@ describe("translate component tests for interpolation", () => {
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
-    vm.$nextTick(function () {
-      expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour John Doe</span></p>");
-      done();
-    });
+    await nextTick();
+    expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour John Doe</span></p>");
   });
 
-  it("goes up the parent chain of a nested component to evaluate `user.details.name`", (done) => {
-    const warnSpy = jest.spyOn(console, "warn");
+  it("goes up the parent chain of a nested component to evaluate `user.details.name`", async () => {
+    const warnSpy = vi.spyOn(console, "warn");
     const wrapper = mount({
       template: `<div><inner-component><translate>Hello %{ user.details.name }</translate></inner-component></div>`,
       data() {
@@ -285,16 +284,14 @@ describe("translate component tests for interpolation", () => {
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
-    vm.$nextTick(function () {
-      expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour Jane Doe</span></p>");
-      expect(warnSpy).not.toHaveBeenCalled;
-      warnSpy.mockRestore();
-      done();
-    });
+    await nextTick();
+    expect(vm.$el.innerHTML.trim()).toEqual("<p><span>Bonjour Jane Doe</span></p>");
+    expect(warnSpy).not.toHaveBeenCalled;
+    warnSpy.mockRestore();
   });
 
-  it("goes up the parent chain of 2 nested components to evaluate `user.details.name`", (done) => {
-    const warnSpy = jest.spyOn(console, "warn");
+  it("goes up the parent chain of 2 nested components to evaluate `user.details.name`", async () => {
+    const warnSpy = vi.spyOn(console, "warn");
     const wrapper = mount({
       template: `<div><first-component><translate>Hello %{ user.details.name }</translate></first-component></div>`,
       data() {
@@ -319,11 +316,9 @@ describe("translate component tests for interpolation", () => {
     });
     const vm = wrapper.vm as any;
     vm.$language.current = "fr_FR";
-    vm.$nextTick(function () {
-      expect(vm.$el.innerHTML.trim()).toEqual("<p><b><span>Bonjour Jane Doe</span></b></p>");
-      expect(console.warn).not.toHaveBeenCalled;
-      warnSpy.mockRestore();
-      done();
-    });
+    await nextTick();
+    expect(vm.$el.innerHTML.trim()).toEqual("<p><b><span>Bonjour Jane Doe</span></b></p>");
+    expect(console.warn).not.toHaveBeenCalled;
+    warnSpy.mockRestore();
   });
 });

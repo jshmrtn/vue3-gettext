@@ -1,3 +1,4 @@
+import { defineClientConfig } from "@vuepress/client";
 import { createGettext } from "../../src";
 
 import translations from "../../dev/language/translations.json";
@@ -14,8 +15,10 @@ const gettext = createGettext({
   translations: translations,
 });
 
-export default ({ app }) => {
-  app.use(gettext);
+export default defineClientConfig({
+  enhance({ app }) {
+    app.use(gettext);
 
-  app.component("Demo", Demo);
-};
+    app.component("Demo", Demo);
+  },
+});

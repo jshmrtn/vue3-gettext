@@ -1,6 +1,5 @@
-import interpolate from "./interpolate";
 import plurals from "./plurals";
-import { MessageContext, Language, LanguageData } from "./typeDefs";
+import { Language, LanguageData, Message, MessageContext } from "./typeDefs";
 
 const translate = (language: Language) => ({
   /*
@@ -30,6 +29,9 @@ const translate = (language: Language) => ({
     const interp = (message: string, parameters?: { [key: string]: string }) =>
       parameters ? language.interpolate(message, parameters, disableHtmlEscaping) : message;
 
+    // spacing needs to be consistent even if a web template designer adds spaces between lines
+    msgid = msgid.trim();
+
     if (!msgid) {
       return ""; // Allow empty strings.
     }
@@ -55,16 +57,20 @@ const translate = (language: Language) => ({
       return interp(untranslated, parameters);
     }
 
-    // spacing needs to be consistent even if a web template designer adds spaces between lines
-    msgid = msgid.trim();
+    const getTranslationFromArray = (arr: string[]) => {
+      let translationIndex = plurals.getTranslationIndex(languageKey!, n);
 
-    let translated = translations[msgid];
+      // Do not assume that the default value of n is 1 for the singular form of all languages. E.g. Arabic
+      if (arr.length === 1 && n === 1) {
+        translationIndex = 0;
+      }
+      if (!(arr as string[])[translationIndex]) {
+        throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
+      }
+      return interp(arr[translationIndex], parameters);
+    };
 
-    if (translated && context) {
-      translated = (translated as any as MessageContext)[context];
-    }
-
-    if (!translated) {
+    const getUntranslatedMsg = () => {
       if (!silent) {
         let msg = `Untranslated ${languageKey} key found: ${msgid}`;
         if (context) {
@@ -73,29 +79,28 @@ const translate = (language: Language) => ({
         console.warn(msg);
       }
       return interp(untranslated, parameters);
-    }
+    };
 
-    // Avoid a crash when a msgid exists with and without a context, see #32.
-    if (!(translated instanceof Array) && translated.hasOwnProperty("")) {
-      // As things currently stand, the void key means a void context for easygettext.
-      translated = (translated as any as MessageContext)[""] as any;
-    }
+    const translateMsg = (msg: Message | MessageContext, context: string | null = null): string => {
+      if (msg instanceof Object) {
+        if (Array.isArray(msg)) {
+          return getTranslationFromArray(msg);
+        }
+        const msgContext = context ?? "";
+        const ctxVal = msg[msgContext];
+        return translateMsg(ctxVal);
+      }
+      if (context) {
+        return getUntranslatedMsg();
+      }
+      if (!msg) {
+        return getUntranslatedMsg();
+      }
+      return msg as string;
+    };
 
-    if (typeof translated === "string") {
-      return interp(translated, parameters);
-    }
-
-    let translationIndex = plurals.getTranslationIndex(languageKey, n);
-
-    // Do not assume that the default value of n is 1 for the singular form of all languages. E.g. Arabic
-    if (translated.length === 1 && n === 1) {
-      translationIndex = 0;
-    }
-
-    if (!(translated as string[])[translationIndex]) {
-      throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
-    }
-    return interp((translated as string[])[translationIndex], parameters);
+    const translated = translations[msgid];
+    return translateMsg(translated, context);
   },
 
   /*

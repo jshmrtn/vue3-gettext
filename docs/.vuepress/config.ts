@@ -1,16 +1,15 @@
 import path from "path";
 
-import type { DefaultThemeOptions } from "vuepress";
+import { defaultTheme, viteBundler } from "vuepress";
 import { defineUserConfig } from "vuepress";
 
-export default defineUserConfig<DefaultThemeOptions>({
+export default defineUserConfig({
   base: "/vue3-gettext/",
   port: 8080,
   lang: "en-US",
   title: "Vue 3 Gettext",
-  plugins: ["@vuepress/plugin-search"],
-  bundler: "@vuepress/vite",
-  bundlerConfig: {
+  // plugins:  ["@vuepress/plugin-search"],
+  bundler: viteBundler({
     viteOptions: {
       resolve: {
         alias: {
@@ -19,9 +18,9 @@ export default defineUserConfig<DefaultThemeOptions>({
         },
       },
     },
-  },
-  clientAppEnhanceFiles: [path.resolve(__dirname, "./enhanceAppFile.ts")],
-  themeConfig: {
+  }),
+  // clientConfigFile: path.resolve(__dirname, "./enhanceAppFile.ts"),
+  theme: defaultTheme({
     repo: "https://github.com/jshmrtn/vue3-gettext",
     navbar: [{ text: "npm", link: "https://npmjs.com/package/vue-haystack" }],
     locales: {
@@ -50,5 +49,5 @@ export default defineUserConfig<DefaultThemeOptions>({
         ],
       },
     ],
-  },
+  }),
 });

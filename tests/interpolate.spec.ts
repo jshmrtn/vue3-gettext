@@ -112,7 +112,7 @@ describe("Interpolate tests", () => {
     const context = {
       foo: "bar",
     };
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     interpolate(msgid, context);
     expect(warnSpy).toHaveBeenCalledTimes(1);
     expect(warnSpy).toHaveBeenCalledWith('Cannot evaluate expression: alert("foobar")');
@@ -124,7 +124,7 @@ describe("Interpolate tests", () => {
     const context = {
       foo: "bar",
     };
-    const warnSpy = jest.spyOn(console, "warn");
+    const warnSpy = vi.spyOn(console, "warn");
     interpolate(msgid, context);
     expect(warnSpy).not.toHaveBeenCalled;
     plugin.silent = false;
