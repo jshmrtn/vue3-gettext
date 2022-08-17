@@ -96,7 +96,7 @@ const translate = (language: Language) => ({
       if (!msg) {
         return getUntranslatedMsg();
       }
-      return msg as string;
+      return interp(msg, parameters);
     };
 
     const translated = translations[msgid];
