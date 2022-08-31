@@ -5,6 +5,7 @@ import { IContentOptions, normalizeContent } from "gettext-extractor/dist/utils/
 import { Validate } from "gettext-extractor/dist/utils/validate";
 import { DefaultTreeChildNode, Node, serialize } from "parse5";
 import treeAdapter from "parse5-htmlparser2-tree-adapter";
+import { ScriptKind } from "typescript";
 
 type Template = Element & {
   tagName: "template";
@@ -50,7 +51,7 @@ export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtml
       });
 
       jsParser.parseString(source, fileName, {
-        scriptKind: 1,
+        scriptKind: ScriptKind.Deferred,
         lineNumberStart: (element.sourceCodeLocation && element.sourceCodeLocation.startLine) || 0,
       });
     }

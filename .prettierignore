@@ -8,4 +8,5 @@ docs/.vuepress/.temp
 .vscode
 .eslintrc.json
 package.json
+package-lock.json
 tsconfig.json
