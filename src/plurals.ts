@@ -87,6 +87,12 @@ export default {
       case "bs": // Bosnian
       case "hr": // Croatian
       case "ru": // Russian
+        // 3 forms
+        return n % 10 === 1 && n % 100 !== 11
+          ? 0
+          : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)
+          ? 1
+          : 2;
       case "sr": // Serbian
       case "uk": // Ukrainian
         // 3 forms
@@ -105,6 +111,8 @@ export default {
         // 3 forms
         return n === 1 ? 0 : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20) ? 1 : 2;
       case "cs": // Czech
+        // 3 forms
+        return n === 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2;
       case "sk": // Slovak
         // 3 forms
         return n === 1 ? 0 : n >= 2 && n <= 4 ? 1 : 2;
