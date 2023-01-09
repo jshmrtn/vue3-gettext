@@ -25,13 +25,13 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoPlural.vue:13
+#: dev/components/DemoPlural.vue:12 dev/components/DemoPlural.vue:13
 msgid "%{ n } book"
 msgid_plural "%{ n } books"
 msgstr[0] "%{ n } livre"
 msgstr[1] "%{ n } livres"
 
-#: dev/components/DemoAlert.vue:35
+#: dev/components/DemoAlert.vue:40
 msgid "%{ n } car"
 msgid_plural "%{ n } cars"
 msgstr[0] "%{ n } voiture"
@@ -61,7 +61,7 @@ msgstr ""
 "Mot de passe perdu ? Saisissez votre \"adresse électronique\" ci-dessous\n"
 "et nous vous enverrons les instructions pour en créer un nouveau."
 
-#: dev/components/DemoAlert.vue:24
+#: dev/components/DemoAlert.vue:28
 msgid "Good bye!"
 msgstr "Au revoir !"
 
@@ -108,6 +108,6 @@ msgid ""
 "left untranslated on purpose."
 msgstr ""
 
-#: dev/components/DemoIf.vue:5
+#: dev/components/DemoIf.vue:4 dev/components/DemoIf.vue:5
 msgid "Welcome %{ name }"
 msgstr "Bienvenue %{ name }"

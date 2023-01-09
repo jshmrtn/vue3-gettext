@@ -8,13 +8,14 @@ msgid_plural "%{ countForUntranslated } items. This is left untranslated on purp
 msgstr[0] ""
 msgstr[1] ""
 
+#: dev/components/DemoPlural.vue:12
 #: dev/components/DemoPlural.vue:13
 msgid "%{ n } book"
 msgid_plural "%{ n } books"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoAlert.vue:35
+#: dev/components/DemoAlert.vue:40
 msgid "%{ n } car"
 msgid_plural "%{ n } cars"
 msgstr[0] ""
@@ -40,7 +41,7 @@ msgstr ""
 msgid "Forgotten your password? Enter your \"email address\" below, and we'll email instructions for setting a new one."
 msgstr ""
 
-#: dev/components/DemoAlert.vue:24
+#: dev/components/DemoAlert.vue:28
 msgid "Good bye!"
 msgstr ""
 
@@ -86,6 +87,7 @@ msgstr ""
 msgid "Use default singular or plural form when there is no translation. This is left untranslated on purpose."
 msgstr ""
 
+#: dev/components/DemoIf.vue:4
 #: dev/components/DemoIf.vue:5
 msgid "Welcome %{ name }"
 msgstr ""

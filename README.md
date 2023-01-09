@@ -1,15 +1,15 @@
-<p align="center">
+<h1 align="center">
   <a href="https://www.npmjs.com/package/vue3-gettext" target="_blank">
-    <h1>Vue 3 Gettext 💬</h1>
+  Vue 3 Gettext 💬
   </a>
-</p>
+</h1>
 <br/>
 
 Translate [Vue 3](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
 <br>
 <p align="center">
- <a href="https://jshmrtn.github.io/vue3-gettext/">Getting started</a> | <a href="https://jshmrtn.github.io/vue3-gettext/demo.html">Demo</a> | <a href="https://jshmrtn.github.io/vue3-gettext/setup.html">Documentation</a>
+ <a href="https://jshmrtn.github.io/vue3-gettext/">Getting started</a> | <a href="https://jshmrtn.github.io/vue3-gettext/demo.html">Demo</a> | <a href="https://jshmrtn.github.io/vue3-gettext/setup.html">Documentation</a> | <a href="README_zh.md">中文</a>
 </p>
 <br>
 

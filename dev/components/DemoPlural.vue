@@ -10,7 +10,7 @@
     </p>
     <p>
       data:
-      <translate class="translated" :translate-n="n" translate-plural="%{ n } books">%{ n } book</translate>
+      {{ _n('%{ n } book', '%{ n } books', n, { n }) }}
     </p>
     <p>
       computed:
@@ -25,11 +25,8 @@
       </translate>
     </p>
     <p>
-      <translate
-        class="translated"
-        :translate-n="countForUntranslated"
-        translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose."
-      >
+      <translate class="translated" :translate-n="countForUntranslated"
+        translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose.">
         %{ countForUntranslated } item. This is left untranslated on purpose.
       </translate>
     </p>
@@ -37,7 +34,12 @@
 </template>
 
 <script>
+import { gettext } from "../i18n";
 export default {
+  setup: () => {
+    const _n = gettext.$ngettext.bind(this);
+    return { _n };
+  },
   data: () => ({
     n: 0,
     countForUntranslated: 10,

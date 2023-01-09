@@ -10,6 +10,7 @@ const gettext = createGettext({
     en_GB: "British English",
     fr_FR: "Français",
     it_IT: "Italiano",
+    zh_CN: "简体中文",
   },
   defaultLanguage: "en_GB",
   translations: translations,

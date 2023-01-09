@@ -1,3 +1,4 @@
+import { IJsExtractorOptions } from "gettext-extractor/dist/js/extractors/common";
 import { App, UnwrapRef, WritableComputedRef } from "vue";
 import type { Component as ComponentType } from "./component";
 import directive from "./directive";
@@ -74,6 +75,11 @@ export interface GettextConfig {
     include: string[];
     /** glob patterns to exclude files from extraction */
     exclude: string[];
+    /** js extractor options, for custom extractor keywords */
+    jsExtractorOpts?: {
+      keyword: string,
+      options: IJsExtractorOptions,
+    }[],
   };
   output: {
     path: string;
