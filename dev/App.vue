@@ -48,17 +48,6 @@ import { useGettext } from "/@gettext/";
 
 export default {
   name: "App",
-  props: {
-    lang: {
-      type: String,
-      default: 'en_GB',
-    }
-  },
-  setup(props) {
-    const gettext = useGettext();
-    gettext.current = props.lang;
-
-  },
   components: {
     DemoAlert,
     DemoCustomTags,
@@ -68,6 +57,16 @@ export default {
     DemoMultilines,
     DemoPlural,
     LanguageSelect,
+  },
+  props: {
+    lang: {
+      type: String,
+      default: 'en_GB',
+    }
+  },
+  mounted() {
+    const gettext = useGettext();
+    gettext.current = this.lang;
   },
 };
 </script>

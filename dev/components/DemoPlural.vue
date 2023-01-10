@@ -25,7 +25,9 @@
       </translate>
     </p>
     <p>
-      <translate class="translated" :translate-n="countForUntranslated"
+      <translate
+        class="translated"
+        :translate-n="countForUntranslated"
         translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose.">
         %{ countForUntranslated } item. This is left untranslated on purpose.
       </translate>
