@@ -78,3 +78,15 @@ module.exports = {
   },
 };
 ```
+
+## 额外说明
+第一次抽取时，会调用 [`msginit`](https://www.gnu.org/software/gettext/manual/html_node/msginit-Invocation.html)
+新建 `.po` 文件，该命令会自动设置 po 文件中的 `Plural-Forms` 字段。该字段表示翻译语言的复数形式。
+
+但如果翻译语言不在该命令的
+[内置表](https://github.com/dd32/gettext/blob/master/gettext-tools/src/plural-table.c#L27) 中，
+需要使用 [CLDR](http://cldr.unicode.org/) 数据才能判断语言的复数形式。
+
+因此你需要设置环境变量 `GETTEXTCLDRDIR` 指向 CLDR 数据所在的目录，
+并保证目录中存在 `common/supplemental/plurals.xml` 文件。
+不过，你无需下载完整的 CLDR 数据，只需要下载 [plurals.xml](https://raw.githubusercontent.com/unicode-org/cldr/main/common/supplemental/plurals.xml) 即可。

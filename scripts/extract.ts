@@ -11,8 +11,8 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
   const extr = new GettextExtractor();
 
   // custom keywords
-  let emptyExtractors = new Array<IJsExtractorFunction>();
-  let extractors = config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
+  const emptyExtractors = new Array<IJsExtractorFunction>();
+  const extractors = config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
     console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`)
     acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options))
     return acc

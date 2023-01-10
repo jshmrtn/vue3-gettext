@@ -72,11 +72,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 
       if (mergedOptions.setGlobalProperties) {
         const globalProperties = app.config.globalProperties;
-        let properties = mergedOptions.globalProperties.language || ['$language'];
-        properties.forEach((p) => {
-          globalProperties[p] = gettext;
-        })
-        properties = mergedOptions.globalProperties.gettext || ['$gettext'];
+        let properties = mergedOptions.globalProperties.gettext || ['$gettext'];
         properties.forEach((p) => {
           globalProperties[p] = gettext.$gettext;
         })
@@ -95,6 +91,10 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
         properties = mergedOptions.globalProperties.interpolate || ['$gettextInterpolate'];
         properties.forEach((p) => {
           globalProperties[p] = gettext.interpolate;
+        })
+        properties = mergedOptions.globalProperties.language || ['$language'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext;
         })
       }
 

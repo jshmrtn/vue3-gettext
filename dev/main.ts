@@ -1,24 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
-import translations from "./language/translations.json";
-import { createGettext } from "/@gettext/";
+import { gettext } from "./i18n";
 
 const app = createApp(App);
-
-const gettext = createGettext({
-    availableLanguages: {
-        en_GB: "British English",
-        fr_FR: "Français",
-        it_IT: "Italiano",
-        zh_CN: "简体中文",
-    },
-    defaultLanguage: "en_GB",
-    translations: translations,
-    setGlobalProperties: true,
-    globalProperties: { // custom global properties name
-        ngettext: ['$ngettext', '_n']
-    },
-});
 
 app.use(gettext);
 

@@ -8,6 +8,7 @@ export default defineUserConfig({
   port: 8080,
   lang: "en-US",
   title: "Vue 3 Gettext",
+  description: "Translate your Vue 3 applications with Gettext",
   plugins: [searchPlugin()],
   bundler: viteBundler({
     viteOptions: {
@@ -22,8 +23,6 @@ export default defineUserConfig({
   locales: {
     "/": {
       lang: "en-US",
-      title: "Vue 3 Gettext",
-      description: "Translate your Vue 3 applications with Gettext",
     },
     "/zh/": {
       lang: "zh-CN",
@@ -51,7 +50,7 @@ export default defineUserConfig({
             children: [
               { link: "/zh/setup.md", text: "安装步骤" },
               { link: "/zh/extraction.md", text: "自动抽取" },
-              { link: "/zh/configuration.md", text: "配置" },
+              { link: "/zh/configuration.md", text: "插件配置" },
             ],
           },
           {

@@ -10,7 +10,7 @@
     </p>
     <p>
       data:
-      {{ _n('%{ n } book', '%{ n } books', n, { n }) }}
+      <translate class="translated" :translate-n="n" translate-plural="%{ n } books">%{ n } book</translate>
     </p>
     <p>
       computed:
@@ -28,7 +28,8 @@
       <translate
         class="translated"
         :translate-n="countForUntranslated"
-        translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose.">
+        translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose."
+      >
         %{ countForUntranslated } item. This is left untranslated on purpose.
       </translate>
     </p>
