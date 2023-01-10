@@ -8,14 +8,13 @@ msgid_plural "%{ countForUntranslated } items. This is left untranslated on purp
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoPlural.vue:12
 #: dev/components/DemoPlural.vue:13
 msgid "%{ n } book"
 msgid_plural "%{ n } books"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoAlert.vue:40
+#: dev/components/DemoAlert.vue:35
 msgid "%{ n } car"
 msgid_plural "%{ n } cars"
 msgstr[0] ""
@@ -41,7 +40,8 @@ msgstr ""
 msgid "Forgotten your password? Enter your \"email address\" below, and we'll email instructions for setting a new one."
 msgstr ""
 
-#: dev/components/DemoAlert.vue:28
+#. use jsExtractorOpts in gettext.config.js to extract custom keywords
+#: dev/components/DemoAlert.vue:24
 msgid "Good bye!"
 msgstr ""
 

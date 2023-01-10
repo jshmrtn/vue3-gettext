@@ -3,11 +3,11 @@
 </h1>
 <br/>
 
-使用 [gettext](https://en.wikipedia.org/wiki/Gettext) 翻译 [Vue 3](http://vuejs.org) 应用程序。
+使用 [gettext](https://en.wikipedia.org/wiki/Gettext) 国际化 [Vue 3](http://vuejs.org) 应用程序。
 
 <br>
 <p align="center">
- <a href="https://jshmrtn.github.io/vue3-gettext/">快速上手</a> | <a href="https://jshmrtn.github.io/vue3-gettext/demo.html">在线演示</a> | <a href="https://jshmrtn.github.io/vue3-gettext/setup.html">文档</a> | <a href="README.md">English</a>
+ <a href="https://jshmrtn.github.io/vue3-gettext/">快速上手</a> | <a href="https://jshmrtn.github.io/vue3-gettext/demo.html">在线演示</a> | <a href="https://jshmrtn.github.io/vue3-gettext/setup.html">使用文档</a> | <a href="README.md">English</a>
 </p>
 <br>
 

@@ -15,12 +15,12 @@ msgid_plural ""
 "%{ countForUntranslated } items. This is left untranslated on purpose."
 msgstr[0] ""
 
-#: dev/components/DemoPlural.vue:12 dev/components/DemoPlural.vue:13
+#: dev/components/DemoPlural.vue:13
 msgid "%{ n } book"
 msgid_plural "%{ n } books"
 msgstr[0] "%{ n } 本书"
 
-#: dev/components/DemoAlert.vue:40
+#: dev/components/DemoAlert.vue:35
 msgid "%{ n } car"
 msgid_plural "%{ n } cars"
 msgstr[0] "%{ n } 辆车"
@@ -47,7 +47,8 @@ msgstr ""
 "忘记密码了吗？请在下面输入你的「电子邮件地址」，我们将通过电子邮件发送设置新"
 "密码的说明。"
 
-#: dev/components/DemoAlert.vue:28
+#. use jsExtractorOpts in gettext.config.js to extract custom keywords
+#: dev/components/DemoAlert.vue:24
 msgid "Good bye!"
 msgstr "再见"
 
