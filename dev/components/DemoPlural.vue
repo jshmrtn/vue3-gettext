@@ -34,10 +34,11 @@
 </template>
 
 <script>
-import { gettext } from "../i18n";
+import { useGettext } from "/@gettext/";
 export default {
   setup: () => {
-    const _n = gettext.$ngettext.bind(this);
+    const gettext = useGettext();// must be called on setup
+    const _n = gettext.$ngettext;
     return { _n };
   },
   data: () => ({
