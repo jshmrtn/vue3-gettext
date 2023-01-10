@@ -14,6 +14,9 @@ const gettext = createGettext({
   },
   defaultLanguage: "en_GB",
   translations: translations,
+  globalProperties: {
+    ngettext: ['$ngettext', '_n']
+  },
 });
 
 export default defineClientConfig({

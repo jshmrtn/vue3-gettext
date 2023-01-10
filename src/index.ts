@@ -26,6 +26,14 @@ const defaultOptions: GetTextOptions = {
   silent: false,
   translations: {},
   setGlobalProperties: true,
+  globalProperties: {
+    language: ['$language'],
+    gettext: ['$gettext'],
+    pgettext: ['$pgettext'],
+    ngettext: ['$ngettext'],
+    npgettext: ['$npgettext'],
+    interpolate: ['$gettextInterpolate'],
+  },
   provideDirective: true,
   provideComponent: true,
 };
@@ -64,12 +72,30 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
 
       if (mergedOptions.setGlobalProperties) {
         const globalProperties = app.config.globalProperties;
-        globalProperties.$gettext = gettext.$gettext;
-        globalProperties.$pgettext = gettext.$pgettext;
-        globalProperties.$ngettext = gettext.$ngettext;
-        globalProperties.$npgettext = gettext.$npgettext;
-        globalProperties.$gettextInterpolate = gettext.interpolate;
-        globalProperties.$language = gettext;
+        let properties = mergedOptions.globalProperties.language || ['$language'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext;
+        })
+        properties = mergedOptions.globalProperties.gettext || ['$gettext'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext.$gettext;
+        })
+        properties = mergedOptions.globalProperties.pgettext || ['$pgettext'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext.$pgettext;
+        })
+        properties = mergedOptions.globalProperties.ngettext || ['$ngettext'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext.$ngettext;
+        })
+        properties = mergedOptions.globalProperties.npgettext || ['$npgettext'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext.$npgettext;
+        })
+        properties = mergedOptions.globalProperties.interpolate || ['$gettextInterpolate'];
+        properties.forEach((p) => {
+          globalProperties[p] = gettext.interpolate;
+        })
       }
 
       if (mergedOptions.provideDirective) {

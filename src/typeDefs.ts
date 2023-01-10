@@ -29,6 +29,14 @@ export interface GetTextOptions {
   silent: boolean;
   translations: Translations;
   setGlobalProperties: boolean;
+  globalProperties: {
+    language?: Array<string>,
+    gettext?: Array<string>,
+    pgettext?: Array<string>,
+    ngettext?: Array<string>,
+    npgettext?: Array<string>,
+    interpolate?: Array<string>,
+  },
   provideDirective: boolean;
   provideComponent: boolean;
 }

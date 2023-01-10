@@ -34,13 +34,7 @@
 </template>
 
 <script>
-import { useGettext } from "/@gettext/";
 export default {
-  setup: () => {
-    const gettext = useGettext();// must be called on setup
-    const _n = gettext.$ngettext;
-    return { _n };
-  },
   data: () => ({
     n: 0,
     countForUntranslated: 10,

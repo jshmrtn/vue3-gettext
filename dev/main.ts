@@ -15,6 +15,9 @@ const gettext = createGettext({
     defaultLanguage: "en_GB",
     translations: translations,
     setGlobalProperties: true,
+    globalProperties: { // custom global properties name
+        ngettext: ['$ngettext', '_n']
+    },
 });
 
 app.use(gettext);

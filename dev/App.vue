@@ -44,9 +44,21 @@ import DemoIf from "./components/DemoIf.vue";
 import DemoMultilines from "./components/DemoMultilines.vue";
 import DemoPlural from "./components/DemoPlural.vue";
 import LanguageSelect from "./components/LanguageSelect.vue";
+import { useGettext } from "/@gettext/";
 
 export default {
   name: "App",
+  props: {
+    lang: {
+      type: String,
+      default: 'en_GB',
+    }
+  },
+  setup(props) {
+    const gettext = useGettext();
+    gettext.current = props.lang;
+
+  },
   components: {
     DemoAlert,
     DemoCustomTags,
