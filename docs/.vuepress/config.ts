@@ -62,6 +62,10 @@ export default defineUserConfig({
               { link: "/zh/directive.md", text: "指令(已废弃)" },
             ],
           },
+          {
+            text: "翻译文档说明",
+            link: "/zh/translation.md",
+          },
         ]
       },
     },
@@ -84,6 +88,10 @@ export default defineUserConfig({
           { link: "/component.md", text: "Component" },
           { link: "/directive.md", text: "Directive" },
         ],
+      },
+      {
+        text: "Translation",
+        link: "/translation.md",
       },
     ],
   }),

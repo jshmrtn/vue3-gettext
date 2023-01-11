@@ -39,10 +39,10 @@ app.use(gettext);
   globalProperties: {
     language: ['$language'], // gettext 实例
     gettext: ['$gettext'], // 改成 ['$gettext', '__'] 这样支持同时使用 $gettext, __ 两种方式
-    pgettext: ['$pgettext'],// ['$pgettext', '_n'] 同理支持 $pgettext 与 _n 两种方式
-    ngettext: ['$ngettext'],// ['$ngettext','_x'] 这些 _x, _nx 是 WordPress 风格
+    ngettext: ['$ngettext'],// ['$ngettext','_n'] 同理支持 $ngettext 与 _n 两种方式
+    pgettext: ['$pgettext'],// ['$pgettext', '_x'] 这些 _x, _nx 是 WordPress 风格
     npgettext: ['$npgettext'],// ['$npgettext', '_nx'] 带上下文的复数翻译
-    interpolate: ['$gettextInterpolate'], // gettext 内部的插值函数
+    interpolate: ['$gettextInterpolate'], // 已废弃: gettext 内部的插值函数
   },
   provideDirective: true,
   provideComponent: true,

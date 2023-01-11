@@ -136,6 +136,25 @@ const { interpolate } = useGettext();
 interpolate($gettext("My message for %{ name }"), { name: "Rudi" });
 ```
 
+### custom translate function name
+You can custom the translate function name by pass the `globalProperties` option to `createGettext`, see [Configuration](./configuration.md).
+
+For example, if you want to use the WordPress style:
+```ts
+import { createGettext } from "vue3-gettext";
+
+const gettext = createGettext({
+  ...
+  globalProperties: {
+    gettext: ['$gettext', '__'],  // both support `$gettext`, `__` the two names
+    ngettext: ['$ngettext', '_n'],
+    pgettext: ['$pgettext', '_x'],
+    npgettext: ['$npgettext', '_nx'],
+  }
+})
+
+```
+
 ## Html escaping
 
 All the translation functions escape html by default and take a `disableHtmlEscaping` as their last parameter. If your translation messages or parameters contain html tags, you will have to set this to `true` and render the message using [`v-html`](https://vuejs.org/api/built-in-directives.html#v-html):

@@ -131,6 +131,25 @@ const { interpolate } = useGettext();
 interpolate($gettext("My message for %{ name }"), { name: "Rudi" });
 ```
 
+### 自定义翻译函数名称
+你可以在 `createGettext` 时通过 `globalProperties` 选项自定义翻译函数的名称，参见 [插件配置](./configuration.md)。
+
+例如，要使用 WordPress 的翻译名称风格，可以作如下配置：
+```ts
+import { createGettext } from "vue3-gettext";
+
+const gettext = createGettext({
+  ...
+  globalProperties: {
+    gettext: ['$gettext', '__'],  // 这样支持同时使用 $gettext, __ 两种方式
+    ngettext: ['$ngettext', '_n'],
+    pgettext: ['$pgettext', '_x'],
+    npgettext: ['$npgettext', '_nx'],
+  }
+})
+
+```
+
 ## Html 转义
 默认地，所有的翻译函数都会进行 html 转义，不过也可以通过最后一个参数 `disableHtmlEscaping`  来控制是否转义。
 如果确实需要包含 html 标签，你需要指定该参数为 true 以避免转义，并且将结果通过 [`v-html`](https://cn.vuejs.org/api/built-in-directives.html#v-html) 来显示:
