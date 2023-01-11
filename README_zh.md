@@ -7,7 +7,7 @@
 
 <br>
 <p align="center">
- <a href="https://jshmrtn.github.io/vue3-gettext/">快速上手</a> | <a href="https://jshmrtn.github.io/vue3-gettext/demo.html">在线演示</a> | <a href="https://jshmrtn.github.io/vue3-gettext/setup.html">使用文档</a> | <a href="README.md">English</a>
+ <a href="https://jshmrtn.github.io/vue3-gettext/zh/">快速上手</a> | <a href="https://jshmrtn.github.io/vue3-gettext/zh/demo.html">在线演示</a> | <a href="https://jshmrtn.github.io/vue3-gettext/zh/setup.html">使用文档</a> | <a href="README.md">English</a>
 </p>
 <br>
 
