@@ -3,16 +3,16 @@ import Component from "./component";
 import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import { GetTextSymbol } from "./typeDefs";
 import type {
-  Language,
-  Message,
-  LanguageData,
-  Translations,
   GettextConfig,
   GettextConfigOptions,
   GetTextOptions,
+  Language,
+  LanguageData,
+  Message,
+  Translations,
 } from "./typeDefs";
+import { GetTextSymbol } from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
 export { useGettext } from "./utilities";

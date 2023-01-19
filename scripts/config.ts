@@ -4,9 +4,7 @@ import { GettextConfig, GettextConfigOptions } from "../src/typeDefs";
 
 export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
   const moduleName = "gettext";
-  const explorer = cosmiconfigSync(moduleName, {
-    searchPlaces: [`${moduleName}.config.js`, `${moduleName}.config.json`],
-  });
+  const explorer = cosmiconfigSync(moduleName);
 
   let configRes;
   if (cliArgs?.config) {
