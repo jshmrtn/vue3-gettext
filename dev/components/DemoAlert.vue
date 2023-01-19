@@ -21,7 +21,7 @@ export default {
   }),
   methods: {
     alert() {
-      const msg = this.$gettext("Good bye!");
+      const msg = this.__("Good bye!");// use jsExtractorOpts in gettext.config.js to extract custom keywords
       return window.alert(msg);
     },
     decrease() {
@@ -32,7 +32,7 @@ export default {
       this.n += 1;
     },
     alertPlural(n) {
-      const msg = this.$ngettext("%{ n } car", "%{ n } cars", n, { n });
+      const msg = this._n("%{ n } car", "%{ n } cars", n, { n });
       return window.alert(msg);
     },
   },

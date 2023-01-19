@@ -56,6 +56,7 @@ msgstr ""
 "Forgotten your password? Enter your \"email address\" below,\n"
 "      and we'll email instructions for setting a new one."
 
+#. use jsExtractorOpts in gettext.config.js to extract custom keywords
 #: dev/components/DemoAlert.vue:24
 msgid "Good bye!"
 msgstr ""
@@ -105,6 +106,6 @@ msgstr ""
 "Use default singular or plural form when there is no translation. This is "
 "left untranslated on purpose."
 
-#: dev/components/DemoIf.vue:5
+#: dev/components/DemoIf.vue:4 dev/components/DemoIf.vue:5
 msgid "Welcome %{ name }"
 msgstr "Welcome %{ name }"

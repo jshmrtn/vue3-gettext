@@ -2,11 +2,21 @@ import { parse } from "@vue/compiler-sfc";
 import chalk from "chalk";
 import fs from "fs";
 import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
+import { IJsExtractorFunction } from "gettext-extractor/dist/js/parser";
+import { GettextConfigOptions } from "../src/typeDefs";
 import { attributeEmbeddedJsExtractor } from "./attributeEmbeddedJsExtractor";
 import { embeddedJsExtractor } from "./embeddedJsExtractor";
 
-const extractFromFiles = async (filePaths: string[], potPath: string) => {
+const extractFromFiles = async (filePaths: string[], potPath: string, config: GettextConfigOptions) => {
   const extr = new GettextExtractor();
+
+  // custom keywords
+  const emptyExtractors = new Array<IJsExtractorFunction>();
+  const extractors = config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
+    console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`)
+    acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options))
+    return acc
+  }, emptyExtractors) || emptyExtractors;
 
   const jsParser = extr.createJsParser([
     JsExtractors.callExpression(["$gettext", "[this].$gettext"], {
@@ -45,6 +55,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string) => {
         textPlural: 2,
       },
     }),
+    ...extractors,
   ]);
 
   const htmlParser = extr.createHtmlParser([

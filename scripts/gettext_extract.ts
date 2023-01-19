@@ -68,7 +68,7 @@ console.info();
   console.info();
   files.forEach((f) => console.info(chalk.grey(f)));
   console.info();
-  await extractFromFiles(files, config.output.potPath);
+  await extractFromFiles(files, config.output.potPath, config);
 
   for (const loc of config.output.locales) {
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
@@ -80,6 +80,11 @@ console.info();
       await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} --backup=off`);
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
+      // https://www.gnu.org/software/gettext/manual/html_node/msginit-Invocation.html
+      // msginit will set Plural-Forms header if the locale is in the
+      // [embedded table](https://github.com/dd32/gettext/blob/master/gettext-tools/src/plural-table.c#L27)
+      // otherwise it will read [$GETTEXTCLDRDIR/common/supplemental/plurals.xml](https://raw.githubusercontent.com/unicode-org/cldr/main/common/supplemental/plurals.xml)
+      // so execShellCommand should pass the env(GETTEXTCLDRDIR) to child process
       await execShellCommand(
         `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
       );

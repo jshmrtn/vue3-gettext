@@ -40,6 +40,31 @@ module.exports = {
     path: "./src", // only files in this directory are considered for extraction
     include: ["**/*.js", "**/*.ts", "**/*.vue"], // glob patterns to select files for extraction
     exclude: [], // glob patterns to exclude files from extraction
+    jsExtractorOpts:[ // custom extractor keyword
+      {
+        keyword: "__", // only extractor default keyword such as $gettext,use keyword to custom
+        options: {    // see https://github.com/lukasgeiter/gettext-extractor
+          content: {
+            replaceNewLines: "\n",
+          },
+          arguments: {
+            text: 0,
+          },
+        },
+      },
+      {
+        keyword: "_n", // $ngettext
+        options: {
+          content: {
+            replaceNewLines: "\n",
+          },
+          arguments: {
+            text: 0,
+            textPlural: 1,
+          },
+        },
+      },
+    ],
   },
   output: {
     path: "./src/language", // output path of all created files
@@ -52,3 +77,17 @@ module.exports = {
   },
 };
 ```
+
+## Gotchas
+When first extract, it will call `msginit` to create a `.po` file,
+this command will set the `Plural-Forms` header, if the locale is in
+[the embedded table](https://github.com/dd32/gettext/blob/master/gettext-tools/src/plural-table.c#L27)
+of msginit.
+
+Otherwise, as an experimental feature,
+you can instruct msginit to use the information from Unicode CLDR,
+by setting the `GETTEXTCLDRDIR` environment variable.
+The program will look for a file named
+`common/supplemental/plurals.xml` under that directory.
+You can get the CLDR data from [http://cldr.unicode.org/](http://cldr.unicode.org/).
+Or only download the [plurals.xml](https://raw.githubusercontent.com/unicode-org/cldr/main/common/supplemental/plurals.xml) file.

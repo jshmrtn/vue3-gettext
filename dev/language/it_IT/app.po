@@ -61,6 +61,7 @@ msgstr ""
 "Password dimenticata? Inserisci il tuo \"indirizzo email\" qui\n"
 "sotto, e ti invieremo istruzioni per impostarne una nuova."
 
+#. use jsExtractorOpts in gettext.config.js to extract custom keywords
 #: dev/components/DemoAlert.vue:24
 msgid "Good bye!"
 msgstr "Arriverdeci!"
@@ -108,6 +109,6 @@ msgid ""
 "left untranslated on purpose."
 msgstr ""
 
-#: dev/components/DemoIf.vue:5
+#: dev/components/DemoIf.vue:4 dev/components/DemoIf.vue:5
 msgid "Welcome %{ name }"
 msgstr "Benvenuto %{ name }"

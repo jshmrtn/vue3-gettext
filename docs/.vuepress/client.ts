@@ -1,19 +1,6 @@
 import { defineClientConfig } from "@vuepress/client";
-import { createGettext } from "../../src";
-
-import translations from "../../dev/language/translations.json";
-
 import Demo from "../../dev/App.vue";
-
-const gettext = createGettext({
-  availableLanguages: {
-    en_GB: "British English",
-    fr_FR: "Français",
-    it_IT: "Italiano",
-  },
-  defaultLanguage: "en_GB",
-  translations: translations,
-});
+import { gettext } from "../../dev/i18n";
 
 export default defineClientConfig({
   enhance({ app }) {

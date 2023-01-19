@@ -29,6 +29,14 @@ All the available options can be found in the `GetTextOptions` type, these are t
   silent: false,
   translations: {},
   setGlobalProperties: true,
+  globalProperties: { // custom global properties name
+    language: ['$language'],   // the plugin instance
+    gettext: ['$gettext'],     // ['$gettext', '__']
+    pgettext: ['$pgettext'],   // ['$pgettext', '_n']
+    ngettext: ['$ngettext'],   // ['$ngettext','_x']
+    npgettext: ['$npgettext'], // ['$npgettext', '_nx']
+    interpolate: ['$gettextInterpolate'],// deprecated
+  },
   provideDirective: true,
   provideComponent: true,
 }
