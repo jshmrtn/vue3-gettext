@@ -40,7 +40,7 @@ module.exports = {
     path: "./src", // only files in this directory are considered for extraction
     include: ["**/*.js", "**/*.ts", "**/*.vue"], // glob patterns to select files for extraction
     exclude: [], // glob patterns to exclude files from extraction
-    jsExtractorOpts:[ // custom extractor keyword
+    jsExtractorOpts:[ // custom extractor keyword. default empty.
       {
         keyword: "__", // only extractor default keyword such as $gettext,use keyword to custom
         options: {    // see https://github.com/lukasgeiter/gettext-extractor

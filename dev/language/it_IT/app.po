@@ -86,9 +86,19 @@ msgstr "Titolo 4"
 msgid "Hello <strong>%{ name }</strong>"
 msgstr "Buongiorno <strong>%{ name }</strong>"
 
+#: dev/components/DemoTemplate.vue:19 dev/components/DemoTemplate.vue:20
+msgid "hover here and see the title"
+msgstr ""
+
 #: dev/components/DemoPlural.vue:4
 msgid "In English, '0' (zero) is always plural."
 msgstr "In inglese, '0' (zero) è sempre al plurale."
+
+#: dev/components/DemoTemplate.vue:15 dev/components/DemoTemplate.vue:16
+msgid "One apple"
+msgid_plural "%{n} apples"
+msgstr[0] ""
+msgstr[1] ""
 
 #: dev/components/DemoCustomTags.vue:7
 msgid "Paragraph"
@@ -103,6 +113,22 @@ msgstr "Seleziona la tua lingua:"
 msgid "This is %{ obj.name }"
 msgstr "Questo è %{ obj.name }"
 
+#: dev/components/DemoTemplate.vue:12 dev/components/DemoTemplate.vue:13
+msgid "use `__` as a alias of gettext"
+msgstr ""
+
+#: dev/components/DemoTemplate.vue:14 dev/components/DemoTemplate.vue:15
+msgid "use `_n` as a alias of ngettext"
+msgstr ""
+
+#: dev/components/DemoTemplate.vue:18 dev/components/DemoTemplate.vue:19
+msgid "use `_x` as a alias of pgettext"
+msgstr ""
+
+#: dev/components/DemoTemplate.vue:22 dev/components/DemoTemplate.vue:23
+msgid "use `_xn` as a alias of npgettext"
+msgstr ""
+
 #: dev/components/DemoPlural.vue:23
 msgid ""
 "Use default singular or plural form when there is no translation. This is "
@@ -112,3 +138,15 @@ msgstr ""
 #: dev/components/DemoIf.vue:4 dev/components/DemoIf.vue:5
 msgid "Welcome %{ name }"
 msgstr "Benvenuto %{ name }"
+
+#: dev/components/DemoTemplate.vue:23 dev/components/DemoTemplate.vue:24
+msgctxt "list-item"
+msgid "one message"
+msgid_plural "%{n} messages"
+msgstr[0] ""
+msgstr[1] ""
+
+#: dev/components/DemoTemplate.vue:18
+msgctxt "title"
+msgid "This is my title"
+msgstr ""

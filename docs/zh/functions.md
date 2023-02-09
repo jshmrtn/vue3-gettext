@@ -149,6 +149,26 @@ const gettext = createGettext({
 })
 
 ```
+如果 VSCode 警告 `Property '{0}' does not exist on type '{1}'. ts(2339)`(类型“xxx”上不存在“__”属性), 请考虑新建一个 `gettext.d.ts` 文件，内容如下：
+```ts
+export { };
+declare module 'vue' {
+    interface ComponentCustomProperties {
+        __: (msgid: string, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+        _x: (context: string, msgid: string, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+        _n: (msgid: string, plural: string, n: number, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+        _xn: (context: string, msgid: string, plural: string, n: number, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+    }
+}
+```
 
 ## Html 转义
 默认地，所有的翻译函数都会进行 html 转义，不过也可以通过最后一个参数 `disableHtmlEscaping`  来控制是否转义。

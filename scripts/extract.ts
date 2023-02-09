@@ -95,7 +95,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
           errors.forEach((e) => console.error(e));
         }
         if (descriptor.template) {
-          htmlParser.parseString(descriptor.template.content, descriptor.filename, {
+          htmlParser.parseString(`<template>${descriptor.template.content}</template>`, descriptor.filename, {
             lineNumberStart: descriptor.template.loc.start.line,
           });
         }
