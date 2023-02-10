@@ -88,6 +88,7 @@ export interface GettextConfig {
       keyword: string;
       options: IJsExtractorOptions;
     }[];
+    compileTemplate: boolean;
   };
   output: {
     path: string;
