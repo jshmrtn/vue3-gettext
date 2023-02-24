@@ -1,5 +1,5 @@
 import translations from "./language/translations.json";
-import { createGettext } from "/@gettext/";
+import { createGettext } from "../src";
 
 const gettext = createGettext({
   availableLanguages: {

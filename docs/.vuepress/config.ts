@@ -14,7 +14,7 @@ export default defineUserConfig({
     viteOptions: {
       resolve: {
         alias: {
-          vue: "vue/dist/vue.esm-bundler.js",
+          // vue: "vue/dist/vue.esm-bundler.js",
           "/@gettext/": path.resolve(__dirname, "../../src"),
         },
       },
@@ -32,7 +32,7 @@ export default defineUserConfig({
   },
   theme: defaultTheme({
     repo: "https://github.com/jshmrtn/vue3-gettext",
-    navbar: [{ text: "npm", link: "https://npmjs.com/package/vue-haystack" }],
+    navbar: [{ text: "npm", link: "https://npmjs.com/package/vue3-gettext" }],
     locales: {
       "/": {
         selectLanguageName: "English",

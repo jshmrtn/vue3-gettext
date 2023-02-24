@@ -1,6 +1,6 @@
 import { cosmiconfigSync } from "cosmiconfig";
-import path from "path";
-import { GettextConfig, GettextConfigOptions } from "../src/typeDefs";
+import path from "node:path";
+import { GettextConfig, GettextConfigOptions } from "../src/typeDefs.js";
 
 export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
   const moduleName = "gettext";
@@ -16,7 +16,7 @@ export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
     configRes = explorer.search();
   }
 
-  const config = configRes?.config as GettextConfigOptions;
+  const config = configRes?.config as GettextConfigOptions | undefined;
 
   const languagePath = config.output?.path || "./src/language";
   const joinPath = (inputPath: string) => path.join(languagePath, inputPath);
