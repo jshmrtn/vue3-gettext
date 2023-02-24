@@ -1,11 +1,11 @@
 import { parse, compileTemplate } from "@vue/compiler-sfc";
 import chalk from "chalk";
-import fs from "fs";
+import fs from "node:fs";
 import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
-import { IJsExtractorFunction } from "gettext-extractor/dist/js/parser";
-import { GettextConfigOptions } from "../src/typeDefs";
-import { attributeEmbeddedJsExtractor } from "./attributeEmbeddedJsExtractor";
-import { embeddedJsExtractor } from "./embeddedJsExtractor";
+import { IJsExtractorFunction } from "gettext-extractor/dist/js/parser.js";
+import { GettextConfigOptions } from "../src/typeDefs.js";
+import { attributeEmbeddedJsExtractor } from "./attributeEmbeddedJsExtractor.js";
+import { embeddedJsExtractor } from "./embeddedJsExtractor.js";
 
 const extractFromFiles = async (filePaths: string[], potPath: string, config: GettextConfigOptions) => {
   const extr = new GettextExtractor();

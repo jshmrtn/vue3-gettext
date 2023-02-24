@@ -1,6 +1,6 @@
-import { Element, IHtmlExtractorFunction } from "gettext-extractor/dist/html/parser";
-import { JsParser } from "gettext-extractor/dist/js/parser";
-import { Validate } from "gettext-extractor/dist/utils/validate";
+import { Element, IHtmlExtractorFunction } from "gettext-extractor/dist/html/parser.js";
+import { JsParser } from "gettext-extractor/dist/js/parser.js";
+import { Validate } from "gettext-extractor/dist/utils/validate.js";
 
 export function attributeEmbeddedJsExtractor(selector: string, jsParser: JsParser): IHtmlExtractorFunction {
   Validate.required.nonEmptyString({ selector });

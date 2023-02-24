@@ -18,7 +18,7 @@ footer: MIT Licensed | Copyright © 2020-present JOSHMARTIN GmbH
 # Quick Start
 
 ```sh
-npm i vue3-gettext@next
+npm i vue3-gettext
 ```
 
 Set up gettext in your `main.ts`/`main.js`:

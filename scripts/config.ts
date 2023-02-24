@@ -16,7 +16,7 @@ export const loadConfig = async (cliArgs?: { config?: string }): Promise<Gettext
     configRes = await explorer.search();
   }
 
-  const config = configRes?.config as GettextConfigOptions;
+  const config = configRes?.config as GettextConfigOptions | undefined;
 
   const languagePath = config.output?.path || "./src/language";
   const joinPath = (inputPath: string) => path.join(languagePath, inputPath);

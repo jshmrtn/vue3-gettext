@@ -5,6 +5,7 @@
   "homepage": "https://jshmrtn.github.io/vue3-gettext/",
   "author": "Leo Zurbriggen",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/jshmrtn/vue3-gettext"
@@ -29,12 +30,12 @@
   "scripts": {
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs -d distDocs",
-    "docs:extract": "node --loader ts-node/esm ./scripts/gettext_extract.ts",
+    "docs:extract": "ts-node --project scripts/tsconfig.json ./scripts/gettext_extract.ts",
     "docs:compile": "node --loader ts-node/esm ./scripts/gettext_compile.ts",
     "start": "vite serve dev",
     "build": "tsup",
     "test": "npm run test:types && npm run test:lint && npm run test:unit",
-    "test:types": "tsc --noEmit",
+    "test:types": "vue-tsc --noEmit",
     "test:lint": "npm run test:lint:js && npm run test:lint:prettier",
     "test:lint:js": "./node_modules/.bin/eslint --ext .js,.ts,.vue",
     "test:lint:prettier": "./node_modules/.bin/prettier --check '**/**.(json|js|ts|vue)'",
@@ -52,7 +53,7 @@
     "vue": ">=3.0.0"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.2.0",
     "command-line-args": "^5.2.1",
     "cosmiconfig": "^9.0.0",
     "gettext-extractor": "^3.8.0",

@@ -16,12 +16,15 @@ footer: MIT Licensed | Copyright © 2020-present JOSHMARTIN GmbH
 ---
 
 # 快速开始
+
 ## 1. 安装
 
 ```sh
-npm i vue3-gettext@next
+npm i vue3-gettext
 ```
+
 ## 2. 引入
+
 在 `main.ts`/`main.js` 中设置 gettext:
 
 ```javascript {3,11}
@@ -30,19 +33,23 @@ import { createApp } from "vue";
 import translations from "./src/language/translations.json";
 
 const app = createApp(App);
-app.use(createGettext({
-  availableLanguages: {
-    en: "Engilish",
-    zh: "简体中文",
-  },
-  defaultLanguage: 'zh',
-  translations,
-}));
+app.use(
+  createGettext({
+    availableLanguages: {
+      en: "Engilish",
+      zh: "简体中文",
+    },
+    defaultLanguage: "zh",
+    translations,
+  }),
+);
 ```
+
 高亮的行暂时会报错，后续抽取编译后会修复它。
 更多配置选项请查看 [配置](./configuration.md) 。
 
 ## 3. 使用
+
 在应用程序中使用 gettext:
 
 ```jsx
@@ -50,6 +57,7 @@ app.use(createGettext({
 ```
 
 ## 4. 自动抽取翻译与编译
+
 > 详见 [自动抽取](./extraction.md) 。
 
 **首先**，在 `package.json` 中添加 scripts:
@@ -63,16 +71,18 @@ app.use(createGettext({
 ```
 
 **然后**，在根目录新建 `gettext.config.js` 配置文件。
+
 ```js
 module.exports = {
   input: {
-    path: './src'
+    path: "./src",
   },
   output: {
     locales: ["en", "zh"],
   },
 };
 ```
+
 更多配置项（比如自定义抽取关键字）请查看 [自动抽取](./extraction.md) 。
 
 **最后**，运行如下指令自动抽取与编译。

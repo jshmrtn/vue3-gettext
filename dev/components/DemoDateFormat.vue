@@ -7,10 +7,10 @@
 <script>
 import { useGettext } from "/@gettext/";
 import { format } from "date-fns";
-import en from "date-fns/locale/en-US";
-import fr from "date-fns/locale/fr";
-import it from "date-fns/locale/it";
-import zh from "date-fns/locale/zh-CN";
+import en from "date-fns/locale/en-US/index";
+import fr from "date-fns/locale/fr/index";
+import it from "date-fns/locale/it/index";
+import zh from "date-fns/locale/zh-CN/index";
 
 export default {
   data: () => ({
