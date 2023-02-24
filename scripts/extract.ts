@@ -12,11 +12,12 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
 
   // custom keywords
   const emptyExtractors = new Array<IJsExtractorFunction>();
-  const extractors = config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
-    console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`)
-    acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options))
-    return acc
-  }, emptyExtractors) || emptyExtractors;
+  const extractors =
+    config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
+      console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`);
+      acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options));
+      return acc;
+    }, emptyExtractors) || emptyExtractors;
 
   const jsParser = extr.createJsParser([
     JsExtractors.callExpression(["$gettext", "[this].$gettext"], {

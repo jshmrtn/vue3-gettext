@@ -21,7 +21,7 @@ export default {
   }),
   methods: {
     alert() {
-      const msg = this.__("Good bye!");// use jsExtractorOpts in gettext.config.js to extract custom keywords
+      const msg = this.__("Good bye!"); // use jsExtractorOpts in gettext.config.js to extract custom keywords
       return window.alert(msg);
     },
     decrease() {

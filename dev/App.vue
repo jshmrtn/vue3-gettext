@@ -61,8 +61,8 @@ export default {
   props: {
     lang: {
       type: String,
-      default: 'en_GB',
-    }
+      default: "en_GB",
+    },
   },
   mounted() {
     const gettext = useGettext();

@@ -66,7 +66,7 @@ export default defineUserConfig({
             text: "翻译文档说明",
             link: "/zh/translation.md",
           },
-        ]
+        ],
       },
     },
     sidebar: [
