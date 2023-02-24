@@ -1,4 +1,4 @@
-import { parse } from "@vue/compiler-sfc";
+import { parse, compileTemplate } from "@vue/compiler-sfc";
 import chalk from "chalk";
 import fs from "fs";
 import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
@@ -98,6 +98,21 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
         if (descriptor.template) {
           htmlParser.parseString(descriptor.template.content, descriptor.filename, {
             lineNumberStart: descriptor.template.loc.start.line,
+            transformSource: (code) => {
+              const lang = descriptor?.template?.lang?.toLowerCase() || "html";
+              if (!config.input?.compileTemplate || lang === "html") {
+                return code;
+              }
+
+              const compiledTemplate = compileTemplate({
+                filename: descriptor?.filename,
+                source: code,
+                preprocessLang: lang,
+                id: descriptor?.filename,
+              });
+
+              return compiledTemplate.source;
+            },
           });
         }
         if (descriptor.script) {
