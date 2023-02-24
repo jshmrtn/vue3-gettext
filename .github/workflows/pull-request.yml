@@ -1,0 +1,28 @@
+name: pull request
+
+on:
+  pull_request:
+    branches:
+      - "*"
+
+jobs:
+  test:
+    name: "test"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v3
+      - name: setup node
+        id: setup-node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: install dependencies
+        run: npm ci
+      - name: run tests
+        run: npm run test
+      - name: build package
+        run: npm run build
+      - name: build docs
+        run: npm run docs:build
