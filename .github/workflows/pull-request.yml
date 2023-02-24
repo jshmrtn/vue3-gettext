@@ -2,8 +2,7 @@ name: pull request
 
 on:
   pull_request:
-    branches:
-      - "*"
+    types: [opened, edited, reopened, synchronize]
 
 jobs:
   test:
