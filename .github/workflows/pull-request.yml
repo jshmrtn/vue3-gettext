@@ -1,9 +1,6 @@
 name: pull request
 
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, edited, reopened, synchronize]
 
