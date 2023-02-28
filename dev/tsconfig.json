@@ -1,0 +1,9 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "vue3-gettext": ["../src/index.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.vue", "../src/**/*.ts"]
+}

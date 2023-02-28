@@ -1,5 +1,5 @@
-import plurals from "./plurals";
-import { Language, LanguageData, Message, MessageContext } from "./typeDefs";
+import plurals from "./plurals.js";
+import { Language, LanguageData, Message, MessageContext } from "./typeDefs.js";
 
 const translate = (language: Language) => ({
   /*

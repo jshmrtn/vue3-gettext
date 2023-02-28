@@ -14,27 +14,30 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    n: 2,
-  }),
-  methods: {
-    alert() {
-      const msg = this.__("Good bye!"); // use jsExtractorOpts in gettext.config.js to extract custom keywords
-      return window.alert(msg);
-    },
-    decrease() {
-      if (this.n === 0) return;
-      this.n -= 1;
-    },
-    increase() {
-      this.n += 1;
-    },
-    alertPlural(n) {
-      const msg = this._n("%{ n } car", "%{ n } cars", n, { n });
-      return window.alert(msg);
-    },
-  },
+<script setup lang="ts">
+import { ref } from "vue";
+import { useGettext } from "vue3-gettext";
+
+const { $gettext: __, $ngettext: _n } = useGettext();
+
+const n = ref(2);
+
+const alert = () => {
+  const msg = __("Good bye!"); // use jsExtractorOpts in gettext.config.js to extract custom keywords
+  return window.alert(msg);
+};
+
+const decrease = () => {
+  if (n.value === 0) return;
+  n.value -= 1;
+};
+
+const increase = () => {
+  n.value += 1;
+};
+
+const alertPlural = (n: number) => {
+  const msg = _n("%{ n } car", "%{ n } cars", n, { n: `${n}` });
+  return window.alert(msg);
 };
 </script>

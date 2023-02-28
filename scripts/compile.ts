@@ -1,8 +1,8 @@
 // Based on https://github.com/Polyconseil/easygettext/blob/master/src/compile.js
 
 const Pofile = require("pofile");
-import fsPromises from "fs/promises";
-import { LanguageData, MessageContext, Translations } from "../src/typeDefs";
+import fsPromises from "node:fs/promises";
+import { LanguageData, MessageContext, Translations } from "../src/typeDefs.js";
 
 /**
  * Returns a sanitized po data dictionary where:

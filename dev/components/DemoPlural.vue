@@ -10,24 +10,20 @@
     </p>
     <p>
       data:
-      <translate class="translated" :translate-n="n" translate-plural="%{ n } books">%{ n } book</translate>
-    </p>
-    <p>
-      computed:
-      <translate class="translated" :translate-n="nComputed" translate-plural="%{ nComputed } books">
-        %{ nComputed } book
-      </translate>
+      <translate class="translated" :translate-params="{ n }" :translate-n="n" translate-plural="%{ n } books"
+        >%{ n } book</translate
+      >
     </p>
 
     <p>
-      <translate class="translated">
+      <translate>
         Use default singular or plural form when there is no translation. This is left untranslated on purpose.
       </translate>
     </p>
     <p>
       <translate
-        class="translated"
         :translate-n="countForUntranslated"
+        :translate-params="{ countForUntranslated }"
         translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose."
       >
         %{ countForUntranslated } item. This is left untranslated on purpose.
@@ -36,25 +32,18 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    n: 0,
-    countForUntranslated: 10,
-  }),
-  computed: {
-    nComputed() {
-      return this.n;
-    },
-  },
-  methods: {
-    decrease() {
-      if (this.n === 0) return;
-      this.n -= 1;
-    },
-    increase() {
-      this.n += 1;
-    },
-  },
+<script setup lang="ts">
+import { ref } from "vue";
+
+const countForUntranslated = 10;
+const n = ref(0);
+
+const decrease = () => {
+  if (n.value === 0) return;
+  n.value -= 1;
+};
+
+const increase = () => {
+  n.value += 1;
 };
 </script>

@@ -1,5 +1,5 @@
 import { inject } from "vue";
-import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs";
+import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs.js";
 
 export function normalizeTranslationKey(key: string) {
   return key

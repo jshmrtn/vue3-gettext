@@ -1,0 +1,43 @@
+name: release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  test:
+    name: "test"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: check out repo
+        uses: actions/checkout@v3
+
+      - name: prepare release information
+        id: release
+        uses: manovotny/github-releases-for-automated-package-publishing-action@v2.0.1
+
+      - name: setup node
+        id: setup-node
+        uses: actions/setup-node@v3
+        with:
+          always-auth: true
+          node-version: 18
+          registry-url: "https://registry.npmjs.org"
+      - name: install dependencies
+        run: npm ci
+      - name: run tests
+        run: npm run test
+      - name: build package
+        run: npm run build
+
+      - name: publish version
+        if: steps.release.outputs.tag == ''
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: publish tagged version
+        if: steps.release.outputs.tag != ''
+        run: npm publish --tag ${{ steps.release.outputs.tag }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

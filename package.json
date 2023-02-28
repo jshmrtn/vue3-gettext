@@ -5,6 +5,7 @@
   "homepage": "https://jshmrtn.github.io/vue3-gettext/",
   "author": "Leo Zurbriggen",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/jshmrtn/vue3-gettext"
@@ -23,18 +24,18 @@
     "registry": "https://registry.npmjs.org"
   },
   "bin": {
-    "vue-gettext-extract": "./dist/bin/gettext_extract.js",
-    "vue-gettext-compile": "./dist/bin/gettext_compile.js"
+    "vue-gettext-extract": "./dist/bin/gettext_extract.cjs",
+    "vue-gettext-compile": "./dist/bin/gettext_compile.cjs"
   },
   "scripts": {
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs -d distDocs",
-    "docs:extract": "node --loader ts-node/esm ./scripts/gettext_extract.ts",
+    "docs:extract": "ts-node --project scripts/tsconfig.json ./scripts/gettext_extract.ts",
     "docs:compile": "node --loader ts-node/esm ./scripts/gettext_compile.ts",
     "start": "vite serve dev",
-    "build": "rm -rf dist && rollup -c",
+    "build": "rm -rf dist && rollup -c --configPlugin @rollup/plugin-typescript",
     "test": "npm run test:types && npm run test:lint && npm run test:unit",
-    "test:types": "tsc --noEmit",
+    "test:types": "vue-tsc --noEmit && vue-tsc --noEmit -p scripts && vue-tsc --noEmit -p dev && vue-tsc --noEmit -p docs/.vuepress",
     "test:lint": "npm run test:lint:js && npm run test:lint:prettier",
     "test:lint:js": "./node_modules/.bin/eslint --ext .js,.ts,.vue",
     "test:lint:prettier": "./node_modules/.bin/prettier --check '**/**.(json|js|ts|vue)'",
@@ -51,53 +52,61 @@
     "vue": ">=3.0.0"
   },
   "dependencies": {
-    "chalk": "^4.1.2",
+    "chalk": "^5.2.0",
     "command-line-args": "^5.2.1",
-    "cosmiconfig": "^7.0.1",
-    "gettext-extractor": "^3.5.4",
-    "glob": "^7.2.0",
+    "gettext-extractor": "^3.6.2",
+    "glob": "^8.1.0",
+    "lilconfig": "^2.0.6",
     "parse5": "^6.0.1",
     "parse5-htmlparser2-tree-adapter": "^6.0.1",
-    "pofile": "^1.1.3",
-    "tslib": "^2.4.0"
+    "pofile": "^1.1.4",
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.0.3",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@rollup/plugin-typescript": "^8.3.4",
+    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@types/command-line-args": "^5.2.0",
-    "@types/glob": "^7.2.0",
-    "@types/node": "^17.0.23",
+    "@types/glob": "^8.1.0",
+    "@types/node": "^18.14.1",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.1",
-    "@typescript-eslint/parser": "^5.33.1",
-    "@vitejs/plugin-vue": "^2.3.4",
-    "@vue/test-utils": "^2.0.2",
-    "@vuepress/plugin-search": "^2.0.0-beta.49",
-    "date-fns": "^2.29.1",
-    "eslint": "^8.22.0",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-vue": "^8.5.0",
-    "happy-dom": "^6.0.4",
+    "@typescript-eslint/parser": "^5.53.0",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue/test-utils": "^2.3.0",
+    "@vuepress/plugin-search": "2.0.0-beta.60",
+    "date-fns": "^2.29.3",
+    "eslint": "^8.34.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-vue": "^9.9.0",
+    "happy-dom": "^8.7.2",
     "json-loader": "^0.5.7",
     "markdown-it-fence": "^0.1.3",
-    "prettier": "^2.7.1",
-    "rollup": "^2.78.0",
-    "rollup-plugin-dts": "^4.2.2",
-    "rollup-plugin-terser": "^7.0.2",
+    "prettier": "^2.8.4",
+    "rollup": "^3.17.2",
+    "rollup-plugin-dts": "^5.2.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.7.4",
-    "vite": "^2.9.15",
-    "vitest": "^0.20.2",
-    "vue": "^3.2.29",
-    "vuepress": "^2.0.0-beta.49"
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4",
+    "vitest": "^0.28.5",
+    "vue": "^3.2.47",
+    "vue-tsc": "^1.1.7",
+    "vuepress": "2.0.0-beta.60",
+    "vuepress-vite": "2.0.0-beta.60"
   },
-  "exports": {
-    "require": "./dist/cjs/index.js",
-    "import": "./dist/esm/index.mjs"
+  "overrides": {
+    "vuepress-vite": "2.0.0-beta.60",
+    "@vuepress/client": "2.0.0-beta.60"
   },
-  "main": "dist/cjs/index.js",
+  "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.cjs",
+      "import": "./dist/esm/index.mjs"
+    }
+  },
   "files": [
     "dist",
     "LICENSE",

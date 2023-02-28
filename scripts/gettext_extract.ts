@@ -1,11 +1,11 @@
 import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
-import fs from "fs";
+import { chmodSync, existsSync, lstatSync, mkdirSync, writeFileSync } from "node:fs";
 import glob from "glob";
-import path from "path";
-import { loadConfig } from "./config";
-import extractFromFiles from "./extract";
-import { execShellCommand } from "./utils";
+import path from "node:path";
+import { loadConfig } from "./config.js";
+import extractFromFiles from "./extract.js";
+import { execShellCommand } from "./utils.js";
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
 let options;
@@ -74,8 +74,8 @@ console.info();
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
     const poFile = config.output.flat ? path.join(poDir, `${loc}.po`) : path.join(poDir, `app.po`);
 
-    fs.mkdirSync(poDir, { recursive: true });
-    const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
+    mkdirSync(poDir, { recursive: true });
+    const isFile = existsSync(poFile) && lstatSync(poFile).isFile();
     if (isFile) {
       await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} --backup=off`);
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
@@ -88,14 +88,14 @@ console.info();
       await execShellCommand(
         `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
       );
-      fs.chmodSync(poFile, 0o666);
+      chmodSync(poFile, 0o666);
       await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
       console.info(`${chalk.green("Created")}: ${chalk.blueBright(poFile)}`);
     }
   }
   if (config.output.linguas === true) {
     const linguasPath = path.join(config.output.path, "LINGUAS");
-    fs.writeFileSync(linguasPath, config.output.locales.join(" "));
+    writeFileSync(linguasPath, config.output.locales.join(" "));
     console.info();
     console.info(`${chalk.green("Created")}: ${chalk.blueBright(linguasPath)}`);
   }
