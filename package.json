@@ -94,10 +94,6 @@
     "vuepress": "2.0.0-beta.60",
     "vuepress-vite": "2.0.0-beta.60"
   },
-  "exports": {
-    "require": "./dist/cjs/index.js",
-    "import": "./dist/esm/index.mjs"
-  },
   "overrides": {
     "vuepress-vite": "2.0.0-beta.60",
     "@vuepress/client": "2.0.0-beta.60"
@@ -105,6 +101,12 @@
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.mjs",
   "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/cjs/index.cjs",
+      "import": "./dist/esm/index.mjs"
+    }
+  },
   "files": [
     "dist",
     "LICENSE",
