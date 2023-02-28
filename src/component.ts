@@ -1,7 +1,7 @@
 import { computed, defineComponent, getCurrentInstance, h, onMounted, ref } from "vue";
-import interpolate from "./interpolate";
-import translate from "./translate";
-import { useGettext } from "./utilities";
+import interpolate from "./interpolate.js";
+import translate from "./translate.js";
+import { useGettext } from "./utilities.js";
 
 /**
  * Translate content according to the current language.

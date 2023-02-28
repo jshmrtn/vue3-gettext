@@ -25,13 +25,25 @@ export default [
   {
     input: "scripts/gettext_extract.ts",
     external: [/node_modules/],
-    plugins: [resolve({ preferBuiltins: true }), typescript(), commonjs()],
+    plugins: [
+      resolve({ preferBuiltins: true }),
+      typescript({
+        tsconfig: "./scripts/tsconfig.json",
+      }),
+      commonjs(),
+    ],
     output: [{ file: pkg.bin["vue-gettext-extract"], format: "cjs", banner: "#!/usr/bin/env node" }],
   },
   {
     input: "scripts/gettext_compile.ts",
     external: [/node_modules/],
-    plugins: [resolve({ preferBuiltins: true }), typescript(), commonjs()],
+    plugins: [
+      resolve({ preferBuiltins: true }),
+      typescript({
+        tsconfig: "./scripts/tsconfig.json",
+      }),
+      commonjs(),
+    ],
     output: [{ file: pkg.bin["vue-gettext-compile"], format: "cjs", banner: "#!/usr/bin/env node" }],
   },
 ];

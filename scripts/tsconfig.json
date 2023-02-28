@@ -1,4 +1,5 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "nodenext",
@@ -7,5 +8,6 @@
   "ts-node": {
     "esm": true,
     "experimentalResolver": true
-  }
+  },
+  "include": ["**/*.ts"]
 }
