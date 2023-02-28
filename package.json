@@ -35,7 +35,7 @@
     "start": "vite serve dev",
     "build": "tsup",
     "test": "npm run test:types && npm run test:lint && npm run test:unit",
-    "test:types": "vue-tsc --noEmit",
+    "test:types": "vue-tsc --noEmit && vue-tsc --noEmit -p scripts && vue-tsc --noEmit -p dev && vue-tsc --noEmit -p docs/.vuepress",
     "test:lint": "npm run test:lint:js && npm run test:lint:prettier",
     "test:lint:js": "./node_modules/.bin/eslint --ext .js,.ts,.vue",
     "test:lint:prettier": "./node_modules/.bin/prettier --check '**/**.(json|js|ts|vue)'",

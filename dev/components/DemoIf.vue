@@ -11,34 +11,32 @@
         <button @click="setName3()">3</button>
         [{{ obj.name }}]
       </p>
-      <p v-if="obj.name === 'Group1'" v-translate="obj.name" class="translated">This is %{ obj.name }</p>
-      <p v-else-if="obj.name === 'Group2'" v-translate="obj.name" class="translated">This is %{ obj.name }</p>
-      <p v-else v-translate="obj.name" class="translated">This is %{ obj.name }</p>
+      <p v-if="obj.name === 'Group1'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
+      <p v-else-if="obj.name === 'Group2'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
+      <p v-else v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    show: true,
-    obj: {
-      name: "Group1",
-    },
-  }),
-  methods: {
-    toggleShow() {
-      this.show = !this.show;
-    },
-    setName1() {
-      this.obj.name = "Group1";
-    },
-    setName2() {
-      this.obj.name = "Group2";
-    },
-    setName3() {
-      this.obj.name = "Group3";
-    },
-  },
+<script setup lang="ts">
+import { ref } from "vue";
+
+const show = ref(true);
+const obj = ref({ name: "Group1" });
+
+const toggleShow = () => {
+  show.value = !show.value;
+};
+
+const setName1 = () => {
+  obj.value.name = "Group1";
+};
+
+const setName2 = () => {
+  obj.value.name = "Group2";
+};
+
+const setName3 = () => {
+  obj.value.name = "Group3";
 };
 </script>

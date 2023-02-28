@@ -1,7 +1,7 @@
 import { DirectiveBinding, ObjectDirective, VNode, watch } from "vue";
-import interpolate from "./interpolate";
-import translate from "./translate";
-import { Language } from "./typeDefs";
+import interpolate from "./interpolate.js";
+import translate from "./translate.js";
+import { Language } from "./typeDefs.js";
 
 const updateTranslation = (language: Language, el: HTMLElement, binding: DirectiveBinding, vnode: VNode) => {
   const attrs = vnode.props || {};

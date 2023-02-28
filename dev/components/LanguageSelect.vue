@@ -3,24 +3,21 @@
     <p>
       <translate class="translated">Select your language:</translate>
     </p>
-    <button v-for="(name, key) in language.available" :key="key" :class="$style.button" @click="language.current = key">
+    <button
+      v-for="(name, key) in language.available"
+      :key="key"
+      :class="$style.button"
+      @click="language.current = key as string"
+    >
       {{ name }}
     </button>
   </div>
 </template>
 
-<script>
-import { useGettext } from "/@gettext/";
+<script setup lang="ts">
+import { useGettext } from "vue3-gettext";
 
-export default {
-  setup() {
-    const language = useGettext();
-
-    return {
-      language,
-    };
-  },
-};
+const language = useGettext();
 </script>
 
 <style lang="scss" module>

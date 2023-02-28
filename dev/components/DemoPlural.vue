@@ -26,25 +26,18 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    n: 0,
-    countForUntranslated: 10,
-  }),
-  computed: {
-    nComputed() {
-      return this.n;
-    },
-  },
-  methods: {
-    decrease() {
-      if (this.n === 0) return;
-      this.n -= 1;
-    },
-    increase() {
-      this.n += 1;
-    },
-  },
+<script setup lang="ts">
+import { ref } from "vue";
+
+const countForUntranslated = 10;
+const n = ref(0);
+
+const decrease = () => {
+  if (n.value === 0) return;
+  n.value -= 1;
+};
+
+const increase = () => {
+  n.value += 1;
 };
 </script>

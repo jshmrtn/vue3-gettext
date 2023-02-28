@@ -40,7 +40,9 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { useGettext } from "vue3-gettext";
+import { onMounted } from "vue";
 import DemoAlert from "./components/DemoAlert.vue";
 import DemoCustomTags from "./components/DemoCustomTags.vue";
 import DemoDateFormat from "./components/DemoDateFormat.vue";
@@ -49,33 +51,21 @@ import DemoIf from "./components/DemoIf.vue";
 import DemoMultilines from "./components/DemoMultilines.vue";
 import DemoPlural from "./components/DemoPlural.vue";
 import LanguageSelect from "./components/LanguageSelect.vue";
-import DemoTemplate from "./components/DemoTemplate.vue";
-import { useGettext } from "/@gettext/";
 
-export default {
-  name: "App",
-  components: {
-    DemoAlert,
-    DemoCustomTags,
-    DemoDirective,
-    DemoIf,
-    DemoDateFormat,
-    DemoMultilines,
-    DemoPlural,
-    LanguageSelect,
-    DemoTemplate,
+const props = withDefaults(
+  defineProps<{
+    lang: string;
+  }>(),
+  {
+    lang: "en_GB",
   },
-  props: {
-    lang: {
-      type: String,
-      default: "en_GB",
-    },
-  },
-  mounted() {
-    const gettext = useGettext();
-    gettext.current = this.lang;
-  },
-};
+);
+
+const gettext = useGettext();
+
+onMounted(() => {
+  gettext.current = props.lang;
+});
 </script>
 
 <style lang="scss" module>

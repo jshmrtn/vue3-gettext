@@ -20,5 +20,5 @@
     }
   },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["src/**/*", "dev/**/*", "scripts/**/*.ts", "tests/**/*.ts", "docs/.vuepress/**/*"]
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

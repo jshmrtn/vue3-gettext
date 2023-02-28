@@ -1,7 +1,7 @@
-import { IJsExtractorOptions } from "gettext-extractor/dist/js/extractors/common";
+import { IJsExtractorOptions } from "gettext-extractor/dist/js/extractors/common.js";
 import { App, UnwrapRef, WritableComputedRef } from "vue";
-import type { Component as ComponentType } from "./component";
-import directive from "./directive";
+import type { Component as ComponentType } from "./component.js";
+import directive from "./directive.js";
 
 export type TranslateComponent = typeof ComponentType;
 export type TranslateDirective = ReturnType<typeof directive>;
