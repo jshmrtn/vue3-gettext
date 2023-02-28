@@ -1,11 +1,12 @@
 import { Element, IHtmlExtractorFunction } from "gettext-extractor/dist/html/parser.js";
 import { ElementSelectorSet } from "gettext-extractor/dist/html/selector.js";
 import { JsParser } from "gettext-extractor/dist/js/parser.js";
+import { JsExtractors } from "gettext-extractor";
 import { IContentOptions, normalizeContent } from "gettext-extractor/dist/utils/content.js";
 import { Validate } from "gettext-extractor/dist/utils/validate.js";
 import { DefaultTreeChildNode, Node, serialize } from "parse5";
 import treeAdapter from "parse5-htmlparser2-tree-adapter";
-import * as typescript from "typescript";
+import typescript from "typescript";
 const { ScriptKind } = typescript;
 
 type Template = Element & {

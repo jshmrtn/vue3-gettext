@@ -54,9 +54,9 @@
   "dependencies": {
     "chalk": "^5.2.0",
     "command-line-args": "^5.2.1",
-    "cosmiconfig": "^8.0.0",
     "gettext-extractor": "^3.6.2",
     "glob": "^8.1.0",
+    "lilconfig": "^2.0.6",
     "parse5": "^6.0.1",
     "parse5-htmlparser2-tree-adapter": "^6.0.1",
     "pofile": "^1.1.4",
@@ -70,7 +70,6 @@
     "@types/command-line-args": "^5.2.0",
     "@types/glob": "^8.1.0",
     "@types/node": "^18.14.1",
-    "@types/parse5": "^6.0.3",
     "@types/parse5-htmlparser2-tree-adapter": "^6.0.1",
     "@typescript-eslint/parser": "^5.53.0",
     "@vitejs/plugin-vue": "^4.0.0",

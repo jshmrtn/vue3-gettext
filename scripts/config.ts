@@ -1,22 +1,23 @@
-import { cosmiconfigSync } from "cosmiconfig";
+import { lilconfigSync } from "lilconfig";
 import path from "node:path";
 import { GettextConfig, GettextConfigOptions } from "../src/typeDefs.js";
 
 export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
   const moduleName = "gettext";
-  const explorer = cosmiconfigSync(moduleName);
+  const explorer = lilconfigSync(moduleName);
 
   let configRes;
   if (cliArgs?.config) {
     configRes = explorer.load(cliArgs.config);
-    if (!configRes) {
-      throw new Error(`Config not found: ${cliArgs.config}`);
-    }
   } else {
     configRes = explorer.search();
   }
 
-  const config = configRes?.config as GettextConfigOptions | undefined;
+  if (!configRes) {
+    throw new Error(`Config not found: ${cliArgs?.config}`);
+  }
+
+  const config = configRes.config as GettextConfigOptions;
 
   const languagePath = config.output?.path || "./src/language";
   const joinPath = (inputPath: string) => path.join(languagePath, inputPath);

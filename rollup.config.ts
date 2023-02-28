@@ -10,7 +10,7 @@ export default [
   {
     input: "src/index.ts",
     external: ["vue"],
-    plugins: [resolve({ extensions }), typescript()],
+    plugins: [typescript()],
     output: [
       { file: pkg.main, format: "cjs" },
       { file: pkg.module, format: "es" },
