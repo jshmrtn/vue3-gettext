@@ -86,7 +86,7 @@ msgstr "Titre 4"
 msgid "Hello <strong>%{ name }</strong>"
 msgstr "Bonjour <strong>%{ name }</strong>"
 
-#: dev/components/DemoTemplate.vue:20
+#: dev/components/DemoTemplate.vue:22
 msgid "hover here and see the title"
 msgstr ""
 
@@ -94,7 +94,7 @@ msgstr ""
 msgid "In English, '0' (zero) is always plural."
 msgstr "En anglais, '0' (zero) prend toujours le pluriel."
 
-#: dev/components/DemoTemplate.vue:16
+#: dev/components/DemoTemplate.vue:18
 msgid "One apple"
 msgid_plural "%{n} apples"
 msgstr[0] ""
@@ -113,19 +113,19 @@ msgstr "Sélectionner votre langage"
 msgid "This is %{ obj.name }"
 msgstr "C'est %{ obj.name }"
 
-#: dev/components/DemoTemplate.vue:13
+#: dev/components/DemoTemplate.vue:15
 msgid "use `__` as a alias of gettext"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:15
+#: dev/components/DemoTemplate.vue:17
 msgid "use `_n` as a alias of ngettext"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:19
+#: dev/components/DemoTemplate.vue:21
 msgid "use `_x` as a alias of pgettext"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:23
+#: dev/components/DemoTemplate.vue:25
 msgid "use `_xn` as a alias of npgettext"
 msgstr ""
 
@@ -139,14 +139,14 @@ msgstr ""
 msgid "Welcome %{ name }"
 msgstr "Bienvenue %{ name }"
 
-#: dev/components/DemoTemplate.vue:24
+#: dev/components/DemoTemplate.vue:26
 msgctxt "list-item"
 msgid "one message"
 msgid_plural "%{n} messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoTemplate.vue:18
+#: dev/components/DemoTemplate.vue:20
 msgctxt "title"
 msgid "This is my title"
 msgstr ""
