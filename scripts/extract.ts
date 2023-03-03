@@ -1,4 +1,4 @@
-import { parse } from "@vue/compiler-sfc";
+import { parse, compileTemplate } from "@vue/compiler-sfc";
 import chalk from "chalk";
 import fs from "fs";
 import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
@@ -12,11 +12,12 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
 
   // custom keywords
   const emptyExtractors = new Array<IJsExtractorFunction>();
-  const extractors = config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
-    console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`)
-    acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options))
-    return acc
-  }, emptyExtractors) || emptyExtractors;
+  const extractors =
+    config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
+      console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`);
+      acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options));
+      return acc;
+    }, emptyExtractors) || emptyExtractors;
 
   const jsParser = extr.createJsParser([
     JsExtractors.callExpression(["$gettext", "[this].$gettext"], {
@@ -97,6 +98,21 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
         if (descriptor.template) {
           htmlParser.parseString(`<template>${descriptor.template.content}</template>`, descriptor.filename, {
             lineNumberStart: descriptor.template.loc.start.line,
+            transformSource: (code) => {
+              const lang = descriptor?.template?.lang?.toLowerCase() || "html";
+              if (!config.input?.compileTemplate || lang === "html") {
+                return code;
+              }
+
+              const compiledTemplate = compileTemplate({
+                filename: descriptor?.filename,
+                source: code,
+                preprocessLang: lang,
+                id: descriptor?.filename,
+              });
+
+              return compiledTemplate.source;
+            },
           });
         }
         if (descriptor.script) {

@@ -30,13 +30,13 @@ export interface GetTextOptions {
   translations: Translations;
   setGlobalProperties: boolean;
   globalProperties: {
-    language?: Array<string>,
-    gettext?: Array<string>,
-    pgettext?: Array<string>,
-    ngettext?: Array<string>,
-    npgettext?: Array<string>,
-    interpolate?: Array<string>,
-  },
+    language?: Array<string>;
+    gettext?: Array<string>;
+    pgettext?: Array<string>;
+    ngettext?: Array<string>;
+    npgettext?: Array<string>;
+    interpolate?: Array<string>;
+  };
   provideDirective: boolean;
   provideComponent: boolean;
 }
@@ -85,9 +85,10 @@ export interface GettextConfig {
     exclude: string[];
     /** js extractor options, for custom extractor keywords */
     jsExtractorOpts?: {
-      keyword: string,
-      options: IJsExtractorOptions,
-    }[],
+      keyword: string;
+      options: IJsExtractorOptions;
+    }[];
+    compileTemplate: boolean;
   };
   output: {
     path: string;

@@ -65,6 +65,7 @@ module.exports = {
         },
       },
     ],
+	compileTemplate: false, // do not compile <template> tag when its lang is not html
   },
   output: {
     path: "./src/language", // output path of all created files

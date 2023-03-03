@@ -5,6 +5,7 @@ dev/language
 docs/language/translations.json
 docs/.vuepress/.cache
 docs/.vuepress/.temp
+distDocs
 .vscode
 .eslintrc.json
 package.json
