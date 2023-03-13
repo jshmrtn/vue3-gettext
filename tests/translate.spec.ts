@@ -9,6 +9,7 @@ const mount = mountWithPlugin({
     fr_FR: "Français",
   },
   defaultLanguage: "en_US",
+  sourceCodeLanguage: "en_US",
   translations: translations,
   setGlobalProperties: true,
 });
