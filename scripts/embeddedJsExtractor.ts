@@ -36,7 +36,7 @@ export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtml
 
   const selectors = new ElementSelectorSet(selector);
 
-  return (node: any, fileName: string) => {
+  return (node: any, fileName: string, _, lineNumberStart: number) => {
     if (typeof (node as Element).tagName !== "string") {
       return;
     }
@@ -49,10 +49,12 @@ export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtml
         preserveIndentation: true,
         replaceNewLines: false,
       });
-
+      if (element.sourceCodeLocation && element.sourceCodeLocation.startLine) {
+        lineNumberStart = lineNumberStart + element.sourceCodeLocation.startLine - 1;
+      }
       jsParser.parseString(source, fileName, {
         scriptKind: ScriptKind.Deferred,
-        lineNumberStart: (element.sourceCodeLocation && element.sourceCodeLocation.startLine) || 0,
+        lineNumberStart,
       });
     }
   };

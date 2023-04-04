@@ -155,6 +155,27 @@ const gettext = createGettext({
 
 ```
 
+If you got a VSCode warning `Property '{0}' does not exist on type '{1}'. ts(2339)`, consider add a `gettext.d.ts` file like this:
+```ts
+export { };
+declare module 'vue' {
+    interface ComponentCustomProperties {
+        __: (msgid: string, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+        _x: (context: string, msgid: string, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+        _n: (msgid: string, plural: string, n: number, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+        _xn: (context: string, msgid: string, plural: string, n: number, parameters?: {
+            [key: string]: string;
+        }, disableHtmlEscaping?: boolean) => string;
+    }
+}
+```
+
 ## Html escaping
 
 All the translation functions escape html by default and take a `disableHtmlEscaping` as their last parameter. If your translation messages or parameters contain html tags, you will have to set this to `true` and render the message using [`v-html`](https://vuejs.org/api/built-in-directives.html#v-html):

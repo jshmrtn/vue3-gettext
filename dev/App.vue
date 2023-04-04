@@ -3,6 +3,11 @@
 
   <div :class="$style.container">
     <div :class="$style.tile">
+      <h2>Template</h2>
+      <DemoTemplate></DemoTemplate>
+    </div>
+
+    <div :class="$style.tile">
       <h2>Alert</h2>
       <DemoAlert></DemoAlert>
     </div>
@@ -44,6 +49,7 @@ import DemoIf from "./components/DemoIf.vue";
 import DemoMultilines from "./components/DemoMultilines.vue";
 import DemoPlural from "./components/DemoPlural.vue";
 import LanguageSelect from "./components/LanguageSelect.vue";
+import DemoTemplate from "./components/DemoTemplate.vue";
 import { useGettext } from "/@gettext/";
 
 export default {
@@ -57,6 +63,7 @@ export default {
     DemoMultilines,
     DemoPlural,
     LanguageSelect,
+    DemoTemplate,
   },
   props: {
     lang: {

@@ -39,7 +39,12 @@ const translate = (language: Language) => ({
     const silent = languageKey ? language.silent || language.muted.indexOf(languageKey) !== -1 : false;
 
     // Default untranslated string, singular or plural.
-    const untranslated = defaultPlural && plurals.getTranslationIndex(languageKey, n) > 0 ? defaultPlural : msgid;
+    let noTransLangKey = languageKey; // if no translation, use current lang key to get plural text.(for compatibility)
+    if (language.sourceCodeLanguage) {
+      // new config: if source code language has been set, use it to get plural text.
+      noTransLangKey = language.sourceCodeLanguage;
+    }
+    const untranslated = defaultPlural && plurals.getTranslationIndex(noTransLangKey, n) > 0 ? defaultPlural : msgid;
 
     // `easygettext`'s `gettext-compile` generates a JSON version of a .po file based on its `Language` field.
     // But in this field, `ll_CC` combinations denoting a language’s main dialect are abbreviated as `ll`,

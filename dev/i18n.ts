@@ -15,6 +15,8 @@ const gettext = createGettext({
     // custom global properties name
     gettext: ["$gettext", "__"],
     ngettext: ["$ngettext", "_n"],
+    pgettext: ["$pgettext", "_x"],
+    npgettext: ["$npgettext", "_xn"],
   },
 });
 

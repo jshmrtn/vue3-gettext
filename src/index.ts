@@ -22,6 +22,7 @@ const defaultOptions: GetTextOptions = {
   /** all the available languages of your application. Keys must match locale names */
   availableLanguages: { en: "English" },
   defaultLanguage: "en",
+  sourceCodeLanguage: undefined,
   mutedLanguages: [],
   silent: false,
   translations: {},
@@ -65,6 +66,7 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
       },
     }),
     current: mergedOptions.defaultLanguage,
+    sourceCodeLanguage: mergedOptions.sourceCodeLanguage,
     install(app: App) {
       // TODO: is this needed?
       (app as any)[GetTextSymbol] = gettext;

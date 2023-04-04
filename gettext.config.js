@@ -25,6 +25,31 @@ module.exports = {
           },
         },
       },
+      {
+        keyword: "_x",
+        options: {
+          content: {
+            replaceNewLines: "\n",
+          },
+          arguments: {
+            context: 0,
+            text: 1,
+          },
+        },
+      },
+      {
+        keyword: "_xn",
+        options: {
+          content: {
+            replaceNewLines: "\n",
+          },
+          arguments: {
+            context: 0,
+            text: 1,
+            textPlural: 2,
+          },
+        },
+      },
     ],
   },
   output: {

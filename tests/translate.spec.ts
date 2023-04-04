@@ -9,6 +9,7 @@ const mount = mountWithPlugin({
     fr_FR: "Français",
   },
   defaultLanguage: "en_US",
+  sourceCodeLanguage: "en_US",
   translations: translations,
   setGlobalProperties: true,
 });
@@ -51,11 +52,15 @@ describe("Translate tests", () => {
     translated = translate.getTranslation("Pending", 1, null, null, "en_US");
     expect(translated).toEqual("Pending");
 
-    // If no translation exists, display the default singular form (if n < 2).
-    translated = translate.getTranslation("Untranslated %{ n } item", 0, null, "Untranslated %{ n } items", "fr_FR");
+    // If no translation exists, display the untranslated message (if n==1 then use singular form).
+    translated = translate.getTranslation("Untranslated %{ n } item", 1, null, "Untranslated %{ n } items", "fr_FR");
     expect(translated).toEqual("Untranslated %{ n } item");
 
-    // If no translation exists, display the default plural form (if n > 1).
+    // If no translation exists, display the untranslated message (if n!=1 then use plural form).
+    translated = translate.getTranslation("Untranslated %{ n } item", 0, null, "Untranslated %{ n } items", "fr_FR");
+    expect(translated).toEqual("Untranslated %{ n } items");
+
+    // If no translation exists, display the untranslated message (if n!=1 then use plural form).
     translated = translate.getTranslation("Untranslated %{ n } item", 10, null, "Untranslated %{ n } items", "fr_FR");
     expect(translated).toEqual("Untranslated %{ n } items");
 
@@ -131,15 +136,15 @@ describe("Translate tests", () => {
     setLanguage("en_US");
     expect(undetectableNgettext("%{ carCount } car", "%{ carCount } cars", 2)).toEqual("%{ carCount } cars");
 
-    // If no translation exists, display the default singular form (if n < 2).
+    // If no translation exists, display the untranslated message (if n==1 then use singular form).
     setLanguage("fr_FR");
-    expect(undetectableNgettext("Untranslated %{ n } item", "Untranslated %{ n } items", -1)).toEqual(
+    expect(undetectableNgettext("Untranslated %{ n } item", "Untranslated %{ n } items", 1)).toEqual(
       "Untranslated %{ n } item",
     );
 
-    // If no translation exists, display the default plural form (if n > 1).
+    // If no translation exists, display the untranslated message (if n!=1 then use plural form).
     setLanguage("fr_FR");
-    expect(undetectableNgettext("Untranslated %{ n } item", "Untranslated %{ n } items", 2)).toEqual(
+    expect(undetectableNgettext("Untranslated %{ n } item", "Untranslated %{ n } items", -1)).toEqual(
       "Untranslated %{ n } items",
     );
 

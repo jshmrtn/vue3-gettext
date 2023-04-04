@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "baseUrl": "./",
+        "paths": {
+            "/@gettext/": [
+                "../src"
+            ]
+        }
+    },
+    "include": [
+        "./**/*"
+    ],
+}
