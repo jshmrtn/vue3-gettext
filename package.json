@@ -23,8 +23,8 @@
     "registry": "https://registry.npmjs.org"
   },
   "bin": {
-    "vue-gettext-extract": "./dist/bin/gettext_extract.js",
-    "vue-gettext-compile": "./dist/bin/gettext_compile.js"
+    "vue-gettext-compile": "./dist/bin/gettext_compile.js",
+    "vue-gettext-extract": "./dist/bin/gettext_extract.js"
   },
   "scripts": {
     "docs": "vuepress dev docs",

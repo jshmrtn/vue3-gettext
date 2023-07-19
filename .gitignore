@@ -10,6 +10,8 @@ manifest.json
 .*.pid
 *.mo
 ./coverage
+.yarn
+yarn.lock
 
 .tm_properties
 .idea/
