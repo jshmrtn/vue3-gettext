@@ -127,7 +127,13 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
         }
       } else if (fp.endsWith(".html")) {
         htmlParser.parseString(buffer, fp);
-      } else if (fp.endsWith(".js") || fp.endsWith(".ts") || fp.endsWith(".cjs") || fp.endsWith(".mjs")) {
+      } else if (
+        fp.endsWith(".js") ||
+        fp.endsWith(".ts") ||
+        fp.endsWith(".cjs") ||
+        fp.endsWith(".mjs") ||
+        fp.endsWith(".tsx")
+      ) {
         jsParser.parseString(buffer, fp);
       }
     }),
