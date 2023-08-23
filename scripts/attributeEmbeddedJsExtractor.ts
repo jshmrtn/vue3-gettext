@@ -6,17 +6,20 @@ export function attributeEmbeddedJsExtractor(selector: string, jsParser: JsParse
   Validate.required.nonEmptyString({ selector });
   Validate.required.argument({ jsParser });
 
-  return (node: any, fileName: string, _, lineNumberStart) => {
+  return (node: any, fileName: string, _, nodeLineNumberStart) => {
     if (typeof (node as Element).tagName !== "string") {
       return;
     }
 
     const element = node as Element;
     element.attrs.forEach((attr) => {
-      const startLine = element.sourceCodeLocation?.attrs[attr.name]?.startLine;
-      if (startLine) {
-        lineNumberStart = lineNumberStart + startLine - 1;
+      let lineNumberStart = nodeLineNumberStart;
+      const attributeLineNumber = element.sourceCodeLocation?.attrs[attr.name]?.startLine;
+
+      if (attributeLineNumber) {
+        lineNumberStart += attributeLineNumber - 1;
       }
+
       jsParser.parseString(attr.value, fileName, {
         lineNumberStart,
       });
