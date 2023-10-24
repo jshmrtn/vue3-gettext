@@ -22,6 +22,9 @@ export default {
       "": "Object",
       Context: "Object with context",
     },
+
+    "%{ orangeCount } orange": ["", "%{ orangeCount } oranges"],
+    "%{ appleCount } apple": ["1 apple", ""],
   },
   fr: {
     Answer: {

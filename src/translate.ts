@@ -69,10 +69,18 @@ const translate = (language: Language) => ({
       if (arr.length === 1 && n === 1) {
         translationIndex = 0;
       }
-      if (!(arr as string[])[translationIndex]) {
+
+      const str = arr[translationIndex];
+      if (!str) {
+        // If the translation is empty, use the untranslated string.
+        if (str === "") {
+          return interp(untranslated, parameters);
+        }
+
         throw new Error(msgid + " " + translationIndex + " " + language.current + " " + n);
       }
-      return interp(arr[translationIndex], parameters);
+
+      return interp(str, parameters);
     };
 
     const getUntranslatedMsg = () => {
