@@ -43,8 +43,9 @@ export const Component = defineComponent({
     const isPlural = props.translateN !== undefined && props.translatePlural !== undefined;
     if (!isPlural && (props.translateN || props.translatePlural)) {
       throw new Error(
-        `\`translate-n\` and \`translate-plural\` attributes must be used together: ${context.slots.default?.()[0]
-          ?.children}.`,
+        `\`translate-n\` and \`translate-plural\` attributes must be used together: ${
+          context.slots.default?.()[0]?.children
+        }.`,
       );
     }
 

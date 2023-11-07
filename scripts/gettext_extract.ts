@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import fs from "fs";
-import { glob } from "glob";
+import glob from "glob";
 import path from "path";
 import { loadConfig } from "./config";
 import extractFromFiles from "./extract";
@@ -20,19 +20,30 @@ try {
 
 const config = loadConfig(options);
 
+const globPromise = (pattern: string) =>
+  new Promise((resolve, reject) => {
+    try {
+      glob(pattern, {}, (er, res) => {
+        resolve(res);
+      });
+    } catch (e) {
+      reject(e);
+    }
+  });
+
 var getFiles = async () => {
   const allFiles = await Promise.all(
     config.input?.include.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
       console.info(`Searching: ${chalk.blueBright(searchPath)}`);
-      return glob(searchPath);
+      return globPromise(searchPath) as Promise<string[]>;
     }),
   );
   const excludeFiles = await Promise.all(
     config.input.exclude.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
       console.info(`Excluding: ${chalk.blueBright(searchPath)}`);
-      return glob(searchPath);
+      return globPromise(searchPath) as Promise<string[]>;
     }),
   );
   const filesFlat = allFiles.reduce((prev, curr) => [...prev, ...curr], [] as string[]);
