@@ -33,6 +33,16 @@ module.exports = {
 };
 ```
 
+您也可以使用带有 Ecmascript 模块格式的 `gettext.config.mjs` 文件：
+
+```js
+export default {
+  output: {
+    locales: ["en", "de"],
+  },
+}
+```
+
 下面列出所有配置选项和默认值：
 
 ```js

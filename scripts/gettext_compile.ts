@@ -16,17 +16,15 @@ try {
   process.exit(1);
 }
 
-const config = loadConfig(options);
-
-console.info(`Language directory: ${chalk.blueBright(config.output.path)}`);
-console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
-console.info();
-
-const localesPaths = config.output.locales.map((loc) =>
-  config.output.flat ? path.join(config.output.path, `${loc}.po`) : path.join(config.output.path, `${loc}/app.po`),
-);
-
 (async () => {
+  const config = await loadConfig(options);
+  console.info(`Language directory: ${chalk.blueBright(config.output.path)}`);
+  console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+  console.info();
+  const localesPaths = config.output.locales.map((loc) =>
+    config.output.flat ? path.join(config.output.path, `${loc}.po`) : path.join(config.output.path, `${loc}/app.po`),
+  );
+
   await fsPromises.mkdir(config.output.path, { recursive: true });
   const jsonRes = await compilePoFiles(localesPaths);
   console.info(`${chalk.green("Compiled json")}: ${chalk.grey(JSON.stringify(jsonRes))}`);

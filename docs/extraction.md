@@ -32,6 +32,16 @@ module.exports = {
 };
 ```
 
+You can also use a `gettext.config.mjs` file with the Ecmascript module format:
+
+```js
+export default {
+  output: {
+    locales: ["en", "de"],
+  },
+}
+```
+
 Here are all the available configuration options and their defaults:
 
 ```js

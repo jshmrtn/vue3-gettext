@@ -1,19 +1,19 @@
-import { cosmiconfigSync } from "cosmiconfig";
+import { cosmiconfig } from "cosmiconfig";
 import path from "path";
 import { GettextConfig, GettextConfigOptions } from "../src/typeDefs";
 
-export const loadConfig = (cliArgs?: { config?: string }): GettextConfig => {
+export const loadConfig = async (cliArgs?: { config?: string }): Promise<GettextConfig> => {
   const moduleName = "gettext";
-  const explorer = cosmiconfigSync(moduleName);
+  const explorer = cosmiconfig(moduleName);
 
   let configRes;
   if (cliArgs?.config) {
-    configRes = explorer.load(cliArgs.config);
+    configRes = await explorer.load(cliArgs.config);
     if (!configRes) {
       throw new Error(`Config not found: ${cliArgs.config}`);
     }
   } else {
-    configRes = explorer.search();
+    configRes = await explorer.search();
   }
 
   const config = configRes?.config as GettextConfigOptions;
