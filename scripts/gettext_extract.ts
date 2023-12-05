@@ -6,6 +6,7 @@ import path from "path";
 import { loadConfig } from "./config";
 import extractFromFiles from "./extract";
 import { execShellCommand } from "./utils";
+import { GettextConfig } from "../src/typeDefs";
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
 let options;
@@ -18,8 +19,6 @@ try {
   process.exit(1);
 }
 
-const config = loadConfig(options);
-
 const globPromise = (pattern: string) =>
   new Promise((resolve, reject) => {
     try {
@@ -31,7 +30,7 @@ const globPromise = (pattern: string) =>
     }
   });
 
-var getFiles = async () => {
+var getFiles = async (config: GettextConfig) => {
   const allFiles = await Promise.all(
     config.input?.include.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
@@ -57,14 +56,15 @@ var getFiles = async () => {
   return filesFlat;
 };
 
-console.info(`Input directory: ${chalk.blueBright(config.input.path)}`);
-console.info(`Output directory: ${chalk.blueBright(config.output.path)}`);
-console.info(`Output POT file: ${chalk.blueBright(config.output.potPath)}`);
-console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
-console.info();
-
 (async () => {
-  const files = await getFiles();
+  const config = await loadConfig(options);
+  console.info(`Input directory: ${chalk.blueBright(config.input.path)}`);
+  console.info(`Output directory: ${chalk.blueBright(config.output.path)}`);
+  console.info(`Output POT file: ${chalk.blueBright(config.output.potPath)}`);
+  console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+  console.info();
+
+  const files = await getFiles(config);
   console.info();
   files.forEach((f) => console.info(chalk.grey(f)));
   console.info();
