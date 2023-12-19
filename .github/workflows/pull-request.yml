@@ -19,7 +19,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: install dependencies
+      - name: install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext
+      - name: install npm dependencies
         run: npm ci
       - name: run tests
         run: npm run test

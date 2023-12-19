@@ -53,7 +53,7 @@
   "dependencies": {
     "chalk": "^4.1.2",
     "command-line-args": "^5.2.1",
-    "cosmiconfig": "^7.0.1",
+    "cosmiconfig": "^9.0.0",
     "gettext-extractor": "^3.6.2",
     "glob": "^7.2.0",
     "parse5": "^6.0.1",
