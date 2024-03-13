@@ -77,7 +77,11 @@ var getFiles = async (config: GettextConfig) => {
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
-      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath}${config.output.fuzzyMatching ? '' : '--no-fuzzy-matching'} --backup=off`);
+      await execShellCommand(
+        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${
+          config.output.fuzzyMatching ? "" : "--no-fuzzy-matching"
+        } --backup=off`,
+      );
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
       // https://www.gnu.org/software/gettext/manual/html_node/msginit-Invocation.html
