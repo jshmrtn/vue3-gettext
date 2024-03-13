@@ -56,5 +56,6 @@ module.exports = {
     path: "./dev/language",
     locales: ["en_GB", "fr_FR", "it_IT", "zh_CN"],
     splitJson: false,
+    fuzzyMatching: true,
   },
 };

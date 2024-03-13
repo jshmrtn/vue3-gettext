@@ -85,6 +85,7 @@ module.exports = {
     flat: false, // don't create subdirectories for locales
     linguas: true, // create a LINGUAS file
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
+    fuzzyMatching: false, // do not fuzzy match strings when merging the POT file into the PO files
   },
 };
 ```
