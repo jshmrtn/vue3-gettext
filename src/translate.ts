@@ -1,11 +1,5 @@
 import plurals from "./plurals";
-import { Language, LanguageData, Message, MessageContext } from "./typeDefs";
-
-type ParameterKeys<TString extends string> = TString extends `${infer _}%{${infer Key}}${infer End}`
-  ? Key | ParameterKeys<End>
-  : never;
-
-type Parameters<TString extends string> = Record<ParameterKeys<TString>, string>;
+import { Language, LanguageData, Message, MessageContext, Parameters } from "./typeDefs";
 
 const translate = (language: Language) => ({
   /*
