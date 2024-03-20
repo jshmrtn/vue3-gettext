@@ -1,5 +1,5 @@
 import plurals from "./plurals";
-import { Language, LanguageData, Message, MessageContext } from "./typeDefs";
+import { Language, LanguageData, Message, MessageContext, Parameters } from "./typeDefs";
 
 const translate = (language: Language) => ({
   /*
@@ -26,7 +26,7 @@ const translate = (language: Language) => ({
       languageKey = language.current;
     }
 
-    const interp = (message: string, parameters?: { [key: string]: string }) =>
+    const interp = <TString extends string>(message: TString, parameters?: Parameters<TString>) =>
       parameters ? language.interpolate(message, parameters, disableHtmlEscaping) : message;
 
     // spacing needs to be consistent even if a web template designer adds spaces between lines
@@ -126,7 +126,11 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  gettext: function (msgid: string, parameters?: { [key: string]: string }, disableHtmlEscaping = false) {
+  gettext: function <TString extends string>(
+    msgid: TString,
+    parameters?: Parameters<TString>,
+    disableHtmlEscaping = false,
+  ) {
     return this.getTranslation(msgid, undefined, undefined, undefined, undefined, parameters, disableHtmlEscaping);
   },
 
@@ -141,10 +145,10 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  pgettext: function (
+  pgettext: function <TString extends string>(
     context: string,
-    msgid: string,
-    parameters?: { [key: string]: string },
+    msgid: TString,
+    parameters?: Parameters<TString>,
     disableHtmlEscaping = false,
   ) {
     return this.getTranslation(msgid, 1, context, undefined, undefined, parameters, disableHtmlEscaping);
@@ -163,11 +167,11 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  ngettext: function (
-    msgid: string,
-    plural: string,
+  ngettext: function <TSingular extends string, TPlural extends string>(
+    msgid: TSingular,
+    plural: TPlural,
     n: number,
-    parameters?: { [key: string]: string },
+    parameters?: Parameters<TSingular> & Parameters<TPlural>,
     disableHtmlEscaping = false,
   ) {
     return this.getTranslation(msgid, n, null, plural, undefined, parameters, disableHtmlEscaping);
@@ -187,12 +191,12 @@ const translate = (language: Language) => ({
    *
    * @return {String} The translated string
    */
-  npgettext: function (
+  npgettext: function <TSingular extends string, TPlural extends string>(
     context: string,
-    msgid: string,
-    plural: string,
+    msgid: TSingular,
+    plural: TPlural,
     n: number,
-    parameters?: { [key: string]: string },
+    parameters?: Parameters<TSingular> & Parameters<TPlural>,
     disableHtmlEscaping = false,
   ) {
     return this.getTranslation(msgid, n, context, plural, undefined, parameters, disableHtmlEscaping);

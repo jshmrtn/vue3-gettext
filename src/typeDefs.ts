@@ -42,6 +42,12 @@ export interface GetTextOptions {
   provideComponent: boolean;
 }
 
+type ParameterKeys<TString extends string> = TString extends `${infer _}%{${infer Key}}${infer Rest}`
+  ? Key | ParameterKeys<Rest>
+  : never;
+
+export type Parameters<TString extends string> = Record<ParameterKeys<TString>, string>;
+
 export type Language = UnwrapRef<{
   available: GetTextOptions["availableLanguages"];
   muted: GetTextOptions["mutedLanguages"];
@@ -49,26 +55,30 @@ export type Language = UnwrapRef<{
   translations: WritableComputedRef<GetTextOptions["translations"]>;
   current: string;
   sourceCodeLanguage?: string; // if set, use it to calculate plural form when a msgid is not translated.
-  $gettext: (msgid: string, parameters?: { [key: string]: string }, disableHtmlEscaping?: boolean) => string;
-  $pgettext: (
-    context: string,
-    msgid: string,
-    parameters?: { [key: string]: string },
+  $gettext: <TString extends string>(
+    msgid: TString,
+    parameters?: Parameters<TString>,
     disableHtmlEscaping?: boolean,
   ) => string;
-  $ngettext: (
-    msgid: string,
-    plural: string,
-    n: number,
-    parameters?: { [key: string]: string },
+  $pgettext: <TString extends string>(
+    context: string,
+    msgid: TString,
+    parameters?: Parameters<TString>,
     disableHtmlEscaping?: boolean,
   ) => string;
-  $npgettext: (
-    context: string,
-    msgid: string,
-    plural: string,
+  $ngettext: <TSingular extends string, TPlural extends string>(
+    msgid: TSingular,
+    plural: TPlural,
     n: number,
-    parameters?: { [key: string]: string },
+    parameters?: Parameters<TSingular> & Parameters<TPlural>,
+    disableHtmlEscaping?: boolean,
+  ) => string;
+  $npgettext: <TSingular extends string, TPlural extends string>(
+    context: string,
+    msgid: TSingular,
+    plural: TPlural,
+    n: number,
+    parameters?: Parameters<TSingular> & Parameters<TPlural>,
     disableHtmlEscaping?: boolean,
   ) => string;
   interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
