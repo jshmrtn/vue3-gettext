@@ -85,6 +85,7 @@ module.exports = {
     flat: false, // 是否为每种语言单独创建一个文件夹
     linguas: true, // 创建一个 LINGUAS 文件
     splitJson: false, // 为每种语言生成一个 json 文件，如果为 true, jsonPath 应当是一个目录路径而不是一个文件路径
+    fuzzyMatching: false, // 将 pot 文件合并到 po 文件时不要模糊匹配字符串
   },
 };
 ```
