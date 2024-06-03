@@ -1,7 +1,7 @@
-import path from "path";
-
-import searchPlugin from "@vuepress/plugin-search";
-import { defaultTheme, defineUserConfig, viteBundler } from "vuepress";
+import { viteBundler } from "@vuepress/bundler-vite";
+import { defaultTheme } from "@vuepress/theme-default";
+import path from "node:path";
+import { defineUserConfig } from "vuepress";
 
 export default defineUserConfig({
   base: "/vue3-gettext/",
@@ -9,7 +9,6 @@ export default defineUserConfig({
   lang: "en-US",
   title: "Vue 3 Gettext",
   description: "Translate your Vue 3 applications with Gettext",
-  plugins: [searchPlugin()],
   bundler: viteBundler({
     viteOptions: {
       resolve: {

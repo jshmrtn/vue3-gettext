@@ -146,7 +146,7 @@ import { createGettext } from "vue3-gettext";
 const gettext = createGettext({
   ...
   globalProperties: {
-    gettext: ['$gettext', '__'],  // both support `$gettext`, `__` the two names
+    gettext: ['$gettext', '__'],  // both support `$gettext` and `__`
     ngettext: ['$ngettext', '_n'],
     pgettext: ['$pgettext', '_x'],
     npgettext: ['$npgettext', '_nx'],
@@ -158,7 +158,7 @@ const gettext = createGettext({
 If you got a VSCode warning `Property '{0}' does not exist on type '{1}'. ts(2339)`, consider add a `gettext.d.ts` file like this:
 ```ts
 export { };
-declare module 'vue' {
+declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
         __: (msgid: string, parameters?: {
             [key: string]: string;

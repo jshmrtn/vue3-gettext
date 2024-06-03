@@ -1,8 +1,8 @@
 import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
-import fs from "fs";
-import glob from "glob";
-import path from "path";
+import fs from "node:fs";
+import { glob } from "glob";
+import path from "node:path";
 import { loadConfig } from "./config";
 import extractFromFiles from "./extract";
 import { execShellCommand } from "./utils";
@@ -19,30 +19,19 @@ try {
   process.exit(1);
 }
 
-const globPromise = (pattern: string) =>
-  new Promise((resolve, reject) => {
-    try {
-      glob(pattern, {}, (er, res) => {
-        resolve(res);
-      });
-    } catch (e) {
-      reject(e);
-    }
-  });
-
 var getFiles = async (config: GettextConfig) => {
   const allFiles = await Promise.all(
     config.input?.include.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
       console.info(`Searching: ${chalk.blueBright(searchPath)}`);
-      return globPromise(searchPath) as Promise<string[]>;
+      return glob(searchPath);
     }),
   );
   const excludeFiles = await Promise.all(
     config.input.exclude.map((pattern) => {
       const searchPath = path.join(config.input.path, pattern);
       console.info(`Excluding: ${chalk.blueBright(searchPath)}`);
-      return globPromise(searchPath) as Promise<string[]>;
+      return glob(searchPath);
     }),
   );
   const filesFlat = allFiles.reduce((prev, curr) => [...prev, ...curr], [] as string[]);

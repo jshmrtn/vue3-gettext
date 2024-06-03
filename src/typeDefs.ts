@@ -118,7 +118,7 @@ export interface GettextConfigOptions {
   output?: Partial<GettextConfig["output"]>;
 }
 
-declare module "vue" {
+declare module "@vue/runtime-core" {
   interface ComponentCustomProperties extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
     $language: Language;
     $gettextInterpolate: Language["interpolate"];

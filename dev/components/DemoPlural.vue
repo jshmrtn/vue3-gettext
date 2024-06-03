@@ -9,29 +9,19 @@
       <button @click="increase()">+</button>
     </p>
     <p>
-      data:
-      <translate class="translated" :translate-n="n" translate-plural="%{ n } books">%{ n } book</translate>
-    </p>
-    <p>
-      computed:
-      <translate class="translated" :translate-n="nComputed" translate-plural="%{ nComputed } books">
-        %{ nComputed } book
-      </translate>
+      <span class="translated">{{ $ngettext("%{ n } book", "%{ n } books", n, { n }) }}</span>
     </p>
 
+    <p>Use default singular or plural form when there is no translation.</p>
     <p>
-      <translate class="translated">
-        Use default singular or plural form when there is no translation. This is left untranslated on purpose.
-      </translate>
-    </p>
-    <p>
-      <translate
-        class="translated"
-        :translate-n="countForUntranslated"
-        translate-plural="%{ countForUntranslated } items. This is left untranslated on purpose."
-      >
-        %{ countForUntranslated } item. This is left untranslated on purpose.
-      </translate>
+      <span class="translated">{{
+        $ngettext(
+          "%{ countForUntranslated } item. This is left untranslated on purpose.",
+          "%{ countForUntranslated } items. This is left untranslated on purpose.",
+          countForUntranslated,
+          { countForUntranslated },
+        )
+      }}</span>
     </p>
   </div>
 </template>

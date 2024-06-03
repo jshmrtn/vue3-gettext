@@ -2,12 +2,12 @@ import { Element, IHtmlExtractorFunction } from "gettext-extractor/dist/html/par
 import { ElementSelectorSet } from "gettext-extractor/dist/html/selector";
 import { JsParser } from "gettext-extractor/dist/js/parser";
 import { Validate } from "gettext-extractor/dist/utils/validate";
-import { DefaultTreeChildNode, DefaultTreeTextNode } from "parse5";
+import { ChildNode, TextNode } from "parse5";
 import { ScriptKind } from "typescript";
 
 type Template = Element & {
   tagName: "template";
-  content: { nodeName: string; childNodes: DefaultTreeChildNode[] };
+  content: { nodeName: string; childNodes: ChildNode[] };
 };
 
 export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtmlExtractorFunction {
@@ -28,7 +28,7 @@ export function embeddedJsExtractor(selector: string, jsParser: JsParser): IHtml
 
       children.forEach((childNode) => {
         if (childNode.nodeName === "#text") {
-          const currentNode = childNode as DefaultTreeTextNode;
+          const currentNode = childNode as TextNode;
 
           jsParser.parseString(currentNode.value, fileName, {
             scriptKind: ScriptKind.Deferred,

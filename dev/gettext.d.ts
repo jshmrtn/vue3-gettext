@@ -1,5 +1,5 @@
 export {};
-declare module "vue" {
+declare module "@vue/runtime-core" {
   interface ComponentCustomProperties {
     __: (
       msgid: string,
