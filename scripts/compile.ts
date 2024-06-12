@@ -1,6 +1,6 @@
 // Based on https://github.com/Polyconseil/easygettext/blob/master/src/compile.js
 
-const Pofile = require("pofile");
+import Pofile from "pofile";
 import fsPromises from "fs/promises";
 import { LanguageData, MessageContext, Translations } from "../src/typeDefs";
 

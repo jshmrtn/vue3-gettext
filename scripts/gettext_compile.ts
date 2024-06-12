@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
 import fsPromises from "fs/promises";

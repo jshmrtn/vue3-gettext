@@ -2,13 +2,13 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: dev/components/DemoPlural.vue:28
+#: dev/components/DemoPlural.vue:18
 msgid "%{ countForUntranslated } item. This is left untranslated on purpose."
 msgid_plural "%{ countForUntranslated } items. This is left untranslated on purpose."
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoPlural.vue:13
+#: dev/components/DemoPlural.vue:12
 msgid "%{ n } book"
 msgid_plural "%{ n } books"
 msgstr[0] ""
@@ -17,12 +17,6 @@ msgstr[1] ""
 #: dev/components/DemoAlert.vue:35
 msgid "%{ n } car"
 msgid_plural "%{ n } cars"
-msgstr[0] ""
-msgstr[1] ""
-
-#: dev/components/DemoPlural.vue:17
-msgid "%{ nComputed } book"
-msgid_plural "%{ nComputed } books"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -65,7 +59,7 @@ msgstr ""
 msgid "Hello <strong>%{ name }</strong>"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:22
+#: dev/components/DemoTemplate.vue:11
 msgid "hover here and see the title"
 msgstr ""
 
@@ -73,7 +67,7 @@ msgstr ""
 msgid "In English, '0' (zero) is always plural."
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:18
+#: dev/components/DemoTemplate.vue:7
 msgid "One apple"
 msgid_plural "%{n} apples"
 msgstr[0] ""
@@ -93,38 +87,34 @@ msgstr ""
 msgid "This is %{ obj.name }"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:15
+#: dev/components/DemoTemplate.vue:4
 msgid "use `__` as a alias of gettext"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:17
+#: dev/components/DemoTemplate.vue:6
 msgid "use `_n` as a alias of ngettext"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:21
+#: dev/components/DemoTemplate.vue:10
 msgid "use `_x` as a alias of pgettext"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:25
+#: dev/components/DemoTemplate.vue:14
 msgid "use `_xn` as a alias of npgettext"
-msgstr ""
-
-#: dev/components/DemoPlural.vue:23
-msgid "Use default singular or plural form when there is no translation. This is left untranslated on purpose."
 msgstr ""
 
 #: dev/components/DemoIf.vue:5
 msgid "Welcome %{ name }"
 msgstr ""
 
-#: dev/components/DemoTemplate.vue:26
+#: dev/components/DemoTemplate.vue:15
 msgctxt "list-item"
 msgid "one message"
 msgid_plural "%{n} messages"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dev/components/DemoTemplate.vue:20
+#: dev/components/DemoTemplate.vue:9
 msgctxt "title"
 msgid "This is my title"
 msgstr ""
