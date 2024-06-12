@@ -41,6 +41,7 @@
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "prepublishOnly": "npm run test && npm run build",
+    "package:publish:next": "npm publish --tag next",
     "package:publish": "npm publish"
   },
   "engines": {
