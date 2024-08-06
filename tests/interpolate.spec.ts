@@ -32,7 +32,7 @@ describe("Interpolate tests", () => {
     const msgid = "Foo %{ placeholder } baz";
     const context = { placeholder: "<p>bar</p>" };
     const interpolated = interpolate(msgid, context);
-    expect(interpolated).toEqual("Foo &lt;p&gt;bar&lt;/p&gt; baz");
+    expect(interpolated).toEqual("Foo <p>bar</p> baz");
   });
 
   it("with multiple spaces in the placeholder", () => {

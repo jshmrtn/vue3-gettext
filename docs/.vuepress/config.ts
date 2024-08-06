@@ -55,11 +55,7 @@ export default defineUserConfig({
           {
             text: "使用方法",
             link: "/zh/functions.md",
-            children: [
-              { link: "/zh/functions.md", text: "全局属性" },
-              { link: "/zh/component.md", text: "组件(已废弃)" },
-              { link: "/zh/directive.md", text: "指令(已废弃)" },
-            ],
+            children: [{ link: "/zh/functions.md", text: "全局属性" }],
           },
           {
             text: "翻译文档说明",
@@ -82,11 +78,7 @@ export default defineUserConfig({
       {
         text: "Usage",
         link: "/functions.md",
-        children: [
-          { link: "/functions.md", text: "Functions" },
-          { link: "/component.md", text: "Component" },
-          { link: "/directive.md", text: "Directive" },
-        ],
+        children: [{ link: "/functions.md", text: "Functions" }],
       },
       {
         text: "Translation",

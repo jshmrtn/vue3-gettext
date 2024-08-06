@@ -111,9 +111,9 @@ describe("Translate tests", () => {
 
     expect(gettext("Interpolated: %{param1}", { param1: "success" })).toEqual("Interpolated: success");
     expect(gettext("Interpolated escaped: %{param1}", { param1: "<b>success</b>" })).toEqual(
-      "Interpolated escaped: &lt;b&gt;success&lt;/b&gt;",
+      "Interpolated escaped: <b>success</b>",
     );
-    expect(gettext("Interpolated unescaped: %{param1}", { param1: "<b>success</b>" }, true)).toEqual(
+    expect(gettext("Interpolated unescaped: %{param1}", { param1: "<b>success</b>" })).toEqual(
       "Interpolated unescaped: <b>success</b>",
     );
   });
@@ -131,11 +131,11 @@ describe("Translate tests", () => {
       "Interpolated: success",
     );
     expect(undetectablePgettext("ctx", "Interpolated escaped: %{param1}", { param1: "<b>success</b>" })).toEqual(
-      "Interpolated escaped: &lt;b&gt;success&lt;/b&gt;",
+      "Interpolated escaped: <b>success</b>",
     );
-    expect(
-      undetectablePgettext("ctx", "Interpolated unescaped: %{param1}", { param1: "<b>success</b>" }, true),
-    ).toEqual("Interpolated unescaped: <b>success</b>");
+    expect(undetectablePgettext("ctx", "Interpolated unescaped: %{param1}", { param1: "<b>success</b>" })).toEqual(
+      "Interpolated unescaped: <b>success</b>",
+    );
   });
 
   it("tests the ngettext() method", () => {
@@ -166,15 +166,11 @@ describe("Translate tests", () => {
       undetectableNgettext("Interpolated escaped: %{param1}", "Interpolated escaped plural: %{param1}", 1, {
         param1: "<b>success</b>",
       }),
-    ).toEqual("Interpolated escaped: &lt;b&gt;success&lt;/b&gt;");
+    ).toEqual("Interpolated escaped: <b>success</b>");
     expect(
-      undetectableNgettext(
-        "Interpolated unescaped: %{param1}",
-        "Interpolated unescaped plural: %{param1}",
-        1,
-        { param1: "<b>success</b>" },
-        true,
-      ),
+      undetectableNgettext("Interpolated unescaped: %{param1}", "Interpolated unescaped plural: %{param1}", 1, {
+        param1: "<b>success</b>",
+      }),
     ).toEqual("Interpolated unescaped: <b>success</b>");
   });
 
@@ -222,16 +218,11 @@ describe("Translate tests", () => {
       undetectableNpgettext("ctx", "Interpolated escaped: %{param1}", "Interpolated escaped plural: %{param1}", 1, {
         param1: "<b>success</b>",
       }),
-    ).toEqual("Interpolated escaped: &lt;b&gt;success&lt;/b&gt;");
+    ).toEqual("Interpolated escaped: <b>success</b>");
     expect(
-      undetectableNpgettext(
-        "ctx",
-        "Interpolated unescaped: %{param1}",
-        "Interpolated unescaped plural: %{param1}",
-        1,
-        { param1: "<b>success</b>" },
-        true,
-      ),
+      undetectableNpgettext("ctx", "Interpolated unescaped: %{param1}", "Interpolated unescaped plural: %{param1}", 1, {
+        param1: "<b>success</b>",
+      }),
     ).toEqual("Interpolated unescaped: <b>success</b>");
   });
 

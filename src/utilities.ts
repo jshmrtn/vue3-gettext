@@ -2,10 +2,12 @@ import { inject } from "vue";
 import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs.js";
 
 export function normalizeTranslationKey(key: string) {
-  return key
-    .replace(/\r?\n|\r/, "")
-    .replace(/\s\s+/g, " ")
-    .trim();
+  return (
+    key
+      .replace(/\r?\n|\r/, "")
+      // .replace(/\s\s+/g, " ")
+      .trim()
+  );
 }
 
 export function normalizeTranslations(translations: GetTextOptions["translations"]) {
