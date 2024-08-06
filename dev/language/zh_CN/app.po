@@ -80,7 +80,7 @@ msgstr "欢迎 %{ name }"
 #: dev/components/DemoIf.vue:18
 #, fuzzy
 msgid "This is %{ name }"
-msgstr "这是 %{ obj.name }"
+msgstr "这是 %{ name }"
 
 #: dev/components/DemoDirective.vue:3
 msgid "A <b>random</b> number: <i>%{ random }</i>"

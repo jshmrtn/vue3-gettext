@@ -33,10 +33,9 @@ msgstr[0] "One apple"
 msgstr[1] "%{n} apples"
 
 #: dev/components/DemoTemplate.vue:9
-#, fuzzy
 msgctxt "title"
 msgid "This is my title"
-msgstr "Questo è %{ obj.name }"
+msgstr "Questo è %{ name }"
 
 #: dev/components/DemoTemplate.vue:10
 msgid "use `_x` as a alias of pgettext"
@@ -92,7 +91,7 @@ msgstr "Benvenuto %{ name }"
 #: dev/components/DemoIf.vue:18
 #, fuzzy
 msgid "This is %{ name }"
-msgstr "Questo è %{ obj.name }"
+msgstr "Questo è %{ name }"
 
 #: dev/components/DemoDirective.vue:3
 msgid "A <b>random</b> number: <i>%{ random }</i>"
