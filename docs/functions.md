@@ -162,21 +162,23 @@ declare module '@vue/runtime-core' {
     interface ComponentCustomProperties {
         __: (msgid: string, parameters?: {
             [key: string]: string;
-        }, disableHtmlEscaping?: boolean) => string;
+        }) => string;
         _x: (context: string, msgid: string, parameters?: {
             [key: string]: string;
-        }, disableHtmlEscaping?: boolean) => string;
+        }) => string;
         _n: (msgid: string, plural: string, n: number, parameters?: {
             [key: string]: string;
-        }, disableHtmlEscaping?: boolean) => string;
+        }) => string;
         _xn: (context: string, msgid: string, plural: string, n: number, parameters?: {
             [key: string]: string;
-        }, disableHtmlEscaping?: boolean) => string;
+        }) => string;
     }
 }
 ```
 
 ## Html escaping
+
+<!-- TODO: rework section -->
 
 All the translation functions escape html by default and take a `disableHtmlEscaping` as their last parameter. If your translation messages or parameters contain html tags, you will have to set this to `true` and render the message using [`v-html`](https://vuejs.org/api/built-in-directives.html#v-html):
 

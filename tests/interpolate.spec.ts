@@ -28,19 +28,11 @@ describe("Interpolate tests", () => {
     expect(interpolated).toEqual("Foo bar baz");
   });
 
-  it("with HTML in var (should be escaped)", () => {
+  it("with HTML in var", () => {
     const msgid = "Foo %{ placeholder } baz";
     const context = { placeholder: "<p>bar</p>" };
     const interpolated = interpolate(msgid, context);
     expect(interpolated).toEqual("Foo &lt;p&gt;bar&lt;/p&gt; baz");
-  });
-
-  it("with HTML in var (should NOT be escaped)", () => {
-    const msgid = "Foo %{ placeholder } baz";
-    const context = { placeholder: "<p>bar</p>" };
-    const disableHtmlEscaping = true;
-    const interpolated = interpolate(msgid, context, disableHtmlEscaping, undefined);
-    expect(interpolated).toEqual("Foo <p>bar</p> baz");
   });
 
   it("with multiple spaces in the placeholder", () => {

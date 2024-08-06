@@ -1,6 +1,4 @@
 import { App, computed, reactive, ref } from "vue";
-import Component from "./component";
-import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
 import type {
@@ -100,14 +98,6 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
           globalProperties[p] = gettext;
         });
       }
-
-      if (mergedOptions.provideDirective) {
-        app.directive("translate", Directive(gettext));
-      }
-      if (mergedOptions.provideComponent) {
-        // eslint-disable-next-line vue/multi-word-component-names, vue/component-definition-name-casing
-        app.component("translate", Component);
-      }
     },
   }) as unknown as Language;
 
@@ -118,9 +108,6 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
   gettext.$ngettext = translate.ngettext.bind(translate);
   gettext.$npgettext = translate.npgettext.bind(translate);
   gettext.interpolate = interpolate.bind(interpolate);
-
-  gettext.directive = Directive(gettext);
-  gettext.component = Component;
 
   return gettext;
 }

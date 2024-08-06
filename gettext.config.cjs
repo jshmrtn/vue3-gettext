@@ -4,10 +4,10 @@ module.exports = {
     path: "./dev",
     parserOptions: {
       mapping: {
-        simple: "__",
-        plural: "_n",
-        ctxPlural: "_xn",
-        ctx: "_x",
+        simple: ["__"],
+        plural: ["_n"],
+        ctxPlural: ["_xn"],
+        ctx: ["_x"],
       },
     },
   },

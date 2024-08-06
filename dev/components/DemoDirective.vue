@@ -1,16 +1,18 @@
 <template>
   <div>
-    <p class="translated">{{ $gettext("A <b>random</b> number: <i>%{ random }</i>", {random})}}</p>
+    <p class="translated" v-html="$gettext('A <b>random</b> number: <i>%{ random }</i>', { random })"></p>
 
     <p>
       <input v-model="name" type="text" />
-      <span class="translated">{{ $gettext("Hello <strong>%{ name }</strong>", {name})}}</span>
+      <span class="translated" v-html="$gettext('Hello <strong>%{ name }</strong>', { name })"></span>
     </p>
 
     <p>
       <button @click="decrease()">-</button>
-      <span class="translated">
-        {{ $ngettext("<strong>%{ count }</strong> apple", "<strong>%{ count }</strong> apples", count, {count}) }}
+      <span
+        class="translated"
+        v-html="$ngettext('<strong>%{ count }</strong> apple', '<strong>%{ count }</strong> apples', count, { count })"
+      >
       </span>
       <button @click="increase()">+</button>
     </p>

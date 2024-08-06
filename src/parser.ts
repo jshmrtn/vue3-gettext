@@ -50,32 +50,29 @@ function escapeRegexValue(value: string) {
 
 export type KeywordMapping = {
   /** @default $gettext */
-  simple?: [string];
+  simple?: string[];
   /** @default $ngettext */
-  plural?: [string];
+  plural?: string[];
   /** @default $npgettext */
-  ctxPlural?: [string];
+  ctxPlural?: string[];
   /** @default $pgettext */
-  ctx?: [string];
+  ctx?: string[];
 };
 
-export function parseSrc(mapping: KeywordMapping, src: string): MessageCtx[] {
+export function parseSrc(src: string, mapping?: KeywordMapping): MessageCtx[] {
   // TODO: discardDefaults
   const methods = {
-    simple: ["$gettext", ...(mapping.simple ? mapping.simple : [])],
-    plural: ["$ngettext", ...(mapping.plural ? mapping.plural : [])],
-    ctxPlural: ["$npgettext", ...(mapping.ctxPlural ? mapping.ctxPlural : [])],
-    ctx: ["$pgettext", ...(mapping.ctx ? mapping.ctx : [])],
+    simple: ["$gettext", ...(mapping?.simple ? mapping?.simple : [])],
+    plural: ["$ngettext", ...(mapping?.plural ? mapping?.plural : [])],
+    ctxPlural: ["$npgettext", ...(mapping?.ctxPlural ? mapping?.ctxPlural : [])],
+    ctx: ["$pgettext", ...(mapping?.ctx ? mapping?.ctx : [])],
   };
-  console.log(
+
+  const regex = new RegExp(
     `(?<method>${Object.values(methods)
       .map((m) => m.map((v) => escapeRegexValue(v)))
       .flat()
       .join("|")})[\\n\\r\\s]*\\([\\n\\r\\s]*(?<params>(?:[^(\\\\]|\\\\.)*)[\\n\\r\\s]*\\)`,
-  );
-
-  const regex = new RegExp(
-    `(?<method>\\$gettext)[\\n\\r\\s]*\\([\\n\\r\\s]*(?<params>(?:[^(\\\\]|\\\\.)*)[\\n\\r\\s]*\\)`,
     "gm",
   );
 

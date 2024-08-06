@@ -1,5 +1,4 @@
 import { App, UnwrapRef, WritableComputedRef } from "vue";
-import directive from "./directive.js";
 import { KeywordMapping } from "./parser.js";
 
 export const GetTextSymbol = Symbol("GETTEXT");
@@ -61,23 +60,13 @@ export type Language = UnwrapRef<{
   translations: WritableComputedRef<GetTextOptions["translations"]>;
   current: string;
   sourceCodeLanguage?: string; // if set, use it to calculate plural form when a msgid is not translated.
-  $gettext: <TString extends string>(
-    msgid: TString,
-    parameters?: Parameters<TString>,
-    disableHtmlEscaping?: boolean,
-  ) => string;
-  $pgettext: <TString extends string>(
-    context: string,
-    msgid: TString,
-    parameters?: Parameters<TString>,
-    disableHtmlEscaping?: boolean,
-  ) => string;
+  $gettext: <TString extends string>(msgid: TString, parameters?: Parameters<TString>) => string;
+  $pgettext: <TString extends string>(context: string, msgid: TString, parameters?: Parameters<TString>) => string;
   $ngettext: <TSingular extends string, TPlural extends string>(
     msgid: TSingular,
     plural: TPlural,
     n: number,
     parameters?: Parameters<TSingular> & Parameters<TPlural>,
-    disableHtmlEscaping?: boolean,
   ) => string;
   $npgettext: <TSingular extends string, TPlural extends string>(
     context: string,
@@ -85,9 +74,8 @@ export type Language = UnwrapRef<{
     plural: TPlural,
     n: number,
     parameters?: Parameters<TSingular> & Parameters<TPlural>,
-    disableHtmlEscaping?: boolean,
   ) => string;
-  interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
+  interpolate: (msgid: string, context: object) => string;
   install: (app: App) => void;
 }>;
 
@@ -100,9 +88,9 @@ export interface GettextConfig {
     /** glob patterns to exclude files from extraction */
     exclude: string[];
     /** parser options */
-    parserOptions: {
+    parserOptions?: {
       /** extract different keywords */
-      mapping: KeywordMapping;
+      mapping?: KeywordMapping;
     };
     compileTemplate: boolean;
   };

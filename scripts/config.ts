@@ -36,7 +36,7 @@ export const loadConfig = async (cliArgs?: { config?: string }): Promise<Gettext
       path: config.input?.path || "./src",
       include: config.input?.include || ["**/*.js", "**/*.ts", "**/*.vue"],
       exclude: config.input?.exclude || [],
-      jsExtractorOpts: config.input?.jsExtractorOpts,
+      parserOptions: config.input?.parserOptions,
       compileTemplate: config.input?.compileTemplate || false,
     },
     output: {

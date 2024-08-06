@@ -19,7 +19,7 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
         }),
       );
 
-      const msgs = parseSrc(buffer);
+      const msgs = parseSrc(buffer, config.input?.parserOptions?.mapping);
 
       const po = makePO(fp, msgs);
       // TODO: merge items before building po
