@@ -38,7 +38,7 @@ const { $gettext } = useGettext();
 $gettext('Translate me');
 `,
     );
-    execSync(`sh -c 'cd ${tmpDir}; ts-node ./scripts/gettext_extract.ts'`);
+    execSync(`sh -c 'cd ${tmpDir}; tsx ./scripts/gettext_extract.ts'`);
     const appEnPo = (await readFile(join(tmpDir, "srctest", "lang", "en", "app.po"))).toString();
     const appEnPoLines = appEnPo.trim().split("\n");
     expect(appEnPoLines).toContain('msgid "Translate me"');

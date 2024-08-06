@@ -1,24 +1,16 @@
 <template>
   <div>
-    <!-- No binding: static interpolation. -->
-    <p v-translate="{ random }" class="translated">A <b>random</b> number: <i>%{ random }</i></p>
+    <p class="translated">{{ $gettext("A <b>random</b> number: <i>%{ random }</i>", {random})}}</p>
 
-    <!-- Singular with a dynamic binding. -->
     <p>
       <input v-model="name" type="text" />
-      <span v-translate="{ name }" class="translated">Hello <strong>%{ name }</strong></span>
+      <span class="translated">{{ $gettext("Hello <strong>%{ name }</strong>", {name})}}</span>
     </p>
 
-    <!-- Plural with a dynamic binding. -->
     <p>
       <button @click="decrease()">-</button>
-      <span
-        v-translate="{ count }"
-        class="translated"
-        :translate-n="count"
-        translate-plural="<strong>%{ count }</strong> apples"
-      >
-        <strong>%{ count }</strong> apple
+      <span class="translated">
+        {{ $ngettext("<strong>%{ count }</strong> apple", "<strong>%{ count }</strong> apples", count, {count}) }}
       </span>
       <button @click="increase()">+</button>
     </p>

@@ -1,10 +1,6 @@
-import { IJsExtractorOptions } from "gettext-extractor/dist/js/extractors/common.js";
 import { App, UnwrapRef, WritableComputedRef } from "vue";
-import type { Component as ComponentType } from "./component.js";
 import directive from "./directive.js";
-
-export type TranslateComponent = typeof ComponentType;
-export type TranslateDirective = ReturnType<typeof directive>;
+import { KeywordMapping } from "./parser.js";
 
 export const GetTextSymbol = Symbol("GETTEXT");
 
@@ -42,11 +38,21 @@ export interface GetTextOptions {
   provideComponent: boolean;
 }
 
+type Separator = " ";
+
+type Trim<T extends string, Acc extends string = ""> = T extends `${infer Char}${infer Rest}`
+  ? Char extends Separator
+    ? Trim<Rest, Acc>
+    : Trim<Rest, `${Acc}${Char}`>
+  : T extends ""
+    ? Acc
+    : never;
+
 type ParameterKeys<TString extends string> = TString extends `${infer _}%{${infer Key}}${infer Rest}`
-  ? Key | ParameterKeys<Rest>
+  ? Trim<Key> | ParameterKeys<Rest>
   : never;
 
-export type Parameters<TString extends string> = Record<ParameterKeys<TString>, string>;
+export type Parameters<TString extends string> = Record<ParameterKeys<TString>, string | number>;
 
 export type Language = UnwrapRef<{
   available: GetTextOptions["availableLanguages"];
@@ -83,8 +89,6 @@ export type Language = UnwrapRef<{
   ) => string;
   interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
   install: (app: App) => void;
-  directive: TranslateDirective;
-  component: TranslateComponent;
 }>;
 
 export interface GettextConfig {
@@ -95,11 +99,11 @@ export interface GettextConfig {
     include: string[];
     /** glob patterns to exclude files from extraction */
     exclude: string[];
-    /** js extractor options, for custom extractor keywords */
-    jsExtractorOpts?: {
-      keyword: string;
-      options: IJsExtractorOptions;
-    }[];
+    /** parser options */
+    parserOptions: {
+      /** extract different keywords */
+      mapping: KeywordMapping;
+    };
     compileTemplate: boolean;
   };
   output: {
@@ -122,13 +126,5 @@ declare module "@vue/runtime-core" {
   interface ComponentCustomProperties extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
     $language: Language;
     $gettextInterpolate: Language["interpolate"];
-  }
-
-  interface GlobalComponents {
-    translate: TranslateComponent;
-  }
-
-  interface GlobalDirectives {
-    vTranslate: TranslateDirective;
   }
 }

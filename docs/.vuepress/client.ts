@@ -1,4 +1,4 @@
-import { defineClientConfig } from "@vuepress/client";
+import { defineClientConfig } from "vuepress/client";
 import Demo from "../../dev/App.vue";
 import { gettext } from "../../dev/i18n";
 

@@ -15,6 +15,7 @@ import type {
 import { GetTextSymbol } from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
+export * from "./parser";
 export { useGettext } from "./utilities";
 export type { Language, Message, LanguageData, Translations, GettextConfig, GettextConfigOptions, GetTextOptions };
 

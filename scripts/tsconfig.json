@@ -1,13 +1,15 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "module": "esnext",
+    "target": "es2018",
+    "module": "NodeNext",
     "moduleResolution": "nodenext",
     "esModuleInterop": true
   },
-  "ts-node": {
-    "esm": true,
-    "experimentalResolver": true
-  },
+  // TODO
+  // "ts-node": {
+  //   "esm": true,
+  //   "experimentalResolver": true
+  // },
   "include": ["**/*.ts"]
 }

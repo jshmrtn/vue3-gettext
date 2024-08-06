@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2018",
     "module": "esnext",
     "sourceMap": false,
     "strict": true,
@@ -14,11 +14,12 @@
     "types": ["vitest/globals"],
     "allowJs": true
   },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
-  },
+  // TODO
+  // "ts-node": {
+  //   "compilerOptions": {
+  //     "module": "commonjs"
+  //   }
+  // },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "src/**/*.cjs"]
 }

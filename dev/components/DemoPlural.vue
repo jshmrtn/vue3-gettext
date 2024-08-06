@@ -1,7 +1,7 @@
 <template>
   <div>
     <p>
-      <translate class="translated">In English, '0' (zero) is always plural.</translate>
+      <span class="translated">{{ $gettext("In English, '0' (zero) is always plural.") }}</span>
     </p>
     <p>
       <button @click="decrease()">-</button>

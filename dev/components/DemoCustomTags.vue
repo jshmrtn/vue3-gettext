@@ -1,9 +1,9 @@
 <template>
   <div>
-    <translate class="translated" tag="h1">Headline 1</translate>
-    <translate class="translated" tag="h2">Headline 2</translate>
-    <translate class="translated" tag="h3">Headline 3</translate>
-    <translate class="translated" tag="h4">Headline 4</translate>
-    <translate class="translated" tag="p">Paragraph</translate>
+    <h1 class="translated">{{ $gettext("Headline 1") }}</h1>
+    <h2 class="translated">{{ $gettext("Headline 2") }}</h2>
+    <h3 class="translated">{{ $gettext("Headline 3") }}</h3>
+    <h4 class="translated">{{ $gettext("Headline 4") }}</h4>
+    <p class="translated">{{ $gettext("Paragraph") }}</p>
   </div>
 </template>

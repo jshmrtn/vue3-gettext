@@ -1,56 +1,15 @@
+/** @type {import('vue3-gettext').GettextConfig} */
 module.exports = {
   input: {
     path: "./dev",
-    jsExtractorOpts: [
-      {
-        keyword: "__",
-        options: {
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            text: 0,
-          },
-        },
+    parserOptions: {
+      mapping: {
+        simple: "__",
+        plural: "_n",
+        ctxPlural: "_xn",
+        ctx: "_x",
       },
-      {
-        keyword: "_n",
-        options: {
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            text: 0,
-            textPlural: 1,
-          },
-        },
-      },
-      {
-        keyword: "_x",
-        options: {
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            context: 0,
-            text: 1,
-          },
-        },
-      },
-      {
-        keyword: "_xn",
-        options: {
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            context: 0,
-            text: 1,
-            textPlural: 2,
-          },
-        },
-      },
-    ],
+    },
   },
   output: {
     path: "./dev/language",

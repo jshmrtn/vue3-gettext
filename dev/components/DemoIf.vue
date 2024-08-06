@@ -11,9 +11,11 @@
         <button @click="setName3()">3</button>
         [{{ obj.name }}]
       </p>
-      <p v-if="obj.name === 'Group1'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
-      <p v-else-if="obj.name === 'Group2'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
-      <p v-else v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
+      <p v-if="obj.name === 'Group1'" class="translated">{{ $gettext("This is %{ name }", { name: obj.name }) }}</p>
+      <p v-else-if="obj.name === 'Group2'" class="translated">
+        {{ $gettext("This is %{ name }", { name: obj.name }) }}
+      </p>
+      <p v-else class="translated">{{ $gettext("This is %{ name }", { name: obj.name }) }}</p>
     </div>
   </div>
 </template>

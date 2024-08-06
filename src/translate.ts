@@ -19,7 +19,7 @@ const translate = (language: Language) => ({
     context: string | null = null,
     defaultPlural: string | null = null,
     languageKey?: string,
-    parameters?: { [key: string]: string },
+    parameters?: { [key: string]: string | number },
     disableHtmlEscaping = false,
   ) {
     if (languageKey === undefined) {

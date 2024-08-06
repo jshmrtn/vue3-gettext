@@ -1,13 +1,13 @@
 <template>
   <div>
-    <p>
-      <translate class="translated">Select your language:</translate>
+    <p class="translated">
+      {{ $gettext("Select your language:") }}
     </p>
     <button
       v-for="(name, key) in language.available"
       :key="key"
       :class="$style.button"
-      @click="language.current = key as string"
+      @click="language.current = String(key)"
     >
       {{ name }}
     </button>

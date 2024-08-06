@@ -10,129 +10,71 @@ msgstr ""
 "Generated-By: easygettext\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: dev/components/DemoPlural.vue:18
-msgid "%{ countForUntranslated } item. This is left untranslated on purpose."
-msgid_plural ""
-"%{ countForUntranslated } items. This is left untranslated on purpose."
-msgstr[0] ""
-"%{ countForUntranslated } item. This is left untranslated on purpose."
-msgstr[1] ""
-"%{ countForUntranslated } items. This is left untranslated on purpose."
+#~ msgid "Select your language:"
+#~ msgstr "Select your language:"
 
-#: dev/components/DemoPlural.vue:12
-msgid "%{ n } book"
-msgid_plural "%{ n } books"
-msgstr[0] "%{ n } book"
-msgstr[1] "%{ n } books"
+#~ msgid "%{ n } book"
+#~ msgid_plural "%{ n } books"
+#~ msgstr[0] "%{ n } book"
+#~ msgstr[1] "%{ n } books"
 
-#: dev/components/DemoAlert.vue:35
+#~ msgid ""
+#~ "%{ countForUntranslated } item. This is left untranslated on purpose."
+#~ msgid_plural ""
+#~ "%{ countForUntranslated } items. This is left untranslated on purpose."
+#~ msgstr[0] ""
+#~ "%{ countForUntranslated } item. This is left untranslated on purpose."
+#~ msgstr[1] ""
+#~ "%{ countForUntranslated } items. This is left untranslated on purpose."
+
+#~ msgid ""
+#~ "Forgotten your password? Enter your \"email address\" below, and we'll "
+#~ "email instructions for setting a new one."
+#~ msgstr ""
+#~ "Forgotten your password? Enter your \"email address\" below,\n"
+#~ "      and we'll email instructions for setting a new one."
+
+#~ msgid "Welcome %{ name }"
+#~ msgstr "Welcome %{ name }"
+
 #, fuzzy
-msgid "%{ n } car"
-msgid_plural "%{ n } cars"
-msgstr[0] "%{ n } book"
-msgstr[1] "%{ n } books"
+#~ msgid "This is %{ name }"
+#~ msgstr "This is %{ obj.name }"
 
-#: dev/components/DemoDirective.vue:15
-msgid "<strong>%{ count }</strong> apple"
-msgid_plural "<strong>%{ count }</strong> apples"
-msgstr[0] "<strong>%{ count }</strong> apple"
-msgstr[1] "<strong>%{ count }</strong> apples"
+#~ msgid "A <b>random</b> number: <i>%{ random }</i>"
+#~ msgstr "A <b>random</b> number: <i>%{ random }</i>"
 
-#: dev/components/DemoDirective.vue:4
-msgid "A <b>random</b> number: <i>%{ random }</i>"
-msgstr "A <b>random</b> number: <i>%{ random }</i>"
+#~ msgid "Hello <strong>%{ name }</strong>"
+#~ msgstr "Hello <strong>%{ name }</strong>"
 
-#: dev/components/DemoMultilines.vue:3
-msgid ""
-"Forgotten your password? Enter your \"email address\" below, and we'll email "
-"instructions for setting a new one."
-msgstr ""
-"Forgotten your password? Enter your \"email address\" below,\n"
-"      and we'll email instructions for setting a new one."
+#~ msgid "<strong>%{ count }</strong> apple"
+#~ msgid_plural "<strong>%{ count }</strong> apples"
+#~ msgstr[0] "<strong>%{ count }</strong> apple"
+#~ msgstr[1] "<strong>%{ count }</strong> apples"
 
-#. use jsExtractorOpts in gettext.config.js to extract custom keywords
-#: dev/components/DemoAlert.vue:24
-msgid "Good bye!"
-msgstr ""
+#~ msgid "Headline 1"
+#~ msgstr "Headline 1"
 
-#: dev/components/DemoCustomTags.vue:3
-msgid "Headline 1"
-msgstr "Headline 1"
+#~ msgid "Headline 2"
+#~ msgstr "Headline 2"
 
-#: dev/components/DemoCustomTags.vue:4
-msgid "Headline 2"
-msgstr "Headline 2"
+#~ msgid "Headline 3"
+#~ msgstr "Headline 3"
 
-#: dev/components/DemoCustomTags.vue:5
-msgid "Headline 3"
-msgstr "Headline 3"
+#~ msgid "Headline 4"
+#~ msgstr "Headline 4"
 
-#: dev/components/DemoCustomTags.vue:6
-msgid "Headline 4"
-msgstr "Headline 4"
+#~ msgid "Paragraph"
+#~ msgstr "Paragraph"
 
-#: dev/components/DemoDirective.vue:9
-msgid "Hello <strong>%{ name }</strong>"
-msgstr "Hello <strong>%{ name }</strong>"
+#, fuzzy
+#~ msgid "%{ n } car"
+#~ msgid_plural "%{ n } cars"
+#~ msgstr[0] "%{ n } book"
+#~ msgstr[1] "%{ n } books"
 
-#: dev/components/DemoTemplate.vue:11
-msgid "hover here and see the title"
-msgstr ""
-
-#: dev/components/DemoPlural.vue:4
-msgid "In English, '0' (zero) is always plural."
-msgstr "In English, '0' (zero) is always plural."
-
-#: dev/components/DemoTemplate.vue:7
-msgid "One apple"
-msgid_plural "%{n} apples"
-msgstr[0] ""
-msgstr[1] ""
-
-#: dev/components/DemoCustomTags.vue:7
-msgid "Paragraph"
-msgstr "Paragraph"
-
-#: dev/components/LanguageSelect.vue:4
-msgid "Select your language:"
-msgstr "Select your language:"
-
-#: dev/components/DemoIf.vue:14 dev/components/DemoIf.vue:15
-#: dev/components/DemoIf.vue:16
-msgid "This is %{ obj.name }"
-msgstr "This is %{ obj.name }"
-
-#: dev/components/DemoTemplate.vue:4
-msgid "use `__` as a alias of gettext"
-msgstr ""
-
-#: dev/components/DemoTemplate.vue:6
-msgid "use `_n` as a alias of ngettext"
-msgstr ""
-
-#: dev/components/DemoTemplate.vue:10
-msgid "use `_x` as a alias of pgettext"
-msgstr ""
-
-#: dev/components/DemoTemplate.vue:14
-msgid "use `_xn` as a alias of npgettext"
-msgstr ""
-
-#: dev/components/DemoIf.vue:5
-msgid "Welcome %{ name }"
-msgstr "Welcome %{ name }"
-
-#: dev/components/DemoTemplate.vue:15
-msgctxt "list-item"
-msgid "one message"
-msgid_plural "%{n} messages"
-msgstr[0] ""
-msgstr[1] ""
-
-#: dev/components/DemoTemplate.vue:9
-msgctxt "title"
-msgid "This is my title"
-msgstr ""
+#~ msgid "In English, '0' (zero) is always plural."
+#~ msgstr "In English, '0' (zero) is always plural."
 
 #~ msgid "%{ nComputed } book"
 #~ msgid_plural "%{ nComputed } books"
