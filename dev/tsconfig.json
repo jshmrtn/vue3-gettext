@@ -1,18 +1,14 @@
 {
-    "compilerOptions": {
-        "target": "es2018",
-        "moduleResolution": "Bundler",
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "baseUrl": "./",
+  "compilerOptions": {
+    "target": "es2018",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "baseUrl": "./",
     "skipLibCheck": true,
-        "paths": {
-            "/@gettext/": [
-                "../src"
-            ]
-        }
-    },
-    "include": [
-        "./**/*"
-    ],
+    "paths": {
+      "vue3-gettext": ["../src/index"]
+    }
+  },
+  "include": ["./**/*"]
 }

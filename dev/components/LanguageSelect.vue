@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGettext } from "../../src/index";
+import { useGettext } from "vue3-gettext";
 
 const language = useGettext();
 </script>

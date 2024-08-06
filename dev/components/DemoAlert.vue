@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useGettext } from "../../src/index";
+import { useGettext } from "vue3-gettext";
 
 const { $gettext: __, $ngettext: _n } = useGettext();
 

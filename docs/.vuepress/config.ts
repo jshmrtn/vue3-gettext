@@ -13,7 +13,6 @@ export default defineUserConfig({
     viteOptions: {
       resolve: {
         alias: {
-          // TODO: vue: "vue/dist/vue.esm-bundler.js",
           "vue3-gettext": path.resolve(__dirname, "../../src/index.ts"),
         },
       },
