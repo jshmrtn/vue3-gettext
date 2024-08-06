@@ -4,9 +4,4 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   plugins: [vue()],
-  resolve: {
-    alias: {
-      "vue3-gettext": path.resolve(__dirname, "../src/index"),
-    },
-  },
 });

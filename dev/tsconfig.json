@@ -5,10 +5,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": "./",
-    "skipLibCheck": true,
-    "paths": {
-      "vue3-gettext": ["../src/index"]
-    }
+    "skipLibCheck": true
   },
   "include": ["./**/*"]
 }

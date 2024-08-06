@@ -6,4 +6,5 @@ dev/language
 docs/language/translations.json
 docs/.vuepress/.cache
 docs/.vuepress/.temp
+dev2/.vitepress/cache
 .vscode
