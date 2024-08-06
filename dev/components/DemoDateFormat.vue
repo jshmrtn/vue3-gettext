@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import { useGettext } from "vue3-gettext";
+import { useGettext } from "../../src/index";
 import { format } from "date-fns";
 import en from "date-fns/locale/en-US/index";
 import fr from "date-fns/locale/fr/index";
