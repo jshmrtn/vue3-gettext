@@ -1,5 +1,6 @@
-export {};
-declare module "@vue/runtime-core" {
+import "vue";
+
+declare module "vue" {
   interface ComponentCustomProperties {
     __: ComponentCustomProperties["$gettext"];
     _x: ComponentCustomProperties["$pgettext"];
