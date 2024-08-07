@@ -130,4 +130,11 @@ Line breaks`,
       },
     ]);
   });
+
+  // TODO: test using fixtures
+  // TODO: test all function calls
+  // TODO: test custom function keywords
+  // TODO: test nested calls
+  // TODO: more PO file tests
+  // TODO: test normalized line breaks
 });
