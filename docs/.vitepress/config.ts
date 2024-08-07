@@ -4,8 +4,8 @@ export default defineConfig({
   title: "vue3-gettext",
   description: "Translate Vue applications with gettext",
   themeConfig: {
-    nav: [{ text: "Home", link: "/" }],
     sidebar: [
+      { text: "Overview", link: "/" },
       {
         text: "Getting started",
         items: [
@@ -15,7 +15,6 @@ export default defineConfig({
       },
       {
         text: "Setup",
-        link: "/setup.md",
         items: [
           { link: "/setup.md", text: "Installation" },
           { link: "/extraction.md", text: "Message extraction" },
@@ -24,7 +23,6 @@ export default defineConfig({
       },
       {
         text: "Usage",
-        link: "/functions.md",
         items: [{ link: "/functions.md", text: "Functions" }],
       },
     ],

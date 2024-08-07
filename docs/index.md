@@ -1,4 +1,4 @@
-# vue3-gettext
+# vue3-gettext 🌍
 
 Translate [Vue](http://vuejs.org) applications with [gettext](https://en.wikipedia.org/wiki/Gettext).
 
@@ -7,7 +7,7 @@ Translate [Vue](http://vuejs.org) applications with [gettext](https://en.wikiped
 - Simple, ergonomic API
 - Very **little overhead** for **translation-ready apps**
   - In gettext, translation keys (message ids) don't have to be manually defined
-- CLI tools to automatically extract messages from code
+- CLI tools to **automatically extract messages** from code
 - Easy pluralization
 
 ## Basic workflow

@@ -7,35 +7,38 @@ type MessageCtx = {
   lineNumber: number;
 };
 
-function parseQuotedStringParams(src: string): string[] | undefined {
-  const regex = new RegExp(
-    /\s*(("(?<doubleQuotes>(?:[^"\\]|\\.)*)")|('(?<singleQuotes>(?:[^'\\]|\\.)*)')|(`(?<backTicks>(?:[^`\\]|\\.)*)`))(\s*,\s*(?<remainder>.*))*/,
-  );
-  const res = regex.exec(src);
+export function parseQuotedStringParams(src: string): string[] | undefined {
+  const quoteDouble = quote(`"`, "doubleQuotes");
+  const quoteSingle = quote(`'`, "singleQuotes");
+  const quoteBackTick = quote("`", "backTicks");
 
-  if (!res?.groups) {
-    return undefined;
-  }
+  const regex = new RegExp(`((${quoteDouble})|(${quoteSingle})|(${quoteBackTick}))${ws},?${ws}(?<remainder>.*)`);
+  let res: RegExpExecArray | null = null;
+  let hasMatched = false;
 
-  let next: string[] = [];
-  if (res.groups.remainder) {
-    const parsedRem = parseQuotedStringParams(res.groups.remainder);
-    if (parsedRem) {
-      next = parsedRem;
+  let remainder = src;
+  const messages: string[] = [];
+
+  while (remainder || !hasMatched) {
+    hasMatched = true;
+
+    res = regex.exec(remainder);
+    if (!res?.groups) {
+      break;
+    }
+    remainder = res?.groups.remainder;
+
+    if (res.groups.doubleQuotes) {
+      messages.push(res.groups.doubleQuotes);
+    }
+    if (res.groups.singleQuotes) {
+      messages.push(res.groups.singleQuotes);
+    }
+    if (res.groups.backTicks) {
+      messages.push(res.groups.backTicks);
     }
   }
-
-  if (res.groups.doubleQuotes) {
-    return [res.groups.doubleQuotes, ...next];
-  }
-  if (res.groups.singleQuotes) {
-    return [res.groups.singleQuotes, ...next];
-  }
-  if (res.groups.backTicks) {
-    return [res.groups.backTicks, ...next];
-  }
-
-  return undefined;
+  return messages;
 }
 
 export type TranslationMethodCall = {
@@ -59,6 +62,17 @@ export type KeywordMapping = {
   ctx?: string[];
 };
 
+const ws = `[\\n\\r\\s]*`;
+function quote(delimiter: string, group?: string): string {
+  const groupHead = group ? `?<${group}>` : "";
+  return `${delimiter}(${groupHead}(?:[^${delimiter}\\\\]|\\\\.)*)${delimiter}`;
+}
+const quoteDouble = quote(`"`);
+const quoteSingle = quote(`'`);
+const quoteBackTick = quote("`");
+const quot = `(${quoteDouble})|(${quoteSingle})|(${quoteBackTick})`;
+const params = `(?<params>(${quot})(${ws},${ws}(${quot}))*)`;
+
 export function parseSrc(src: string, mapping?: KeywordMapping): MessageCtx[] {
   // TODO: discardDefaults
   const methods = {
@@ -72,7 +86,7 @@ export function parseSrc(src: string, mapping?: KeywordMapping): MessageCtx[] {
     `(?<method>${Object.values(methods)
       .map((m) => m.map((v) => escapeRegexValue(v)))
       .flat()
-      .join("|")})[\\n\\r\\s]*\\([\\n\\r\\s]*(?<params>(?:[^(\\\\]|\\\\.)*)[\\n\\r\\s]*\\)`,
+      .join("|")})${ws}\\(${ws}${params}`,
     "gm",
   );
 
@@ -82,16 +96,14 @@ export function parseSrc(src: string, mapping?: KeywordMapping): MessageCtx[] {
     const g = match.groups;
     const params = g?.params;
     if (!params) {
-      // TODO
-      throw new Error("Asdf");
+      throw new Error("translation function has no parameters");
     }
     const lineNum = src.substring(0, match.index).split("\n").length;
 
     const args = parseQuotedStringParams(params);
 
     if (!args) {
-      // TODO
-      throw new Error("Asdf");
+      throw new Error("translation function has no message");
     }
 
     if (methods.simple.includes(g.method)) {

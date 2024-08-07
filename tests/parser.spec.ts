@@ -1,7 +1,8 @@
 import { makePO, parseSrc } from "../src/parser";
+import unicodeTestPage from "./json/unicodeTestPage.txt?raw";
 
 describe("parser", () => {
-  it("works on empty strings", async () => {
+  it("basic function calls", () => {
     const src = `
 <template>
   <div>
@@ -59,5 +60,74 @@ msgid_plural \"%{count} books\"
 msgstr[0] \"%{count} book\"
 msgstr[1] \"%{count} books\"
 `);
+  });
+
+  it("handles line breaks correctly", () => {
+    expect(
+      parseSrc(`$gettext(\`Test
+With
+Line breaks\`)`),
+    ).toStrictEqual([
+      {
+        lineNumber: 1,
+        message: `Test
+With
+Line breaks`,
+      },
+    ]);
+  });
+
+  it("deals with all sorts of symbols", () => {
+    // make sure the data is loaded correctly
+    expect(unicodeTestPage.startsWith("#$%&'()*+,")).toBe(true);
+    expect(parseSrc(`$gettext(\`${unicodeTestPage}\`)`)).toStrictEqual([
+      {
+        message: unicodeTestPage,
+        lineNumber: 1,
+      },
+    ]);
+  });
+
+  it("deals with escaped quotes", () => {
+    expect(parseSrc(String.raw`$gettext("t'\`e\"st")`)).toStrictEqual([
+      {
+        message: String.raw`t'\`e\"st`,
+        lineNumber: 1,
+      },
+    ]);
+
+    expect(parseSrc(String.raw`$gettext('t\'\`e"st')`)).toStrictEqual([
+      {
+        message: String.raw`t\'\`e"st`,
+        lineNumber: 1,
+      },
+    ]);
+
+    expect(parseSrc("$gettext(`t'\\`est`)")).toStrictEqual([
+      {
+        message: "t'\\`est",
+        lineNumber: 1,
+      },
+    ]);
+
+    expect(parseSrc(String.raw`$ngettext("t'\`e\"st", 't\'\`e"st')`)).toStrictEqual([
+      {
+        // prettier-ignore
+        message: "t'\\\`e\\\"st",
+        // prettier-ignore
+        messagePlural: "t\\'\\\`e\"st",
+        lineNumber: 1,
+      },
+    ]);
+  });
+
+  it("deals with escaped quotes", () => {
+    expect(parseSrc(`$ngettext("te(st)(()", "test)(()")`)).toStrictEqual([
+      {
+        message: `te(st)(()`,
+        messagePlural: "test)(()",
+        lineNumber: 1,
+      },
+    ]);
   });
 });
