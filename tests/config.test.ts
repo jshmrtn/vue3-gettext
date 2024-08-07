@@ -39,11 +39,11 @@ $gettext('Translate me');
 `,
     );
     execSync(`sh -c 'cd ${tmpDir}; tsx ./scripts/gettext_extract.ts'`);
-    const appEnPo = (await readFile(join(tmpDir, "srctest", "lang", "en", "app.po"))).toString();
+    const appEnPo = (await readFile(join(tmpDir, "srctest", "lang", "en.po"))).toString();
     const appEnPoLines = appEnPo.trim().split("\n");
     expect(appEnPoLines).toContain('msgid "Translate me"');
     expect(appEnPoLines[appEnPoLines.length - 1]).toEqual('msgstr "Translate me"');
-    const appFrPo = (await readFile(join(tmpDir, "srctest", "lang", "fr", "app.po"))).toString();
+    const appFrPo = (await readFile(join(tmpDir, "srctest", "lang", "fr.po"))).toString();
     const appFrPoLines = appFrPo.trim().split("\n");
     expect(appFrPoLines).toContain('msgid "Translate me"');
     expect(appFrPoLines[appFrPoLines.length - 1]).toEqual('msgstr "Translate me"');

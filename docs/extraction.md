@@ -86,7 +86,7 @@ module.exports = {
     potPath: "./messages.pot", // relative to output.path, so by default "./src/language/messages.pot"
     jsonPath: "./translations.json", // relative to output.path, so by default "./src/language/translations.json"
     locales: ["en"],
-    flat: false, // don't create subdirectories for locales
+    flat: true, // create a subdirectory for each locale
     linguas: true, // create a LINGUAS file
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
   },

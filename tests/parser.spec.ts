@@ -20,7 +20,7 @@ describe("parser", () => {
       <p v-else-if="obj.name === 'Group2'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
       <p v-else v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
     </div>
-    {{ $ngettext("%{ n } book", "%{ n } books", n, { n }) }}
+    {{ $ngettext("%{count} book", "%{count} books", n, { n }) }}
   </div>
 </template>
     `;
@@ -36,8 +36,8 @@ describe("parser", () => {
       },
       {
         lineNumber: 19,
-        message: "%{ n } book",
-        messagePlural: "%{ n } books",
+        message: "%{count} book",
+        messagePlural: "%{count} books",
       },
     ]);
 
@@ -54,10 +54,10 @@ msgid \"asdf\"
 msgstr \"asdf\"
 
 #: testFile:19
-msgid \"%{ n } book\"
-msgid_plural \"%{ n } books\"
-msgstr[0] \"%{ n } book\"
-msgstr[1] \"%{ n } books\"
+msgid \"%{count} book\"
+msgid_plural \"%{count} books\"
+msgstr[0] \"%{count} book\"
+msgstr[1] \"%{count} books\"
 `);
   });
 });

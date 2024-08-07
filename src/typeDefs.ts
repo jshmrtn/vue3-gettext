@@ -33,8 +33,6 @@ export interface GetTextOptions {
     npgettext?: Array<string>;
     interpolate?: Array<string>;
   };
-  provideDirective: boolean;
-  provideComponent: boolean;
 }
 
 type Separator = " ";

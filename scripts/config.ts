@@ -46,7 +46,7 @@ export const loadConfig = async (cliArgs?: { config?: string }): Promise<Gettext
         joinPathIfRelative(config.output?.jsonPath) ||
         (config.output?.splitJson ? joinPath("./") : joinPath("./translations.json")),
       locales: config.output?.locales || ["en"],
-      flat: config.output?.flat === undefined ? false : config.output.flat,
+      flat: config.output?.flat === undefined ? true : config.output.flat,
       linguas: config.output?.linguas === undefined ? true : config.output.linguas,
       splitJson: config.output?.splitJson === undefined ? false : config.output.splitJson,
     },

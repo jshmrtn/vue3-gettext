@@ -1,7 +1,8 @@
-/** @type {import('vue3-gettext').GettextConfig} */
+/** @type {import('./src/index').GettextConfig} */
 module.exports = {
   input: {
-    path: "./dev",
+    path: "./docs",
+    include: [".vitepress/theme/**/*.vue", "demo.md"],
     parserOptions: {
       mapping: {
         simple: ["__"],
@@ -12,7 +13,7 @@ module.exports = {
     },
   },
   output: {
-    path: "./dev/language",
+    path: "./docs/.vitepress/language",
     locales: ["en_GB", "fr_FR", "it_IT", "zh_CN"],
     splitJson: false,
   },

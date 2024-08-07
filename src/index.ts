@@ -34,8 +34,6 @@ const defaultOptions: GetTextOptions = {
     npgettext: ["$npgettext"],
     interpolate: ["$gettextInterpolate"],
   },
-  provideDirective: true,
-  provideComponent: true,
 };
 
 export function createGettext(options: Partial<GetTextOptions> = {}) {

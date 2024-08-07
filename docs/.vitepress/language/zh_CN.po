@@ -1,0 +1,28 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: vue 3-gettext\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: docs/.vitepress/theme/demo/LanguageSelect.vue:4
+msgid "Select your language:"
+msgstr "Select your language:"
+
+#: docs/.vitepress/theme/demo/DemoPluralization.vue:4 docs/demo.md:97
+msgid "%{count} book"
+msgid_plural "%{count} books"
+msgstr[0] "%{count} book"
+msgstr[1] "%{count} books"
+
+#: docs/.vitepress/theme/demo/DemoParams.vue:4
+msgid "I like %{name}. My favorite number is %{favNum}."
+msgstr "I like %{name}. My favorite number is %{favNum}."
+
+#: docs/demo.md:17 docs/demo.md:63 docs/demo.md:69 docs/demo.md:81
+#: docs/demo.md:119
+msgid "Headline 1"
+msgstr "Headline 1"

@@ -37,8 +37,6 @@ All the available options can be found in the `GetTextOptions` type, these are t
     npgettext: ['$npgettext'], // ['$npgettext', '_nx']
     interpolate: ['$gettextInterpolate'],// deprecated
   },
-  provideDirective: true,
-  provideComponent: true,
 }
 ```
 
