@@ -1,9 +1,9 @@
 <template>
   <div class="pluralization">
     <DemoBox>
-      {{ $ngettext("%{count} book", "%{count} books", count, { count }) }}
+      {{ $ngettext("I have %{count} book.", "I have %{count} books.", count, { count }) }}
     </DemoBox>
-    <h5>Set value of "count":</h5>
+    <h5>Set count:</h5>
     <div class="controls">
       <VPButton @click="decrease()" text="-" />
       {{ count }}

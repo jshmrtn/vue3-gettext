@@ -46,7 +46,7 @@ $gettext('Translate me');
     const appFrPo = (await readFile(join(tmpDir, "srctest", "lang", "fr.po"))).toString();
     const appFrPoLines = appFrPo.trim().split("\n");
     expect(appFrPoLines).toContain('msgid "Translate me"');
-    expect(appFrPoLines[appFrPoLines.length - 1]).toEqual('msgstr "Translate me"');
+    expect(appFrPoLines[appFrPoLines.length - 1]).toEqual('msgstr ""');
   };
 
   it("load a commonjs format", async () => {

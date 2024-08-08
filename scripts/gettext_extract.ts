@@ -8,7 +8,7 @@ import path from "node:path";
 import { GettextConfig } from "../src/typeDefs.js";
 import { chmodSync, existsSync, lstatSync, mkdirSync, writeFileSync } from "node:fs";
 import { loadConfig } from "./config.js";
-import extractFromFiles from "./extract.js";
+import { extractAndCreatePOT } from "./extract.js";
 import { execShellCommand } from "./utils.js";
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
@@ -60,7 +60,7 @@ var getFiles = async (config: GettextConfig) => {
   console.info();
   files.forEach((f) => console.info(chalk.grey(f)));
   console.info();
-  await extractFromFiles(files, config.output.potPath, config);
+  await extractAndCreatePOT(files, config.output.potPath, config);
 
   for (const loc of config.output.locales) {
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);

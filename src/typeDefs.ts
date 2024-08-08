@@ -56,7 +56,10 @@ export type Language = UnwrapRef<{
   silent: GetTextOptions["silent"];
   translations: WritableComputedRef<GetTextOptions["translations"]>;
   current: string;
-  sourceCodeLanguage?: string; // if set, use it to calculate plural form when a msgid is not translated.
+  /** if set, use it to calculate plural form when a msgid is not translated.
+   * Default is 'en'.
+   */
+  sourceCodeLanguage?: string;
   $gettext: <TString extends string>(msgid: TString, parameters?: Parameters<TString>) => string;
   $pgettext: <TString extends string>(context: string, msgid: TString, parameters?: Parameters<TString>) => string;
   $ngettext: <TSingular extends string, TPlural extends string>(

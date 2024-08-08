@@ -5,8 +5,9 @@ import { GettextConfigOptions } from "../src/typeDefs.js";
 
 import PO from "pofile";
 
-const extractFromFiles = async (filePaths: string[], potPath: string, config: GettextConfigOptions) => {
+export async function extractAndCreatePOT(filePaths: string[], potPath: string, config: GettextConfigOptions) {
   const pot = new PO();
+  pot.headers["Content-Type"] = "text/plain; charset=UTF-8";
 
   await Promise.all(
     filePaths.map(async (fp) => {
@@ -47,5 +48,4 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
   }
 
   console.info(`${chalk.green("Extraction successful")}, ${chalk.blueBright(potPath)} created.`);
-};
-export default extractFromFiles;
+}

@@ -14,7 +14,7 @@ import { computed } from "vue";
 const { $gettext, $ngettext } = useGettext();
 
 const item = computed(() => ({
-  label: $gettext("Headline 1"),
+  label: $gettext("I like cats."),
 }));
 </script>
 
@@ -37,7 +37,7 @@ const item = computed(() => ({
   display: grid;
   grid-template-columns: 1fr;
   @container (width > 860px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr minmax(200px, 2fr);
   }
   grid-template-rows: 1fr;
   gap: 1rem;
@@ -56,31 +56,34 @@ const item = computed(() => ({
 
 ### Simple translation
 
-  <div class="section">
+<div class="section">
 
 ```vue
 <template>
-  {{ $gettext("Headline 1") }}
+  {{ $gettext("I like cats.") }}
 </template>
 ```
 
-  <ClientOnly>
-    <DemoBox>
-      {{ $gettext("Headline 1") }}
-    </DemoBox>
-  </ClientOnly>
+<ClientOnly>
+  <DemoBox>
+    {{ $gettext("I like cats.") }}
+  </DemoBox>
+</ClientOnly>
 
-  </div>
+</div>
   
 ### Parameters
 
 <div class="section">
 
-```vue
-<template>
-  {{ $gettext("Headline 1") }}
-</template>
+<!-- prettier-ignore-start -->
+```ts
+$gettext(
+  "%{name} is a good friend. My favorite number is %{favNum}.",
+  { name, favNum: number }
+)
 ```
+<!-- prettier-ignore-end -->
 
 <ClientOnly>
   <DemoParams />
@@ -94,7 +97,7 @@ const item = computed(() => ({
 
 <!-- prettier-ignore-start -->
 ```ts
-$ngettext("%{count} book", "%{count} books", 
+$ngettext("I have %{count} book.", "I have %{count} books.", 
   count, { count }
 );
 ```
@@ -116,7 +119,7 @@ import { useGettext } from "vue3-gettext";
 const { $gettext, $ngettext } = useGettext();
 
 const item = computed(() => ({
-  label: $gettext("Headline 1"),
+  label: $gettext("I like cats."),
 }));
 </script>
 

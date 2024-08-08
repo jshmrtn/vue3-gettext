@@ -1,7 +1,7 @@
 <template>
   <div class="params">
     <DemoBox>
-      {{ $gettext("I like %{name}. My favorite number is %{favNum}.", { name, favNum: number }) }}
+      {{ $gettext("%{name} is a good friend. My favorite number is %{favNum}.", { name, favNum: number }) }}
     </DemoBox>
     <div class="inputs">
       <label class="input">
@@ -20,7 +20,7 @@
 import { ref } from "vue";
 import DemoBox from "./DemoBox.vue";
 
-const name = ref("cats");
+const name = ref("Jane");
 const number = ref(7);
 </script>
 
@@ -33,10 +33,11 @@ const number = ref(7);
 
 .inputs {
   display: grid;
-  grid-template-columns: 2fr minmax(max-content, 1fr);
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
 
   .input {
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     gap: 0.125rem;

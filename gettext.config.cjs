@@ -14,7 +14,7 @@ module.exports = {
   },
   output: {
     path: "./docs/.vitepress/language",
-    locales: ["en_GB", "fr_FR", "it_IT", "zh_CN"],
+    locales: ["en_GB", "fr_FR", "zh_CN"],
     splitJson: false,
   },
 };

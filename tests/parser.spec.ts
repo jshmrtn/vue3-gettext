@@ -48,17 +48,17 @@ msgstr \"\"
 
 #: testFile:6
 msgid \"Welcome, %{ name }\"
-msgstr \"Welcome, %{ name }\"
+msgstr \"\"
 
 #: testFile:10
 msgid \"asdf\"
-msgstr \"asdf\"
+msgstr \"\"
 
 #: testFile:19
 msgid \"%{count} book\"
 msgid_plural \"%{count} books\"
-msgstr[0] \"%{count} book\"
-msgstr[1] \"%{count} books\"
+msgstr[0] \"\"
+msgstr[1] \"\"
 `);
   });
 

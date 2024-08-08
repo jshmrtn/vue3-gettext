@@ -146,7 +146,6 @@ export function makePO(fileName: string, msgs: MsgInfo[]): PO {
     item.msgid = msg.message;
     item.msgid_plural = msg.messagePlural;
     item.msgctxt = msg.context;
-    item.msgstr = [msg.message, ...(msg.messagePlural ? [msg.messagePlural] : [])];
     item.references = [`${fileName}:${msg.lineNumber}`];
     po.items.push(item);
   }

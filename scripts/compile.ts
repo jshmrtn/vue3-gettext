@@ -2,7 +2,7 @@
 
 import Pofile from "pofile";
 import fsPromises from "fs/promises";
-import { LanguageData, MessageContext, Translations } from "../src/typeDefs";
+import { LanguageData, MessageContext, Translations } from "../src/typeDefs.js";
 
 /**
  * Returns a sanitized po data dictionary where:
