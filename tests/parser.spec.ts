@@ -1,4 +1,4 @@
-import { getKeywords, makePO, parseSrc } from "../src/extract/parser";
+import { makePO, MsgInfo, parseSrc } from "../src/extract/parser";
 import unicodeTestPage from "./json/unicodeTestPage.txt?raw";
 
 describe("parser", () => {
@@ -133,6 +133,15 @@ Line breaks`,
       {
         message: `te(st)(()`,
         messagePlural: "test)(()",
+        lineNumber: 1,
+      },
+    ]);
+  });
+
+  it("deals with repeated keywords", () => {
+    expect(parseSrc(`$gettext $gettext("test")`)).toEqual(<MsgInfo[]>[
+      {
+        message: `test`,
         lineNumber: 1,
       },
     ]);

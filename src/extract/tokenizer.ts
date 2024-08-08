@@ -95,6 +95,9 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
       case '"':
       case "'":
       case "`":
+        // this check prevents parsing string literals that aren't part of a function call
+        // improves robustness as it prevents issues with odd numbers
+        // but will also parse calls within string literals
         const prevTokenKind = tokens[tokens.length - 1]?.kind;
         if (prevTokenKind === TokenKind.ParenLeft || prevTokenKind === TokenKind.Comma) {
           addToken(TokenKind.String, idx, readString(c));

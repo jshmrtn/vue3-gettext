@@ -34,11 +34,11 @@ export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): Msg
     assertIsDefined(t.value);
     const keyword = t.value;
     const charIndex = t.idx;
-    t = advance();
-    if (t.kind !== TokenKind.ParenLeft) {
+    if (tokens[idx + 1]?.kind !== TokenKind.ParenLeft) {
       // not a function call
       continue;
     }
+    t = advance();
     t = advance();
     const stringArgs: string[] = [];
 

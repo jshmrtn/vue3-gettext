@@ -19,11 +19,11 @@ msgid_plural "%{count} books"
 msgstr[0] "%{count} book"
 msgstr[1] "%{count} books"
 
-#: docs/.vitepress/theme/demo/DemoParams.vue:4
-msgid "I like %{name}. My favorite number is %{favNum}."
-msgstr "I like %{name}. My favorite number is %{favNum}."
-
 #: docs/demo.md:17 docs/demo.md:63 docs/demo.md:69 docs/demo.md:81
 #: docs/demo.md:119
 msgid "Headline 1"
 msgstr "Headline 1"
+
+#: docs/.vitepress/theme/demo/DemoParams.vue:4
+msgid "I like %{name}. My favorite number is %{favNum}."
+msgstr "I like %{name}. My favorite number is %{favNum}."

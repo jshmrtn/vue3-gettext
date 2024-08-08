@@ -20,7 +20,7 @@
 import { ref } from "vue";
 import DemoBox from "./DemoBox.vue";
 
-const name = ref("Jane");
+const name = ref("cats");
 const number = ref(7);
 </script>
 
