@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import fs from "node:fs";
-import { makePO, parseSrc } from "../src/parser.js";
+import { makePO, parseSrc } from "../src/extract/parser.js";
 import { GettextConfigOptions } from "../src/typeDefs.js";
 
 import PO from "pofile";
@@ -19,7 +19,10 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
         }),
       );
 
-      const msgs = parseSrc(buffer, config.input?.parserOptions?.mapping);
+      const msgs = parseSrc(buffer, {
+        mapping: config.input?.parserOptions?.mapping,
+        overrideDefaults: config.input?.parserOptions?.overrideDefaultKeywords,
+      });
 
       const po = makePO(fp, msgs);
       // TODO: merge items before building po

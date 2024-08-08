@@ -31,6 +31,6 @@ const language = useGettext();
 .buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 0.25rem;
+  gap: 0.5rem;
 }
 </style>

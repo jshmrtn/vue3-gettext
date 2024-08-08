@@ -1,5 +1,4 @@
 import { App, UnwrapRef, WritableComputedRef } from "vue";
-import { KeywordMapping } from "./parser.js";
 
 export const GetTextSymbol = Symbol("GETTEXT");
 
@@ -77,6 +76,31 @@ export type Language = UnwrapRef<{
   install: (app: App) => void;
 }>;
 
+export type KeywordMapping = {
+  /** @default $gettext */
+  simple?: string[];
+  /** @default $ngettext */
+  plural?: string[];
+  /** @default $npgettext */
+  ctxPlural?: string[];
+  /** @default $pgettext */
+  ctx?: string[];
+};
+
+type ParserOptions =
+  | {
+      /** extract different keywords */
+      mapping: KeywordMapping;
+      /** doesn't merge your custom keywords with the default values */
+      overrideDefaultKeywords: true;
+    }
+  | {
+      /** extract different keywords */
+      mapping?: KeywordMapping;
+      /** doesn't merge your custom keywords with the default values */
+      overrideDefaultKeywords: false;
+    };
+
 export interface GettextConfig {
   input: {
     /** only files in this directory are considered for extraction */
@@ -86,11 +110,7 @@ export interface GettextConfig {
     /** glob patterns to exclude files from extraction */
     exclude: string[];
     /** parser options */
-    parserOptions?: {
-      /** extract different keywords */
-      mapping?: KeywordMapping;
-    };
-    compileTemplate: boolean;
+    parserOptions?: ParserOptions;
   };
   output: {
     path: string;

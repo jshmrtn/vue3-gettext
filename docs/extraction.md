@@ -44,42 +44,22 @@ export default {
 
 Here are all the available configuration options and their defaults:
 
-<!-- TODO: update -->
-
 ```js
 module.exports = {
   input: {
     path: "./src", // only files in this directory are considered for extraction
     include: ["**/*.js", "**/*.ts", "**/*.vue"], // glob patterns to select files for extraction
     exclude: [], // glob patterns to exclude files from extraction
-    jsExtractorOpts: [
-      // custom extractor keyword. default empty.
-      {
-        keyword: "__", // only extractor default keyword such as $gettext,use keyword to custom
-        options: {
-          // see https://github.com/lukasgeiter/gettext-extractor
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            text: 0,
-          },
-        },
+    parserOptions: {
+      // add your own function names/keywords to extract
+      keywords: {
+        simple: ["$gettext"],
+        plural: ["$ngettext"],
+        ctx: ["$pgettext"],
+        ctxPlural: ["$npgettext"],
       },
-      {
-        keyword: "_n", // $ngettext
-        options: {
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            text: 0,
-            textPlural: 1,
-          },
-        },
-      },
-    ],
-    compileTemplate: false, // do not compile <template> tag when its lang is not html
+      overrideDefaultKeywords: false, // do not extract default keywords, `keywords` must be set if this is enabled
+    },
   },
   output: {
     path: "./src/language", // output path of all created files

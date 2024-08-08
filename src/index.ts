@@ -13,7 +13,8 @@ import type {
 import { GetTextSymbol } from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
-export * from "./parser";
+export { tokenize } from "./extract/tokenizer";
+export { type MsgInfo, parseSrc, makePO } from "./extract/parser";
 export { useGettext } from "./utilities";
 export type { Language, Message, LanguageData, Translations, GettextConfig, GettextConfigOptions, GetTextOptions };
 
@@ -86,10 +87,6 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
         properties = mergedOptions.globalProperties.npgettext || ["$npgettext"];
         properties.forEach((p) => {
           globalProperties[p] = gettext.$npgettext;
-        });
-        properties = mergedOptions.globalProperties.interpolate || ["$gettextInterpolate"];
-        properties.forEach((p) => {
-          globalProperties[p] = gettext.interpolate;
         });
         properties = mergedOptions.globalProperties.language || ["$language"];
         properties.forEach((p) => {

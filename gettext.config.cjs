@@ -7,8 +7,8 @@ module.exports = {
       mapping: {
         simple: ["__"],
         plural: ["_n"],
-        ctxPlural: ["_xn"],
         ctx: ["_x"],
+        ctxPlural: ["_xn"],
       },
     },
   },

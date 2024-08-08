@@ -1,4 +1,4 @@
-import { makePO, parseSrc } from "../src/parser";
+import { getKeywords, makePO, parseSrc } from "../src/extract/parser";
 import unicodeTestPage from "./json/unicodeTestPage.txt?raw";
 
 describe("parser", () => {
@@ -26,7 +26,7 @@ describe("parser", () => {
 </template>
     `;
 
-    expect(parseSrc(src)).toStrictEqual([
+    expect(parseSrc(src)).toEqual([
       {
         message: "Welcome, %{ name }",
         lineNumber: 6,
@@ -67,7 +67,7 @@ msgstr[1] \"%{count} books\"
       parseSrc(`$gettext(\`Test
 With
 Line breaks\`)`),
-    ).toStrictEqual([
+    ).toEqual([
       {
         lineNumber: 1,
         message: `Test
@@ -80,7 +80,7 @@ Line breaks`,
   it("deals with all sorts of symbols", () => {
     // make sure the data is loaded correctly
     expect(unicodeTestPage.startsWith("#$%&'()*+,")).toBe(true);
-    expect(parseSrc(`$gettext(\`${unicodeTestPage}\`)`)).toStrictEqual([
+    expect(parseSrc(`$gettext(\`${unicodeTestPage.replace("\\", "\\\\")}\`)`)).toEqual([
       {
         message: unicodeTestPage,
         lineNumber: 1,
@@ -89,40 +89,47 @@ Line breaks`,
   });
 
   it("deals with escaped quotes", () => {
-    expect(parseSrc(String.raw`$gettext("t'\`e\"st")`)).toStrictEqual([
+    expect(parseSrc(`$gettext("t'\`e\\"st")`)).toEqual([
       {
-        message: String.raw`t'\`e\"st`,
+        message: `t'\`e"st`,
         lineNumber: 1,
       },
     ]);
 
-    expect(parseSrc(String.raw`$gettext('t\'\`e"st')`)).toStrictEqual([
+    expect(parseSrc(`$gettext('t\\'\`e"st')`)).toEqual([
       {
-        message: String.raw`t\'\`e"st`,
+        message: `t\'\`e"st`,
         lineNumber: 1,
       },
     ]);
 
-    expect(parseSrc("$gettext(`t'\\`est`)")).toStrictEqual([
+    expect(parseSrc("$gettext(`t'\\`est`)")).toEqual([
       {
-        message: "t'\\`est",
+        message: "t'`est",
         lineNumber: 1,
       },
     ]);
 
-    expect(parseSrc(String.raw`$ngettext("t'\`e\"st", 't\'\`e"st')`)).toStrictEqual([
+    expect(parseSrc(`$ngettext("t'\`e\\"st", 't\\'\`e"st')`)).toEqual([
       {
-        // prettier-ignore
-        message: "t'\\\`e\\\"st",
-        // prettier-ignore
-        messagePlural: "t\\'\\\`e\"st",
+        message: "t'`e\"st",
+        messagePlural: `t'\`e"st`,
+        lineNumber: 1,
+      },
+    ]);
+  });
+
+  it("deals with backslashes", () => {
+    expect(parseSrc(`$gettext("\\\\"`)).toEqual([
+      {
+        message: `\\`,
         lineNumber: 1,
       },
     ]);
   });
 
   it("deals with escaped quotes", () => {
-    expect(parseSrc(`$ngettext("te(st)(()", "test)(()")`)).toStrictEqual([
+    expect(parseSrc(`$ngettext("te(st)(()", "test)(()")`)).toEqual([
       {
         message: `te(st)(()`,
         messagePlural: "test)(()",
