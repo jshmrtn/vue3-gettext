@@ -80,7 +80,7 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
         prevChar = "\\\\";
       }
     }
-    return content;
+    return content.replace(/\r\n/g, "\n");
   }
 
   function scanToken() {

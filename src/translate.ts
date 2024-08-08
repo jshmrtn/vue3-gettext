@@ -1,5 +1,6 @@
 import plurals from "./plurals";
 import { Language, LanguageData, Message, MessageContext, Parameters } from "./typeDefs";
+import { normalizeMsgId } from "./utilities";
 
 const translate = (language: Language) => ({
   /*
@@ -29,11 +30,11 @@ const translate = (language: Language) => ({
     const interp = <TString extends string>(message: TString, parameters?: Parameters<TString>) =>
       parameters ? language.interpolate(message, parameters) : message;
 
-    // spacing needs to be consistent even if a web template designer adds spaces between lines
-    msgid = msgid.trim();
+    msgid = normalizeMsgId(msgid);
+    defaultPlural = defaultPlural ? normalizeMsgId(defaultPlural) : null;
 
     if (!msgid) {
-      // Allow empty strings.
+      // Ignore empty message ids.
       return "";
     }
 
