@@ -1,27 +1,23 @@
-import { cosmiconfig } from "cosmiconfig";
-import { lilconfigSync } from "lilconfig";
+import { lilconfig } from "lilconfig";
 import path from "node:path";
 import { GettextConfig, GettextConfigOptions } from "../src/typeDefs.js";
 
 export const loadConfig = async (cliArgs?: { config?: string }): Promise<GettextConfig> => {
-  const moduleName = "gettext";
-  const explorer = cosmiconfig(moduleName);
+  const configSearcher = lilconfig("gettext", {
+    searchPlaces: ["gettext.config.js", "gettext.config.cjs", "gettext.config.mjs", "package.json"],
+  });
 
   let configRes;
   if (cliArgs?.config) {
-    configRes = await explorer.load(cliArgs.config);
+    configRes = await configSearcher.load(cliArgs.config);
     if (!configRes) {
       throw new Error(`Config not found: ${cliArgs.config}`);
     }
   } else {
-    configRes = await explorer.search();
+    configRes = await configSearcher.search();
   }
 
-  if (!configRes) {
-    throw new Error(`Config not found: ${cliArgs?.config}`);
-  }
-
-  const config = configRes.config as GettextConfigOptions;
+  const config: GettextConfigOptions = configRes?.config ?? {};
 
   const languagePath = config.output?.path || "./src/language";
   const joinPath = (inputPath: string) => path.join(languagePath, inputPath);

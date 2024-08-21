@@ -14,12 +14,6 @@
     "types": ["vitest/globals"],
     "allowJs": true
   },
-  // TODO
-  // "ts-node": {
-  //   "compilerOptions": {
-  //     "module": "commonjs"
-  //   }
-  // },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["src/**/*.ts", "tests/**/*.ts", "src/**/*.cjs"]
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

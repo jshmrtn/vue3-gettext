@@ -2,8 +2,9 @@ msgid ""
 msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 
-#: docs/.vitepress/theme/demo/LanguageSelect.vue:4
-msgid "Select your language:"
+#: docs/.vitepress/theme/demo/DemoParams.vue:4
+#: docs/demo.md:81
+msgid "%{name} is a good friend. My favorite number is %{favNum}."
 msgstr ""
 
 #: docs/.vitepress/theme/demo/DemoPluralization.vue:4
@@ -13,9 +14,8 @@ msgid_plural "I have %{count} books."
 msgstr[0] ""
 msgstr[1] ""
 
-#: docs/.vitepress/theme/demo/DemoParams.vue:4
-#: docs/demo.md:81
-msgid "%{name} is a good friend. My favorite number is %{favNum}."
+#: docs/.vitepress/theme/demo/LanguageSelect.vue:4
+msgid "Select your language:"
 msgstr ""
 
 #: docs/demo.md:17

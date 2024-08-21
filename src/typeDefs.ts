@@ -95,13 +95,13 @@ type ParserOptions =
       /** extract different keywords */
       mapping: KeywordMapping;
       /** doesn't merge your custom keywords with the default values */
-      overrideDefaultKeywords: true;
+      overrideDefaultKeywords?: true;
     }
   | {
       /** extract different keywords */
       mapping?: KeywordMapping;
       /** doesn't merge your custom keywords with the default values */
-      overrideDefaultKeywords: false;
+      overrideDefaultKeywords?: false;
     };
 
 export interface GettextConfig {

@@ -9,9 +9,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: docs/.vitepress/theme/demo/LanguageSelect.vue:4
-msgid "Select your language:"
-msgstr "Select your language:"
+#: docs/.vitepress/theme/demo/DemoParams.vue:4 docs/demo.md:81
+msgid "%{name} is a good friend. My favorite number is %{favNum}."
+msgstr "%{name} is a good friend. My favorite number is %{favNum}."
 
 #: docs/.vitepress/theme/demo/DemoPluralization.vue:4 docs/demo.md:100
 msgid "I have %{count} book."
@@ -19,9 +19,9 @@ msgid_plural "I have %{count} books."
 msgstr[0] "I have %{count} book."
 msgstr[1] "I have %{count} books."
 
-#: docs/.vitepress/theme/demo/DemoParams.vue:4 docs/demo.md:81
-msgid "%{name} is a good friend. My favorite number is %{favNum}."
-msgstr "%{name} is a good friend. My favorite number is %{favNum}."
+#: docs/.vitepress/theme/demo/LanguageSelect.vue:4
+msgid "Select your language:"
+msgstr "Select your language:"
 
 #: docs/demo.md:17 docs/demo.md:63 docs/demo.md:69 docs/demo.md:122
 msgid "I like cats."

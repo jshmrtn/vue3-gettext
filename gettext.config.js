@@ -1,5 +1,6 @@
-/** @type {import('./src/index').GettextConfig} */
-module.exports = {
+// @ts-check
+/** @type {import('./src/index').Config} */
+const config = {
   input: {
     path: "./docs",
     include: [".vitepress/theme/**/*.vue", "demo.md"],
@@ -18,3 +19,5 @@ module.exports = {
     splitJson: false,
   },
 };
+
+export default config;

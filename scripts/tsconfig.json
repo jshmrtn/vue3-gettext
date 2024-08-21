@@ -6,10 +6,5 @@
     "moduleResolution": "nodenext",
     "esModuleInterop": true
   },
-  // TODO
-  // "ts-node": {
-  //   "esm": true,
-  //   "experimentalResolver": true
-  // },
   "include": ["**/*.ts"]
 }

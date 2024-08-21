@@ -1,13 +1,12 @@
 import chalk from "chalk";
 import fs from "node:fs";
-import { makePO, parseSrc } from "../src/extract/parser.js";
+import { MsgInfo, makePO, parseSrc } from "../src/extract/parser.js";
 import { GettextConfigOptions } from "../src/typeDefs.js";
 
 import PO from "pofile";
 
 export async function extractAndCreatePOT(filePaths: string[], potPath: string, config: GettextConfigOptions) {
-  const pot = new PO();
-  pot.headers["Content-Type"] = "text/plain; charset=UTF-8";
+  const fileMsgMap: { path: string; msgs: MsgInfo[] }[] = [];
 
   await Promise.all(
     filePaths.map(async (fp) => {
@@ -25,21 +24,29 @@ export async function extractAndCreatePOT(filePaths: string[], potPath: string, 
         overrideDefaults: config.input?.parserOptions?.overrideDefaultKeywords,
       });
 
-      const po = makePO(fp, msgs);
-      // TODO: merge items before building po
-      for (const i of po.items) {
-        const prevItem = pot.items.find(
-          (pi) => pi.msgid === i.msgid && pi.msgid_plural === i.msgid_plural && pi.msgctxt === i.msgctxt,
-        );
-
-        if (prevItem) {
-          prevItem.references.push(...i.references);
-        } else {
-          pot.items.push(i);
-        }
-      }
+      fileMsgMap.push({ path: fp, msgs });
     }),
   );
+
+  const pot = new PO();
+  pot.headers["Content-Type"] = "text/plain; charset=UTF-8";
+
+  // sorting makes order more deterministic and prevents unnecessary source diffs
+  fileMsgMap.sort((a, b) => a.path.localeCompare(b.path));
+  fileMsgMap.forEach((m) => {
+    const po = makePO(m.path, m.msgs);
+    for (const i of po.items) {
+      const prevItem = pot.items.find(
+        (pi) => pi.msgid === i.msgid && pi.msgid_plural === i.msgid_plural && pi.msgctxt === i.msgctxt,
+      );
+
+      if (prevItem) {
+        prevItem.references.push(...i.references);
+      } else {
+        pot.items.push(i);
+      }
+    }
+  });
 
   try {
     fs.writeFileSync(potPath, pot.toString());

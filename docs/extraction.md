@@ -25,27 +25,22 @@ Using these scripts is _theoretically_ optional if you have other means of extra
 Before running the scripts, create a file `gettext.config.js` in your application root. This is a configuration _only_ for the scripts above. A minimal configuration may look like this:
 
 ```js
-module.exports = {
+// @ts-check
+/** @type {import('./src/index').Config} */
+const config = {
   output: {
     locales: ["en", "de"],
   },
 };
-```
-
-You can also use a `gettext.config.mjs` file with the Ecmascript module format:
-
-```js
-export default {
-  output: {
-    locales: ["en", "de"],
-  },
-};
+export default config;
 ```
 
 Here are all the available configuration options and their defaults:
 
 ```js
-module.exports = {
+// @ts-check
+/** @type {import('./src/index').Config} */
+const config = {
   input: {
     path: "./src", // only files in this directory are considered for extraction
     include: ["**/*.js", "**/*.ts", "**/*.vue"], // glob patterns to select files for extraction
@@ -72,6 +67,7 @@ module.exports = {
     fuzzyMatching: true, // set if fuzzy matching should be enabled when merging the pot file into the po files
   },
 };
+export default config;
 ```
 
 ## Gotchas

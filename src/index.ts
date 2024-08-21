@@ -1,22 +1,14 @@
 import { App, computed, reactive, ref } from "vue";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import type {
-  GettextConfig,
-  GettextConfigOptions,
-  GetTextOptions,
-  Language,
-  LanguageData,
-  Message,
-  Translations,
-} from "./typeDefs";
+import type { GettextConfigOptions, GetTextOptions, Language, LanguageData, Message, Translations } from "./typeDefs";
 import { GetTextSymbol } from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
 export { tokenize } from "./extract/tokenizer";
 export { type MsgInfo, parseSrc, makePO } from "./extract/parser";
 export { useGettext } from "./utilities";
-export type { Language, Message, LanguageData, Translations, GettextConfig, GettextConfigOptions, GetTextOptions };
+export type { Language, Message, LanguageData, Translations, GettextConfigOptions as Config, GetTextOptions };
 
 const defaultOptions: GetTextOptions = {
   /** all the available languages of your application. Keys must match locale names */
