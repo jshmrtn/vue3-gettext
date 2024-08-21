@@ -22,10 +22,10 @@ try {
   process.exit(1);
 }
 
-var getFiles = async (config: GettextConfig) => {
+const getFiles = async (config: GettextConfig) => {
   const allFiles = await Promise.all(
     config.input?.include.map((pattern) => {
-      const searchPath = path.join(config.input.path, pattern);
+      const searchPath = path.join(config.input.path, pattern).replace(/\\/g, "/");
       console.info(`Searching: ${chalk.blueBright(searchPath)}`);
       return glob(searchPath);
     }),

@@ -38,7 +38,7 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
 
   function addToken(kind: TokenKind, charIndex: number, value?: string) {
     if (unrecognizedContent.trim()) {
-      tokens.push({ kind: TokenKind.Unrecognized, idx });
+      tokens.push({ kind: TokenKind.Unrecognized, idx, value: unrecognizedContent });
       unrecognizedContent = "";
     }
     if (value) {
@@ -99,7 +99,10 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
         // improves robustness as it prevents issues with odd numbers
         // but will also parse calls within string literals
         const prevTokenKind = tokens[tokens.length - 1]?.kind;
-        if (prevTokenKind === TokenKind.ParenLeft || prevTokenKind === TokenKind.Comma) {
+        if (
+          !unrecognizedContent.trim() &&
+          (prevTokenKind === TokenKind.ParenLeft || prevTokenKind === TokenKind.Comma)
+        ) {
           addToken(TokenKind.String, idx, readString(c));
           break;
         }
