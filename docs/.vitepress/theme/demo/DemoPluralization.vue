@@ -5,9 +5,9 @@
     </DemoBox>
     <h5>Set count:</h5>
     <div class="controls">
-      <VPButton @click="decrease()" text="-" />
+      <VPButton text="-" @click="decrease()" />
       {{ count }}
-      <VPButton @click="increase()" text="+" />
+      <VPButton text="+" @click="increase()" />
     </div>
   </div>
 </template>

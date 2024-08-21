@@ -10,7 +10,7 @@
       </label>
       <label class="input">
         <span class="label">Number:</span>
-        <input type="number" v-model="number" />
+        <input v-model="number" type="number" />
       </label>
     </div>
   </div>

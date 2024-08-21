@@ -5,11 +5,11 @@
     </div>
     <div class="buttons">
       <VPButton
-        :text="name"
         v-for="(name, key) in language.available"
         :key="key"
-        @click="language.current = String(key)"
+        :text="name"
         :theme="language.current === key ? undefined : 'alt'"
+        @click="language.current = String(key)"
       />
     </div>
   </div>
