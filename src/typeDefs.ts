@@ -132,9 +132,15 @@ export interface GettextConfigOptions {
   output?: Partial<GettextConfig["output"]>;
 }
 
+interface GlobalTypes extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
+  $language: Language;
+  $gettextInterpolate: Language["interpolate"];
+}
+
 declare module "vue" {
-  interface ComponentCustomProperties extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
-    $language: Language;
-    $gettextInterpolate: Language["interpolate"];
-  }
+  interface ComponentCustomProperties extends GlobalTypes {}
+}
+
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties extends GlobalTypes {}
 }
