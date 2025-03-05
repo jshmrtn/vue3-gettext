@@ -18,8 +18,14 @@ const getElementContent = (element: Element | Template, options: IContentOptions
   // text nodes within template tags don't get serialized properly, this is a hack
   if (element.tagName === "template") {
     const docFragment = treeAdapter.createDocumentFragment();
-    (element as Template).content.childNodes.forEach((childNode: Node) => {
-      treeAdapter.appendChild(docFragment, childNode);
+    let childNodes
+    if (typeof (element as Template).content === "undefined") {
+        childNodes = (element as Template).childNodes
+    } else {
+        childNodes = (element as Template).content.childNodes
+    }
+    childNodes.forEach((childNode: Node) => {
+        treeAdapter.appendChild(docFragment, childNode);
     });
     content = serialize(docFragment, {});
   }
