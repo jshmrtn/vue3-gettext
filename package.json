@@ -27,6 +27,7 @@
     "vue-gettext-compile": "./dist/bin/gettext_compile.js"
   },
   "scripts": {
+    "prepare": "npm run build",
     "docs": "vuepress dev docs",
     "docs:build": "vuepress build docs -d distDocs",
     "docs:extract": "node --loader ts-node/esm ./scripts/gettext_extract.ts",
