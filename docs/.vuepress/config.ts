@@ -13,9 +13,16 @@ export default defineUserConfig({
     viteOptions: {
       resolve: {
         alias: {
-          vue: "vue/dist/vue.esm-bundler.js",
+          vue: "vue",
           "/@gettext/": path.resolve(__dirname, "../../src"),
+          "date-fns/locale/en-US": "date-fns/locale/en-US/index.js",
         },
+      },
+      ssr: {
+        noExternal: ["vue", "@vue/server-renderer", "date-fns"],
+      },
+      optimizeDeps: {
+        include: ["vue", "@vue/server-renderer"],
       },
     },
   }),
