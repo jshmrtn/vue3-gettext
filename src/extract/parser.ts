@@ -44,7 +44,7 @@ export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): Msg
 
     // parse strings arguments
     while (true) {
-      if (t.kind !== TokenKind.String) {
+      if (!t || t.kind !== TokenKind.String) {
         break;
       }
       assertIsDefined(t.value);
