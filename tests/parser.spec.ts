@@ -174,6 +174,34 @@ export default {
     ]);
   });
 
+  it("leave variable as not translatable", () => {
+    const src = `
+<script>
+export default {
+  name: 'Test',
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+}
+</script>
+<template>
+  <h1>{{ $gettext(title) }}</h1>
+  <div>
+    {{ $gettext("Hello there") }}
+  </div>
+</template>
+`
+    expect(parseSrc(src)).toEqual(<MsgInfo[]>[
+      {
+        message: `Hello there`,
+        lineNumber: 16,
+      },
+    ]);
+  });
+
   // TODO: test using fixtures
   // TODO: test all function calls
   // TODO: test custom function keywords

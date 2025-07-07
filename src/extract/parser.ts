@@ -61,8 +61,10 @@ export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): Msg
         break;
       }
     }
-
-    msgs.push(getMsgInfo(mapping, keyword, charIndex, stringArgs));
+    
+    if (stringArgs.length) {
+      msgs.push(getMsgInfo(mapping, keyword, charIndex, stringArgs));
+    }
   }
 
   return msgs;
