@@ -57,6 +57,9 @@ export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): Msg
         break;
       }
       t = advance();
+      if (!t) {
+        break;
+      }
     }
 
     msgs.push(getMsgInfo(mapping, keyword, charIndex, stringArgs));
