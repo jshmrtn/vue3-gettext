@@ -17,6 +17,7 @@ const config = {
     path: "./docs/.vitepress/language",
     locales: ["en_GB", "fr_FR", "zh_CN"],
     splitJson: false,
+    locations: true,
   },
 };
 

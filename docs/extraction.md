@@ -65,6 +65,7 @@ const config = {
     linguas: true, // create a LINGUAS file
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
     fuzzyMatching: true, // set if fuzzy matching should be enabled when merging the pot file into the po files
+    locations: true, // output location paths
   },
 };
 export default config;

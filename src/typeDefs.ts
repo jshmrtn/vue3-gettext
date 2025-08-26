@@ -124,6 +124,7 @@ export interface GettextConfig {
     linguas: boolean;
     splitJson: boolean;
     fuzzyMatching: boolean;
+    locations: boolean;
   };
 }
 

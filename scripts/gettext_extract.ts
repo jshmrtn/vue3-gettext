@@ -54,6 +54,7 @@ const getFiles = async (config: GettextConfig) => {
   console.info(`Output directory: ${chalk.blueBright(config.output.path)}`);
   console.info(`Output POT file: ${chalk.blueBright(config.output.potPath)}`);
   console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+  console.info(`Locations: ${chalk.blueBright(config.output.locations)}`);
   console.info();
 
   const files = await getFiles(config);
@@ -65,14 +66,14 @@ const getFiles = async (config: GettextConfig) => {
   for (const loc of config.output.locales) {
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
     const poFile = config.output.flat ? path.join(poDir, `${loc}.po`) : path.join(poDir, `app.po`);
+    const noLocation = config.output.locations ? "" : "--no-location";
+    const noFuzzyMatching = config.output.fuzzyMatching  ? "" : "--no-fuzzy-matching";
 
     mkdirSync(poDir, { recursive: true });
     const isFile = existsSync(poFile) && lstatSync(poFile).isFile();
     if (isFile) {
       await execShellCommand(
-        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${
-          config.output.fuzzyMatching ? "" : "--no-fuzzy-matching"
-        } --backup=off`,
+        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${noFuzzyMatching        } ${noLocation} --backup=off`,
       );
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
@@ -85,7 +86,7 @@ const getFiles = async (config: GettextConfig) => {
         `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
       );
       chmodSync(poFile, 0o666);
-      await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
+      await execShellCommand(`msgattrib --no-wrap --no-obsolete ${noLocation} -o ${poFile} ${poFile}`);
       console.info(`${chalk.green("Created")}: ${chalk.blueBright(poFile)}`);
     }
   }
