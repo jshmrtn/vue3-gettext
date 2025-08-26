@@ -147,6 +147,61 @@ Line breaks`,
     ]);
   });
 
+  it("parse vue file", () => {
+    const src = `
+<script>
+export default {
+  name: 'Test',
+  props: {
+    user: {
+      type: Object,
+      required: true,
+    },
+  },
+}
+</script>
+<template>
+  <div>
+    {{ $gettext("%{fullName} wants to say hello", {fullName: user.fullName}) }}
+  </div>
+</template>
+`;
+    expect(parseSrc(src)).toEqual(<MsgInfo[]>[
+      {
+        message: `%{fullName} wants to say hello`,
+        lineNumber: 15,
+      },
+    ]);
+  });
+
+  it("leave variable as not translatable", () => {
+    const src = `
+<script>
+export default {
+  name: 'Test',
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+}
+</script>
+<template>
+  <h1>{{ $gettext(title) }}</h1>
+  <div>
+    {{ $gettext("Hello there") }}
+  </div>
+</template>
+`
+    expect(parseSrc(src)).toEqual(<MsgInfo[]>[
+      {
+        message: `Hello there`,
+        lineNumber: 16,
+      },
+    ]);
+  });
+
   // TODO: test using fixtures
   // TODO: test all function calls
   // TODO: test custom function keywords
