@@ -53,6 +53,7 @@ var getFiles = async (config: GettextConfig) => {
   console.info(`Output directory: ${chalk.blueBright(config.output.path)}`);
   console.info(`Output POT file: ${chalk.blueBright(config.output.potPath)}`);
   console.info(`Locales: ${chalk.blueBright(config.output.locales)}`);
+  console.info(`Locations: ${chalk.blueBright(config.output.locations)}`);
   console.info();
 
   const files = await getFiles(config);
@@ -68,7 +69,11 @@ var getFiles = async (config: GettextConfig) => {
     fs.mkdirSync(poDir, { recursive: true });
     const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
     if (isFile) {
-      await execShellCommand(`msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} --backup=off`);
+      await execShellCommand(
+        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${
+          config.output.locations ? "" : "--no-location"
+        } --backup=off`,
+      );
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
       // https://www.gnu.org/software/gettext/manual/html_node/msginit-Invocation.html
@@ -80,7 +85,9 @@ var getFiles = async (config: GettextConfig) => {
         `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
       );
       fs.chmodSync(poFile, 0o666);
-      await execShellCommand(`msgattrib --no-wrap --no-obsolete -o ${poFile} ${poFile}`);
+      await execShellCommand(
+        `msgattrib --no-wrap --no-obsolete ${config.output.locations ? "" : "--no-location"} -o ${poFile} ${poFile}`,
+      );
       console.info(`${chalk.green("Created")}: ${chalk.blueBright(poFile)}`);
     }
   }

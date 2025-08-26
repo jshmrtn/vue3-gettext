@@ -89,4 +89,26 @@ export default {
         ),
     );
   });
+  it("output without locations", async () => {
+    await withTempDir(async (tmpDir) => {
+      await testConfigWithExtract(
+        tmpDir,
+        `
+export default {
+  input: {
+    path: './srctest',
+  },
+  output: {
+    path: './srctest/lang',
+    locales: ['en', 'fr'],
+    locations: false,
+  },
+};`,
+        "gettext.config.js",
+        true,
+      );
+      const appEnPo = (await readFile(join(tmpDir, "srctest", "lang", "en", "app.po"))).toString();
+      expect(appEnPo).not.toContain("#:");
+    });
+  });
 });

@@ -85,6 +85,7 @@ module.exports = {
     flat: false, // don't create subdirectories for locales
     linguas: true, // create a LINGUAS file
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
+    locations: true, // removes path comments inside pot files if set to false
   },
 };
 ```

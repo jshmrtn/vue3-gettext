@@ -44,6 +44,7 @@ export const loadConfig = async (cliArgs?: { config?: string }): Promise<Gettext
       flat: config.output?.flat === undefined ? false : config.output.flat,
       linguas: config.output?.linguas === undefined ? true : config.output.linguas,
       splitJson: config.output?.splitJson === undefined ? false : config.output.splitJson,
+      locations: config.output?.locations === undefined ? true : config.output.locations,
     },
   };
 };
