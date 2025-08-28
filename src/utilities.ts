@@ -2,7 +2,7 @@ import { inject } from "vue";
 import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs.js";
 
 export function normalizeMsgId(key: string) {
-  return key.replace(/\r?\n|\r/, "").trim();
+  return key.replaceAll(/\r?\n/g, "\n");
 }
 
 export function normalizeTranslations(translations: GetTextOptions["translations"]) {

@@ -108,7 +108,7 @@ export default {
         "gettext.config.js",
         true,
       );
-      const appEnPo = (await readFile(join(tmpDir, "srctest", "lang", "en", "app.po"))).toString();
+      const appEnPo = (await readFile(join(tmpDir, "srctest", "lang", "en.po"))).toString();
       expect(appEnPo).not.toContain("#:");
     });
   });
