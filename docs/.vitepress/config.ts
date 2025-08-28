@@ -3,6 +3,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "vue3-gettext",
   description: "Translate Vue applications with gettext",
+  base: "/vue3-gettext/",
   themeConfig: {
     sidebar: [
       { text: "Overview", link: "/" },
