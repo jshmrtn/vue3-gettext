@@ -47,13 +47,13 @@ const config = {
     exclude: [], // glob patterns to exclude files from extraction
     parserOptions: {
       // add your own function names/keywords to extract
-      keywords: {
+      mapping: {
         simple: ["$gettext"],
         plural: ["$ngettext"],
         ctx: ["$pgettext"],
         ctxPlural: ["$npgettext"],
       },
-      overrideDefaultKeywords: false, // do not extract default keywords, `keywords` must be set if this is enabled
+      overrideDefaultKeywords: false, // do not extract default keywords, `mapping` must be set if this is enabled
     },
   },
   output: {
