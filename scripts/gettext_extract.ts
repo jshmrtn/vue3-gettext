@@ -67,13 +67,13 @@ const getFiles = async (config: GettextConfig) => {
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
     const poFile = config.output.flat ? path.join(poDir, `${loc}.po`) : path.join(poDir, `app.po`);
     const noLocation = config.output.locations ? "" : "--no-location";
-    const noFuzzyMatching = config.output.fuzzyMatching  ? "" : "--no-fuzzy-matching";
+    const noFuzzyMatching = config.output.fuzzyMatching ? "" : "--no-fuzzy-matching";
 
     mkdirSync(poDir, { recursive: true });
     const isFile = existsSync(poFile) && lstatSync(poFile).isFile();
     if (isFile) {
       await execShellCommand(
-        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${noFuzzyMatching        } ${noLocation} --backup=off`,
+        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${noFuzzyMatching} ${noLocation} --backup=off`,
       );
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {

@@ -193,7 +193,7 @@ export default {
     {{ $gettext("Hello there") }}
   </div>
 </template>
-`
+`;
     expect(parseSrc(src)).toEqual(<MsgInfo[]>[
       {
         message: `Hello there`,

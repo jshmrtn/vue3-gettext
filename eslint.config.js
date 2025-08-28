@@ -1,12 +1,12 @@
 import globals from "globals";
-import pluginVue from 'eslint-plugin-vue'
+import pluginVue from "eslint-plugin-vue";
 import eslintConfigPrettier from "eslint-config-prettier/flat";
 
 export default [
   {
     ignores: ["**/node_modules", "**/dist", "**/distDocs", "**/coverage", "docs/.vitepress/cache", "**/.vscode"],
   },
-  ...pluginVue.configs['flat/recommended'],
+  ...pluginVue.configs["flat/recommended"],
   eslintConfigPrettier,
   {
     languageOptions: {

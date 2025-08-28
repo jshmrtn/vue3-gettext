@@ -137,9 +137,11 @@ interpolate($gettext("My message for %{ name }"), { name: "Rudi" });
 ```
 
 ### custom translate function name
+
 You can custom the translate function name by pass the `globalProperties` option to `createGettext`, see [Configuration](./configuration.md).
 
 For example, if you want to use the WordPress style:
+
 ```ts
 import { createGettext } from "vue3-gettext";
 
@@ -156,23 +158,42 @@ const gettext = createGettext({
 ```
 
 If you got a VSCode warning `Property '{0}' does not exist on type '{1}'. ts(2339)`, consider add a `gettext.d.ts` file like this:
+
 ```ts
-export { };
-declare module '@vue/runtime-core' {
-    interface ComponentCustomProperties {
-        __: (msgid: string, parameters?: {
-            [key: string]: string;
-        }) => string;
-        _x: (context: string, msgid: string, parameters?: {
-            [key: string]: string;
-        }) => string;
-        _n: (msgid: string, plural: string, n: number, parameters?: {
-            [key: string]: string;
-        }) => string;
-        _xn: (context: string, msgid: string, plural: string, n: number, parameters?: {
-            [key: string]: string;
-        }) => string;
-    }
+export {};
+declare module "@vue/runtime-core" {
+  interface ComponentCustomProperties {
+    __: (
+      msgid: string,
+      parameters?: {
+        [key: string]: string;
+      },
+    ) => string;
+    _x: (
+      context: string,
+      msgid: string,
+      parameters?: {
+        [key: string]: string;
+      },
+    ) => string;
+    _n: (
+      msgid: string,
+      plural: string,
+      n: number,
+      parameters?: {
+        [key: string]: string;
+      },
+    ) => string;
+    _xn: (
+      context: string,
+      msgid: string,
+      plural: string,
+      n: number,
+      parameters?: {
+        [key: string]: string;
+      },
+    ) => string;
+  }
 }
 ```
 
