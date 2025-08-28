@@ -9,7 +9,7 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Bundler",
     "skipLibCheck": true,
-    "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"],
+    "lib": ["DOM", "ES5", "ES2021"],
     "rootDir": ".",
     "types": ["vitest/globals"],
     "allowJs": true

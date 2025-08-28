@@ -4,7 +4,8 @@
     "target": "es2018",
     "module": "NodeNext",
     "moduleResolution": "nodenext",
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "lib": ["ES5", "ES2021"]
   },
   "include": ["**/*.ts"]
 }

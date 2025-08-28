@@ -1,7 +1,7 @@
 import PO from "pofile";
-import { Token, tokenize, TokenKind } from "./tokenizer";
-import { KeywordMapping } from "../typeDefs";
-import { assertIsDefined } from "../utilities";
+import { Token, tokenize, TokenKind } from "./tokenizer.js";
+import { KeywordMapping } from "../typeDefs.js";
+import { assertIsDefined } from "../utilities.js";
 
 type BaseMsg = { message: string; messagePlural?: string; context?: string };
 

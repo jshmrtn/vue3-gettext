@@ -5,7 +5,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": "./",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "lib": ["ES5", "ES2021"]
   },
   "include": ["./**/*.vue", "./**/*.ts"]
 }

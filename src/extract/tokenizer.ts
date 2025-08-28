@@ -1,4 +1,4 @@
-import { KeywordMapping } from "../typeDefs";
+import { KeywordMapping } from "../typeDefs.js";
 
 export enum TokenKind {
   ParenLeft = "ParenLeft",
