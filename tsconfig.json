@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2018",
     "module": "esnext",
     "sourceMap": false,
     "strict": true,
@@ -9,15 +9,11 @@
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Bundler",
     "skipLibCheck": true,
-    "lib": ["DOM", "ES5", "ES2020.Symbol.WellKnown"],
+    "lib": ["DOM", "ES5", "ES2021"],
     "rootDir": ".",
-    "types": ["vitest/globals"]
-  },
-  "ts-node": {
-    "compilerOptions": {
-      "module": "commonjs"
-    }
+    "types": ["vitest/globals"],
+    "allowJs": true
   },
   "exclude": ["node_modules", "**/node_modules/*"],
-  "include": ["src/**/*", "scripts/**/*.ts", "tests/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

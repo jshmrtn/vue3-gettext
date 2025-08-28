@@ -1,80 +1,12 @@
-import { parse, compileTemplate } from "@vue/compiler-sfc";
 import chalk from "chalk";
-import fs from "fs";
-import { GettextExtractor, HtmlExtractors, JsExtractors } from "gettext-extractor";
-import { IJsExtractorFunction } from "gettext-extractor/dist/js/parser";
-import { GettextConfigOptions } from "../src/typeDefs";
-import { attributeEmbeddedJsExtractor } from "./attributeEmbeddedJsExtractor";
-import { embeddedJsExtractor } from "./embeddedJsExtractor";
+import fs from "node:fs";
+import { MsgInfo, makePO, parseSrc } from "../src/extract/parser.js";
+import { GettextConfigOptions } from "../src/typeDefs.js";
 
-const extractFromFiles = async (filePaths: string[], potPath: string, config: GettextConfigOptions) => {
-  const extr = new GettextExtractor();
+import PO from "pofile";
 
-  // custom keywords
-  const emptyExtractors = new Array<IJsExtractorFunction>();
-  const extractors =
-    config?.input?.jsExtractorOpts?.reduce((acc, item, index, array) => {
-      console.log(`custom keyword: ${chalk.blueBright(item.keyword)}`);
-      acc.push(JsExtractors.callExpression([item.keyword, `[this].${item.keyword}`], item.options));
-      return acc;
-    }, emptyExtractors) || emptyExtractors;
-
-  const jsParser = extr.createJsParser([
-    JsExtractors.callExpression(["$gettext", "[this].$gettext"], {
-      content: {
-        replaceNewLines: "\n",
-      },
-      arguments: {
-        text: 0,
-      },
-    }),
-    JsExtractors.callExpression(["$ngettext", "[this].$ngettext"], {
-      content: {
-        replaceNewLines: "\n",
-      },
-      arguments: {
-        text: 0,
-        textPlural: 1,
-      },
-    }),
-    JsExtractors.callExpression(["$pgettext", "[this].$pgettext"], {
-      content: {
-        replaceNewLines: "\n",
-      },
-      arguments: {
-        context: 0,
-        text: 1,
-      },
-    }),
-    JsExtractors.callExpression(["$npgettext", "[this].$npgettext"], {
-      content: {
-        replaceNewLines: "\n",
-      },
-      arguments: {
-        context: 0,
-        text: 1,
-        textPlural: 2,
-      },
-    }),
-    ...extractors,
-  ]);
-
-  const htmlParser = extr.createHtmlParser([
-    HtmlExtractors.elementContent("translate, [v-translate]", {
-      content: {
-        trimWhiteSpace: true,
-        // TODO: figure out newlines for component
-        replaceNewLines: " ",
-      },
-      attributes: {
-        textPlural: "translate-plural",
-        context: "translate-context",
-        comment: "translate-comment",
-      },
-    }),
-    attributeEmbeddedJsExtractor("[*=*]", jsParser),
-    embeddedJsExtractor("*", jsParser),
-  ]);
+export async function extractAndCreatePOT(filePaths: string[], potPath: string, config: GettextConfigOptions) {
+  const fileMsgMap: { path: string; msgs: MsgInfo[] }[] = [];
 
   await Promise.all(
     filePaths.map(async (fp) => {
@@ -86,62 +18,41 @@ const extractFromFiles = async (filePaths: string[], potPath: string, config: Ge
           res(data);
         }),
       );
-      // TODO: make file extensions and parsers configurable
-      if (fp.endsWith(".vue")) {
-        const { descriptor, errors } = parse(buffer, {
-          filename: fp,
-          sourceRoot: process.cwd(),
-        });
-        if (errors.length > 0) {
-          errors.forEach((e) => console.error(e));
-        }
-        if (descriptor.template) {
-          htmlParser.parseString(`<template>${descriptor.template.content}</template>`, descriptor.filename, {
-            lineNumberStart: descriptor.template.loc.start.line,
-            transformSource: (code) => {
-              const lang = descriptor?.template?.lang?.toLowerCase() || "html";
-              if (!config.input?.compileTemplate || lang === "html") {
-                return code;
-              }
 
-              const compiledTemplate = compileTemplate({
-                filename: descriptor?.filename,
-                source: code,
-                preprocessLang: lang,
-                id: descriptor?.filename,
-              });
+      const msgs = parseSrc(buffer, {
+        mapping: config.input?.parserOptions?.mapping,
+        overrideDefaults: config.input?.parserOptions?.overrideDefaultKeywords,
+      });
 
-              return compiledTemplate.source;
-            },
-          });
-        }
-        if (descriptor.script) {
-          jsParser.parseString(descriptor.script.content, descriptor.filename, {
-            lineNumberStart: descriptor.script.loc.start.line,
-          });
-        }
-        if (descriptor.scriptSetup) {
-          jsParser.parseString(descriptor.scriptSetup.content, descriptor.filename, {
-            lineNumberStart: descriptor.scriptSetup.loc.start.line,
-          });
-        }
-      } else if (fp.endsWith(".html")) {
-        htmlParser.parseString(buffer, fp);
-      } else if (
-        fp.endsWith(".js") ||
-        fp.endsWith(".ts") ||
-        fp.endsWith(".cjs") ||
-        fp.endsWith(".mjs") ||
-        fp.endsWith(".tsx")
-      ) {
-        jsParser.parseString(buffer, fp);
-      }
+      fileMsgMap.push({ path: fp, msgs });
     }),
   );
 
-  extr.savePotFile(potPath);
-  console.info(`${chalk.green("Extraction successful")}, ${chalk.blueBright(potPath)} created.`);
+  const pot = new PO();
+  pot.headers["Content-Type"] = "text/plain; charset=UTF-8";
 
-  extr.printStats();
-};
-export default extractFromFiles;
+  // sorting makes order more deterministic and prevents unnecessary source diffs
+  fileMsgMap.sort((a, b) => a.path.localeCompare(b.path));
+  fileMsgMap.forEach((m) => {
+    const po = makePO(m.path, m.msgs);
+    for (const i of po.items) {
+      const prevItem = pot.items.find(
+        (pi) => pi.msgid === i.msgid && pi.msgid_plural === i.msgid_plural && pi.msgctxt === i.msgctxt,
+      );
+
+      if (prevItem) {
+        prevItem.references.push(...i.references);
+      } else {
+        pot.items.push(i);
+      }
+    }
+  });
+
+  try {
+    fs.writeFileSync(potPath, pot.toString());
+  } catch (err) {
+    console.error(err);
+  }
+
+  console.info(`${chalk.green("Extraction successful")}, ${chalk.blueBright(potPath)} created.`);
+}

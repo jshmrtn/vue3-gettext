@@ -2,10 +2,10 @@
 
 import chalk from "chalk";
 import commandLineArgs, { OptionDefinition } from "command-line-args";
-import fsPromises from "fs/promises";
-import path from "path";
-import { compilePoFiles } from "./compile";
-import { loadConfig } from "./config";
+import fsPromises from "node:fs/promises";
+import path from "node:path";
+import { compilePoFiles } from "./compile.js";
+import { loadConfig } from "./config.js";
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
 let options;

@@ -1,22 +1,14 @@
 import { App, computed, reactive, ref } from "vue";
-import Component from "./component";
-import Directive from "./directive";
 import interpolateRaw from "./interpolate";
 import translateRaw from "./translate";
-import type {
-  GettextConfig,
-  GettextConfigOptions,
-  GetTextOptions,
-  Language,
-  LanguageData,
-  Message,
-  Translations,
-} from "./typeDefs";
+import type { GettextConfigOptions, GetTextOptions, Language, LanguageData, Message, Translations } from "./typeDefs";
 import { GetTextSymbol } from "./typeDefs";
 import { normalizeTranslations } from "./utilities";
 
+export { tokenize } from "./extract/tokenizer";
+export { type MsgInfo, parseSrc, makePO } from "./extract/parser";
 export { useGettext } from "./utilities";
-export type { Language, Message, LanguageData, Translations, GettextConfig, GettextConfigOptions, GetTextOptions };
+export type { Language, Message, LanguageData, Translations, GettextConfigOptions as Config, GetTextOptions };
 
 const defaultOptions: GetTextOptions = {
   /** all the available languages of your application. Keys must match locale names */
@@ -35,8 +27,6 @@ const defaultOptions: GetTextOptions = {
     npgettext: ["$npgettext"],
     interpolate: ["$gettextInterpolate"],
   },
-  provideDirective: true,
-  provideComponent: true,
 };
 
 export function createGettext(options: Partial<GetTextOptions> = {}) {
@@ -90,22 +80,10 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
         properties.forEach((p) => {
           globalProperties[p] = gettext.$npgettext;
         });
-        properties = mergedOptions.globalProperties.interpolate || ["$gettextInterpolate"];
-        properties.forEach((p) => {
-          globalProperties[p] = gettext.interpolate;
-        });
         properties = mergedOptions.globalProperties.language || ["$language"];
         properties.forEach((p) => {
           globalProperties[p] = gettext;
         });
-      }
-
-      if (mergedOptions.provideDirective) {
-        app.directive("translate", Directive(gettext));
-      }
-      if (mergedOptions.provideComponent) {
-        // eslint-disable-next-line vue/multi-word-component-names, vue/component-definition-name-casing
-        app.component("translate", Component);
       }
     },
   }) as unknown as Language;
@@ -117,9 +95,6 @@ export function createGettext(options: Partial<GetTextOptions> = {}) {
   gettext.$ngettext = translate.ngettext.bind(translate);
   gettext.$npgettext = translate.npgettext.bind(translate);
   gettext.interpolate = interpolate.bind(interpolate);
-
-  gettext.directive = Directive(gettext);
-  gettext.component = Component;
 
   return gettext;
 }

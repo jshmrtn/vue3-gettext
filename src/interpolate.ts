@@ -1,5 +1,5 @@
 import { ComponentInternalInstance } from "vue";
-import { Language } from "./typeDefs";
+import { Language } from "./typeDefs.js";
 
 const EVALUATION_RE = /[[\].]{1,2}/g;
 
@@ -36,7 +36,7 @@ const MUSTACHE_SYNTAX_RE = /\{\{((?:.|\n)+?)\}\}/g;
  */
 const interpolate =
   (plugin: Language) =>
-  (msgid: string, context: any = {}, disableHtmlEscaping = false, parent?: ComponentInternalInstance | any) => {
+  (msgid: string, context: any = {}, parent?: ComponentInternalInstance | any) => {
     const silent = plugin.silent;
     if (!silent && MUSTACHE_SYNTAX_RE.test(msgid)) {
       console.warn(`Mustache syntax cannot be used with vue-gettext. Please use "%{}" instead of "{{}}" in: ${msgid}`);
@@ -79,12 +79,7 @@ const interpolate =
           }
         }
         const result = evaluated.toString();
-        if (disableHtmlEscaping) {
-          // Do not escape HTML, see #78.
-          return result;
-        }
-        // Escape HTML, see #78.
-        return result.replace(/[&<>"']/g, (m: string) => escapeHtmlMap[m as keyof typeof escapeHtmlMap]);
+        return result;
       }
 
       return evalInContext(context, expression, parent);

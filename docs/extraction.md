@@ -25,72 +25,54 @@ Using these scripts is _theoretically_ optional if you have other means of extra
 Before running the scripts, create a file `gettext.config.js` in your application root. This is a configuration _only_ for the scripts above. A minimal configuration may look like this:
 
 ```js
-module.exports = {
+// @ts-check
+/** @type {import('./src/index').Config} */
+const config = {
   output: {
     locales: ["en", "de"],
   },
 };
-```
-
-You can also use a `gettext.config.mjs` file with the Ecmascript module format:
-
-```js
-export default {
-  output: {
-    locales: ["en", "de"],
-  },
-}
+export default config;
 ```
 
 Here are all the available configuration options and their defaults:
 
 ```js
-module.exports = {
+// @ts-check
+/** @type {import('./src/index').Config} */
+const config = {
   input: {
     path: "./src", // only files in this directory are considered for extraction
     include: ["**/*.js", "**/*.ts", "**/*.vue"], // glob patterns to select files for extraction
     exclude: [], // glob patterns to exclude files from extraction
-    jsExtractorOpts:[ // custom extractor keyword. default empty.
-      {
-        keyword: "__", // only extractor default keyword such as $gettext,use keyword to custom
-        options: {    // see https://github.com/lukasgeiter/gettext-extractor
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            text: 0,
-          },
-        },
+    parserOptions: {
+      // add your own function names/keywords to extract
+      mapping: {
+        simple: ["$gettext"],
+        plural: ["$ngettext"],
+        ctx: ["$pgettext"],
+        ctxPlural: ["$npgettext"],
       },
-      {
-        keyword: "_n", // $ngettext
-        options: {
-          content: {
-            replaceNewLines: "\n",
-          },
-          arguments: {
-            text: 0,
-            textPlural: 1,
-          },
-        },
-      },
-    ],
-	compileTemplate: false, // do not compile <template> tag when its lang is not html
+      overrideDefaultKeywords: false, // do not extract default keywords, `mapping` must be set if this is enabled
+    },
   },
   output: {
     path: "./src/language", // output path of all created files
     potPath: "./messages.pot", // relative to output.path, so by default "./src/language/messages.pot"
     jsonPath: "./translations.json", // relative to output.path, so by default "./src/language/translations.json"
     locales: ["en"],
-    flat: false, // don't create subdirectories for locales
+    flat: true, // create a subdirectory for each locale
     linguas: true, // create a LINGUAS file
     splitJson: false, // create separate json files for each locale. If used, jsonPath must end with a directory, not a file
-    locations: true, // removes path comments inside pot files if set to false
+    fuzzyMatching: true, // set if fuzzy matching should be enabled when merging the pot file into the po files
+    locations: true, // output location paths
   },
 };
+export default config;
 ```
 
 ## Gotchas
+
 When first extract, it will call `msginit` to create a `.po` file,
 this command will set the `Plural-Forms` header, if the locale is in
 [the embedded table](https://github.com/dd32/gettext/blob/master/gettext-tools/src/plural-table.c#L27)

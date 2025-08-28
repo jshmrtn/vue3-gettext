@@ -1,0 +1,20 @@
+<template>
+  <div>
+    <p>
+      <button @click="toggleShow()">Toggle: {{ show }}</button>
+      <span v-if="show" class="translated">{{ $gettext(         "Welcome, %{ name }", { name: obj.name }) }}</span>
+    </p>
+    <div>
+      <p>
+        <button @click="setName1()">{{ $gettext("asdf") }}</button>
+        <button @click="setName2()">2</button>
+        <button @click="setName3()">3</button>
+        [{{ obj.name }}]
+      </p>
+      <p v-if="obj.name === 'Group1'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
+      <p v-else-if="obj.name === 'Group2'" v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
+      <p v-else v-translate="{ obj }" class="translated">This is %{ obj.name }</p>
+    </div>
+    {{ $ngettext("%{count} book", "%{count} books", n, { n }) }}
+  </div>
+</template>

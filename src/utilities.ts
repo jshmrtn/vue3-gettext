@@ -1,11 +1,8 @@
 import { inject } from "vue";
-import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs";
+import { GetTextOptions, GetTextSymbol, Language, LanguageData, Translations } from "./typeDefs.js";
 
-export function normalizeTranslationKey(key: string) {
-  return key
-    .replace(/\r?\n|\r/, "")
-    .replace(/\s\s+/g, " ")
-    .trim();
+export function normalizeMsgId(key: string) {
+  return key.replaceAll(/\r?\n/g, "\n");
 }
 
 export function normalizeTranslations(translations: GetTextOptions["translations"]) {
@@ -14,7 +11,7 @@ export function normalizeTranslations(translations: GetTextOptions["translations
     const langData = translations[lang];
     const newLangData: LanguageData = {};
     Object.keys(langData).forEach((key) => {
-      newLangData[normalizeTranslationKey(key)] = langData[key];
+      newLangData[normalizeMsgId(key)] = langData[key];
     });
     newTranslations[lang] = newLangData;
   });
@@ -28,3 +25,9 @@ export const useGettext = (): Language => {
   }
   return gettext;
 };
+
+export function assertIsDefined<T>(value: T): asserts value is NonNullable<T> {
+  if (value === undefined || value === null) {
+    throw new Error(`${value} is not defined`);
+  }
+}

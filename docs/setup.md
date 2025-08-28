@@ -24,8 +24,8 @@ On Windows, you have multiple options. You can run the scripts and install gette
 
 ## Installation
 
-Install Vue 3 Gettext using `npm` or `yarn`:
+Install Vue 3 Gettext using `npm` (or the package manager of your choice):
 
 ```sh
-npm i vue3-gettext@next
+npm i vue3-gettext
 ```

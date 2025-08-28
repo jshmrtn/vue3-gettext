@@ -5,10 +5,11 @@ import commandLineArgs, { OptionDefinition } from "command-line-args";
 import fs from "node:fs";
 import { glob } from "glob";
 import path from "node:path";
-import { loadConfig } from "./config";
-import extractFromFiles from "./extract";
-import { execShellCommand } from "./utils";
-import { GettextConfig } from "../src/typeDefs";
+import { GettextConfig } from "../src/typeDefs.js";
+import { chmodSync, existsSync, lstatSync, mkdirSync, writeFileSync } from "node:fs";
+import { loadConfig } from "./config.js";
+import { extractAndCreatePOT } from "./extract.js";
+import { execShellCommand } from "./utils.js";
 
 const optionDefinitions: OptionDefinition[] = [{ name: "config", alias: "c", type: String }];
 let options;
@@ -21,10 +22,10 @@ try {
   process.exit(1);
 }
 
-var getFiles = async (config: GettextConfig) => {
+const getFiles = async (config: GettextConfig) => {
   const allFiles = await Promise.all(
     config.input?.include.map((pattern) => {
-      const searchPath = path.join(config.input.path, pattern);
+      const searchPath = path.join(config.input.path, pattern).replace(/\\/g, "/");
       console.info(`Searching: ${chalk.blueBright(searchPath)}`);
       return glob(searchPath);
     }),
@@ -60,19 +61,19 @@ var getFiles = async (config: GettextConfig) => {
   console.info();
   files.forEach((f) => console.info(chalk.grey(f)));
   console.info();
-  await extractFromFiles(files, config.output.potPath, config);
+  await extractAndCreatePOT(files, config.output.potPath, config);
 
   for (const loc of config.output.locales) {
     const poDir = config.output.flat ? config.output.path : path.join(config.output.path, loc);
     const poFile = config.output.flat ? path.join(poDir, `${loc}.po`) : path.join(poDir, `app.po`);
+    const noLocation = config.output.locations ? "" : "--no-location";
+    const noFuzzyMatching = config.output.fuzzyMatching ? "" : "--no-fuzzy-matching";
 
-    fs.mkdirSync(poDir, { recursive: true });
-    const isFile = fs.existsSync(poFile) && fs.lstatSync(poFile).isFile();
+    mkdirSync(poDir, { recursive: true });
+    const isFile = existsSync(poFile) && lstatSync(poFile).isFile();
     if (isFile) {
       await execShellCommand(
-        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${
-          config.output.locations ? "" : "--no-location"
-        } --backup=off`,
+        `msgmerge --lang=${loc} --update ${poFile} ${config.output.potPath} ${noFuzzyMatching} ${noLocation} --backup=off`,
       );
       console.info(`${chalk.green("Merged")}: ${chalk.blueBright(poFile)}`);
     } else {
@@ -84,16 +85,14 @@ var getFiles = async (config: GettextConfig) => {
       await execShellCommand(
         `msginit --no-translator --locale=${loc} --input=${config.output.potPath} --output-file=${poFile}`,
       );
-      fs.chmodSync(poFile, 0o666);
-      await execShellCommand(
-        `msgattrib --no-wrap --no-obsolete ${config.output.locations ? "" : "--no-location"} -o ${poFile} ${poFile}`,
-      );
+      chmodSync(poFile, 0o666);
+      await execShellCommand(`msgattrib --no-wrap --no-obsolete ${noLocation} -o ${poFile} ${poFile}`);
       console.info(`${chalk.green("Created")}: ${chalk.blueBright(poFile)}`);
     }
   }
   if (config.output.linguas === true) {
     const linguasPath = path.join(config.output.path, "LINGUAS");
-    fs.writeFileSync(linguasPath, config.output.locales.join(" "));
+    writeFileSync(linguasPath, config.output.locales.join(" "));
     console.info();
     console.info(`${chalk.green("Created")}: ${chalk.blueBright(linguasPath)}`);
   }

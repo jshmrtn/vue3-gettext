@@ -1,0 +1,27 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: vue 3-gettext\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: zh_CN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: docs/.vitepress/theme/demo/DemoParams.vue:4 docs/demo.md:81
+msgid "%{name} is a good friend. My favorite number is %{favNum}."
+msgstr "%{name} 是一个好朋友。我最喜欢的数字是 %{favNum}。"
+
+#: docs/.vitepress/theme/demo/DemoPluralization.vue:4 docs/demo.md:100
+msgid "I have %{count} book."
+msgid_plural "I have %{count} books."
+msgstr[0] "我有 %{count} 本书。"
+msgstr[1] "我有 %{count} 本书。"
+
+#: docs/.vitepress/theme/demo/LanguageSelect.vue:4
+msgid "Select your language:"
+msgstr "选择你的语言"
+
+#: docs/demo.md:17 docs/demo.md:63 docs/demo.md:69 docs/demo.md:122
+msgid "I like cats."
+msgstr "我喜欢猫。"

@@ -16,6 +16,5 @@ yarn.lock
 .tm_properties
 .idea/
 
-docs/.vuepress/.cache
-docs/.vuepress/.temp
+docs/.vitepress/cache
 .npmrc

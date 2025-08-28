@@ -1,10 +1,4 @@
-import { IJsExtractorOptions } from "gettext-extractor/dist/js/extractors/common";
 import { App, UnwrapRef, WritableComputedRef } from "vue";
-import type { Component as ComponentType } from "./component";
-import directive from "./directive";
-
-export type TranslateComponent = typeof ComponentType;
-export type TranslateDirective = ReturnType<typeof directive>;
 
 export const GetTextSymbol = Symbol("GETTEXT");
 
@@ -38,15 +32,23 @@ export interface GetTextOptions {
     npgettext?: Array<string>;
     interpolate?: Array<string>;
   };
-  provideDirective: boolean;
-  provideComponent: boolean;
 }
 
+type Separator = " ";
+
+type Trim<T extends string, Acc extends string = ""> = T extends `${infer Char}${infer Rest}`
+  ? Char extends Separator
+    ? Trim<Rest, Acc>
+    : Trim<Rest, `${Acc}${Char}`>
+  : T extends ""
+    ? Acc
+    : never;
+
 type ParameterKeys<TString extends string> = TString extends `${infer _}%{${infer Key}}${infer Rest}`
-  ? Key | ParameterKeys<Rest>
+  ? Trim<Key> | ParameterKeys<Rest>
   : never;
 
-export type Parameters<TString extends string> = Record<ParameterKeys<TString>, string>;
+export type Parameters<TString extends string> = Record<ParameterKeys<TString>, string | number>;
 
 export type Language = UnwrapRef<{
   available: GetTextOptions["availableLanguages"];
@@ -54,24 +56,17 @@ export type Language = UnwrapRef<{
   silent: GetTextOptions["silent"];
   translations: WritableComputedRef<GetTextOptions["translations"]>;
   current: string;
-  sourceCodeLanguage?: string; // if set, use it to calculate plural form when a msgid is not translated.
-  $gettext: <TString extends string>(
-    msgid: TString,
-    parameters?: Parameters<TString>,
-    disableHtmlEscaping?: boolean,
-  ) => string;
-  $pgettext: <TString extends string>(
-    context: string,
-    msgid: TString,
-    parameters?: Parameters<TString>,
-    disableHtmlEscaping?: boolean,
-  ) => string;
+  /** if set, use it to calculate plural form when a msgid is not translated.
+   * Default is 'en'.
+   */
+  sourceCodeLanguage?: string;
+  $gettext: <TString extends string>(msgid: TString, parameters?: Parameters<TString>) => string;
+  $pgettext: <TString extends string>(context: string, msgid: TString, parameters?: Parameters<TString>) => string;
   $ngettext: <TSingular extends string, TPlural extends string>(
     msgid: TSingular,
     plural: TPlural,
     n: number,
     parameters?: Parameters<TSingular> & Parameters<TPlural>,
-    disableHtmlEscaping?: boolean,
   ) => string;
   $npgettext: <TSingular extends string, TPlural extends string>(
     context: string,
@@ -79,13 +74,35 @@ export type Language = UnwrapRef<{
     plural: TPlural,
     n: number,
     parameters?: Parameters<TSingular> & Parameters<TPlural>,
-    disableHtmlEscaping?: boolean,
   ) => string;
-  interpolate: (msgid: string, context: object, disableHtmlEscaping?: boolean) => string;
+  interpolate: (msgid: string, context: object) => string;
   install: (app: App) => void;
-  directive: TranslateDirective;
-  component: TranslateComponent;
 }>;
+
+export type KeywordMapping = {
+  /** @default $gettext */
+  simple?: string[];
+  /** @default $ngettext */
+  plural?: string[];
+  /** @default $npgettext */
+  ctxPlural?: string[];
+  /** @default $pgettext */
+  ctx?: string[];
+};
+
+type ParserOptions =
+  | {
+      /** extract different keywords */
+      mapping: KeywordMapping;
+      /** doesn't merge your custom keywords with the default values */
+      overrideDefaultKeywords?: true;
+    }
+  | {
+      /** extract different keywords */
+      mapping?: KeywordMapping;
+      /** doesn't merge your custom keywords with the default values */
+      overrideDefaultKeywords?: false;
+    };
 
 export interface GettextConfig {
   input: {
@@ -95,12 +112,8 @@ export interface GettextConfig {
     include: string[];
     /** glob patterns to exclude files from extraction */
     exclude: string[];
-    /** js extractor options, for custom extractor keywords */
-    jsExtractorOpts?: {
-      keyword: string;
-      options: IJsExtractorOptions;
-    }[];
-    compileTemplate: boolean;
+    /** parser options */
+    parserOptions?: ParserOptions;
   };
   output: {
     path: string;
@@ -110,6 +123,7 @@ export interface GettextConfig {
     flat: boolean;
     linguas: boolean;
     splitJson: boolean;
+    fuzzyMatching: boolean;
     locations: boolean;
   };
 }
@@ -119,17 +133,15 @@ export interface GettextConfigOptions {
   output?: Partial<GettextConfig["output"]>;
 }
 
+interface GlobalTypes extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
+  $language: Language;
+  $gettextInterpolate: Language["interpolate"];
+}
+
+declare module "vue" {
+  interface ComponentCustomProperties extends GlobalTypes {}
+}
+
 declare module "@vue/runtime-core" {
-  interface ComponentCustomProperties extends Pick<Language, "$gettext" | "$pgettext" | "$ngettext" | "$npgettext"> {
-    $language: Language;
-    $gettextInterpolate: Language["interpolate"];
-  }
-
-  interface GlobalComponents {
-    translate: TranslateComponent;
-  }
-
-  interface GlobalDirectives {
-    vTranslate: TranslateDirective;
-  }
+  interface ComponentCustomProperties extends GlobalTypes {}
 }
