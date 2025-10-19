@@ -9,6 +9,7 @@ export enum TokenKind {
   String = "String",
   Keyword = "Keyword",
   Unrecognized = "Unrecognized",
+  Plus = "Plus",
 }
 
 export type Token = {
@@ -92,6 +93,9 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
       case ",":
         addToken(TokenKind.Comma, idx);
         break;
+      case "+":
+        addToken(TokenKind.Plus, idx);
+        break;
       case '"':
       case "'":
       case "`":
@@ -101,7 +105,9 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
         const prevTokenKind = tokens[tokens.length - 1]?.kind;
         if (
           !unrecognizedContent.trim() &&
-          (prevTokenKind === TokenKind.ParenLeft || prevTokenKind === TokenKind.Comma)
+          (prevTokenKind === TokenKind.ParenLeft ||
+            prevTokenKind === TokenKind.Comma ||
+            prevTokenKind === TokenKind.Plus)
         ) {
           addToken(TokenKind.String, idx, readString(c));
           break;

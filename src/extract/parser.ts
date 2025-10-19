@@ -14,8 +14,10 @@ type MsgInfoWithCharIdx = BaseMsg & { idx: number };
 export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): MsgInfoWithCharIdx[] {
   let idx = -1;
   let t: Token | undefined = undefined;
+  let previousTokenKind: TokenKind | undefined = undefined;
 
   function advance() {
+    previousTokenKind = tokens[idx]?.kind || undefined;
     idx += 1;
     return tokens[idx];
   }
@@ -48,14 +50,19 @@ export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): Msg
         break;
       }
       assertIsDefined(t.value);
-      stringArgs.push(t.value);
+      if (previousTokenKind === TokenKind.Plus) {
+        stringArgs[stringArgs.length - 1] += t.value;
+      } else {
+        stringArgs.push(t.value);
+      }
       t = advance();
       if (!t) {
         break;
       }
-      if (t.kind !== TokenKind.Comma) {
+      if (t.kind !== TokenKind.Comma && t.kind !== TokenKind.Plus) {
         break;
       }
+
       t = advance();
       if (!t) {
         break;

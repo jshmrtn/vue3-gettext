@@ -5,6 +5,19 @@ import { cwd } from "process";
 import { execSync } from "child_process";
 import { describe, it, expect } from "vitest";
 
+// Setup the project structure inside the temp directory
+async function setupExtractionEnv(tmpDir: string) {
+  for (const d of ["src", "scripts", "node_modules"]) {
+    await symlink(join(cwd(), d), join(tmpDir, d));
+  }
+  await writeFile(join(tmpDir, "package.json"), JSON.stringify({ name: "test", type: "commonjs" }));
+
+  await writeFile(
+    join(tmpDir, "gettext.config.js"),
+    `module.exports = { input: { path: './srctest' }, output: { path: './srctest/lang' } };`,
+  );
+}
+
 describe("Extractor Script Tests", () => {
   type WithTempDirTest = (tmpDir: string) => Promise<any>;
 
@@ -23,16 +36,7 @@ describe("Extractor Script Tests", () => {
 
   it("should correctly extract a message from a $gettext call with a trailing comma", async () => {
     await withTempDir(async (tmpDir) => {
-      // 1. Setup the project structure inside the temp directory
-      for (const d of ["src", "scripts", "node_modules"]) {
-        await symlink(join(cwd(), d), join(tmpDir, d));
-      }
-      await writeFile(join(tmpDir, "package.json"), JSON.stringify({ name: "test", type: "commonjs" }));
-
-      await writeFile(
-        join(tmpDir, "gettext.config.js"),
-        `module.exports = { input: { path: './srctest' }, output: { path: './srctest/lang' } };`,
-      );
+      await setupExtractionEnv(tmpDir);
 
       await mkdir(join(tmpDir, "srctest", "lang"), { recursive: true });
       await writeFile(
@@ -56,6 +60,34 @@ describe("Extractor Script Tests", () => {
           '"              That previously caused a crash in extraction."\n',
       );
       expect(potContent).toContain("#: srctest/MultiLineLiteralWithComma.js:2");
+    });
+  });
+
+  it("should correctly extract a message from a $gettext call with multiple lines", async () => {
+    await withTempDir(async (tmpDir) => {
+      await setupExtractionEnv(tmpDir);
+
+      await mkdir(join(tmpDir, "srctest", "lang"), { recursive: true });
+      await writeFile(
+        join(tmpDir, "srctest", "MultiLine.js"),
+        `
+          const myText = $gettext(
+            'This is a multiline template string that is just too long ' +
+              'to fit on one line in the code and previously wasn\\'t ' +
+              'extracted correctly.'
+          );
+        `,
+      );
+
+      execSync(`sh -c 'cd ${tmpDir}; tsx ./scripts/gettext_extract.ts'`);
+
+      // Verify that the output .pot file is correct.
+      const potContent = (await readFile(join(tmpDir, "srctest", "lang", "messages.pot"))).toString();
+      console.debug(potContent);
+      expect(potContent).toContain(
+        'msgid "This is a multiline template string that is just too long to fit on one line in the code and previously wasn\'t extracted correctly."\n',
+      );
+      expect(potContent).toContain("#: srctest/MultiLine.js:2");
     });
   });
 });

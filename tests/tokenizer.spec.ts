@@ -31,6 +31,15 @@ describe("tokenizer", () => {
     ]);
   });
 
+  it("deals with string concatenation", () => {
+    expect(tokenize(keywords, `("test " + "newlines")`)).toEqual(<Token[]>[
+      { kind: TokenKind.ParenLeft, idx: 0 },
+      { kind: TokenKind.String, value: "test ", idx: 1 },
+      { kind: TokenKind.Plus, idx: 9 },
+      { kind: TokenKind.String, value: "newlines", idx: 11 },
+    ]);
+  });
+
   it("read vue file", () => {
     const src = `
 <script>
