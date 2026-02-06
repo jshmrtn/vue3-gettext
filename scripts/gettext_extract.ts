@@ -32,7 +32,7 @@ const getFiles = async (config: GettextConfig) => {
   );
   const excludeFiles = await Promise.all(
     config.input.exclude.map((pattern) => {
-      const searchPath = path.join(config.input.path, pattern);
+      const searchPath = path.join(config.input.path, pattern).replace(/\\/g, "/");
       console.info(`Excluding: ${chalk.blueBright(searchPath)}`);
       return glob(searchPath);
     }),
