@@ -1,1 +1,0 @@
-import{_ as t,c as a,o as e,af as i}from"./chunks/framework.CQcfBnUl.js";const u=JSON.parse('{"title":"Setup","description":"","frontmatter":{},"headers":[],"relativePath":"setup.md","filePath":"setup.md"}'),n={name:"setup.md"};function l(p,s,r,h,o,d){return e(),a("div",null,[...s[0]||(s[0]=[i("",12)])])}const c=t(n,[["render",l]]);export{u as __pageData,c as default};

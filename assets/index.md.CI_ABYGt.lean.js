@@ -1,1 +1,0 @@
-import{_ as a,c as e,o as i,af as t}from"./chunks/framework.CQcfBnUl.js";const c=JSON.parse('{"title":"vue3-gettext 🌍","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),n={name:"index.md"};function l(p,s,h,r,o,d){return i(),e("div",null,[...s[0]||(s[0]=[t("",14)])])}const g=a(n,[["render",l]]);export{c as __pageData,g as default};
