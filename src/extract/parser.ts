@@ -63,7 +63,10 @@ export function parseFunctionCall(mapping: KeywordMapping, tokens: Token[]): Msg
     }
 
     if (stringArgs.length) {
-      msgs.push(getMsgInfo(mapping, keyword, charIndex, stringArgs));
+      const info = getMsgInfo(mapping, keyword, charIndex, stringArgs);
+      if (info) {
+        msgs.push(info);
+      }
     }
   }
 
@@ -75,7 +78,7 @@ function getMsgInfo(
   keyword: string,
   charIdx: number,
   stringArgs: string[],
-): MsgInfoWithCharIdx {
+): MsgInfoWithCharIdx | null {
   if (mapping.simple?.includes(keyword)) {
     return {
       message: stringArgs[0],
@@ -91,6 +94,9 @@ function getMsgInfo(
     };
   }
   if (mapping.ctx?.includes(keyword)) {
+    if (!stringArgs[1]) {
+      return null;
+    }
     return {
       context: stringArgs[0],
       message: stringArgs[1],
@@ -98,6 +104,9 @@ function getMsgInfo(
     };
   }
   if (mapping.ctxPlural?.includes(keyword)) {
+    if (!stringArgs[1]) {
+      return null;
+    }
     return {
       context: stringArgs[0],
       message: stringArgs[1],
