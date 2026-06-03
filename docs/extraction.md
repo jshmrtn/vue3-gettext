@@ -18,6 +18,8 @@ First, add scripts to your `package.json`:
 
 `npm run gettext:compile` compiles the translated messages from the `.po` files to a `.json` to be used in your application.
 
+**NOTE**: `vue-gettext-compile` WILL NOT include messages marked as `obsolete` or `fuzzy`! Thus you might want to execute `msgattrib --clear-fuzzy` to unset "fuzzy" attribute from all strings in order to get them included in translations.
+
 Using these scripts is _theoretically_ optional if you have other means of extraction or may even want to write message files yourself.
 
 ## Configuration
