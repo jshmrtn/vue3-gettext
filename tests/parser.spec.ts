@@ -30,15 +30,18 @@ describe("parser", () => {
       {
         message: "Welcome, %{ name }",
         lineNumber: 6,
+        hasInterpolation: true,
       },
       {
         message: "asdf",
         lineNumber: 10,
+        hasInterpolation: false,
       },
       {
         lineNumber: 19,
         message: "%{count} book",
         messagePlural: "%{count} books",
+        hasInterpolation: true,
       },
     ]);
 
@@ -47,6 +50,7 @@ describe("parser", () => {
 msgstr \"\"
 
 #: testFile:6
+#, vue-format
 msgid \"Welcome, %{ name }\"
 msgstr \"\"
 
@@ -55,6 +59,7 @@ msgid \"asdf\"
 msgstr \"\"
 
 #: testFile:19
+#, vue-format
 msgid \"%{count} book\"
 msgid_plural \"%{count} books\"
 msgstr[0] \"\"
@@ -73,6 +78,7 @@ Line breaks\`)`),
         message: `Test
 With
 Line breaks`,
+        hasInterpolation: false,
       },
     ]);
   });
@@ -84,6 +90,7 @@ Line breaks`,
       {
         message: unicodeTestPage,
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
   });
@@ -93,6 +100,7 @@ Line breaks`,
       {
         message: `t'\`e"st`,
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
 
@@ -100,6 +108,7 @@ Line breaks`,
       {
         message: `t\'\`e"st`,
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
 
@@ -107,6 +116,7 @@ Line breaks`,
       {
         message: "t'`est",
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
 
@@ -115,6 +125,7 @@ Line breaks`,
         message: "t'`e\"st",
         messagePlural: `t'\`e"st`,
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
   });
@@ -124,6 +135,7 @@ Line breaks`,
       {
         message: `\\`,
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
   });
@@ -134,6 +146,7 @@ Line breaks`,
         message: `te(st)(()`,
         messagePlural: "test)(()",
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
   });
@@ -143,6 +156,7 @@ Line breaks`,
       {
         message: `test`,
         lineNumber: 1,
+        hasInterpolation: false,
       },
     ]);
   });
@@ -170,6 +184,7 @@ export default {
       {
         message: `%{fullName} wants to say hello`,
         lineNumber: 15,
+        hasInterpolation: true,
       },
     ]);
   });
@@ -198,6 +213,7 @@ export default {
       {
         message: `Hello there`,
         lineNumber: 16,
+        hasInterpolation: false,
       },
     ]);
   });

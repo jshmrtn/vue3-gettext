@@ -3,10 +3,18 @@ import { Token, tokenize, TokenKind } from "./tokenizer.js";
 import { KeywordMapping } from "../typeDefs.js";
 import { assertIsDefined } from "../utilities.js";
 
+// Interpolation RegExp - matches Vue.js %{} syntax
+const INTERPOLATION_RE = /%\{((?:.|\n)+?)\}/g;
+
+function hasInterpolation(message: string): boolean {
+  return INTERPOLATION_RE.test(message);
+}
+
 type BaseMsg = { message: string; messagePlural?: string; context?: string };
 
 export type MsgInfo = BaseMsg & {
   lineNumber: number;
+  hasInterpolation: boolean;
 };
 
 type MsgInfoWithCharIdx = BaseMsg & { idx: number };
@@ -147,6 +155,8 @@ export function parseSrc(src: string, options?: { mapping?: KeywordMapping; over
     return {
       ...i,
       lineNumber: src.substring(0, info.idx).split("\n").length,
+      hasInterpolation:
+        hasInterpolation(info.message) || (info.messagePlural ? hasInterpolation(info.messagePlural) : false),
     };
   });
 }
@@ -161,6 +171,7 @@ export function makePO(fileName: string, msgs: MsgInfo[]): PO {
     item.msgid_plural = msg.messagePlural;
     item.msgctxt = msg.context;
     item.references = [`${fileName}:${msg.lineNumber}`];
+    item.flags["vue-format"] = msg.hasInterpolation;
     po.items.push(item);
   }
 
