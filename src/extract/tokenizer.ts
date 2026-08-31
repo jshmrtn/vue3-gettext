@@ -63,8 +63,7 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
 
     while (true) {
       if (c === "") {
-        console.error(`parsing error, string literal is not closed until end of file`);
-        break;
+        throw new SyntaxError(`parsing error, string literal is not closed until end of file`);
       }
       if (prevChar !== "\\") {
         if (c === "\\") {
@@ -87,6 +86,31 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
     return content.replace(/\r\n/g, "\n");
   }
 
+  function isGettextArgument(): boolean {
+    const previousToken = tokens[tokens.length - 1];
+    if (previousToken?.kind === TokenKind.ParenLeft) {
+      return tokens[tokens.length - 2]?.kind === TokenKind.Keyword;
+    }
+
+    if (previousToken?.kind !== TokenKind.Comma) {
+      return false;
+    }
+
+    for (let tokenIndex = tokens.length - 2; tokenIndex >= 0; tokenIndex -= 2) {
+      if (tokens[tokenIndex]?.kind !== TokenKind.String) {
+        return false;
+      }
+      if (tokens[tokenIndex - 1]?.kind === TokenKind.ParenLeft) {
+        return tokens[tokenIndex - 2]?.kind === TokenKind.Keyword;
+      }
+      if (tokens[tokenIndex - 1]?.kind !== TokenKind.Comma) {
+        return false;
+      }
+    }
+
+    return false;
+  }
+
   function scanToken() {
     const c = advance();
     switch (c) {
@@ -99,14 +123,7 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
       case '"':
       case "'":
       case "`":
-        // this check prevents parsing string literals that aren't part of a function call
-        // improves robustness as it prevents issues with odd numbers
-        // but will also parse calls within string literals
-        const prevTokenKind = tokens[tokens.length - 1]?.kind;
-        if (
-          !unrecognizedContent.trim() &&
-          (prevTokenKind === TokenKind.ParenLeft || prevTokenKind === TokenKind.Comma)
-        ) {
+        if (!unrecognizedContent.trim() && isGettextArgument()) {
           addToken(TokenKind.String, idx, readString(c));
           break;
         }
