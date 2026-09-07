@@ -86,25 +86,31 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
     return content.replace(/\r\n/g, "\n");
   }
 
+  // only parse strings that are arguments of a gettext keyword; walk tokens backward to keyword
   function isGettextArgument(): boolean {
-    const previousToken = tokens[tokens.length - 1];
-    if (previousToken?.kind === TokenKind.ParenLeft) {
-      return tokens[tokens.length - 2]?.kind === TokenKind.Keyword;
+    let i = tokens.length - 1;
+
+    if (tokens[i]?.kind === TokenKind.ParenLeft) {
+      return tokens[i - 1]?.kind === TokenKind.Keyword;
     }
 
-    if (previousToken?.kind !== TokenKind.Comma) {
+    if (tokens[i]?.kind !== TokenKind.Comma) {
       return false;
     }
 
-    for (let tokenIndex = tokens.length - 2; tokenIndex >= 0; tokenIndex -= 2) {
-      if (tokens[tokenIndex]?.kind !== TokenKind.String) {
+    while (i >= 0) {
+      if (tokens[i]?.kind !== TokenKind.Comma) {
         return false;
       }
-      if (tokens[tokenIndex - 1]?.kind === TokenKind.ParenLeft) {
-        return tokens[tokenIndex - 2]?.kind === TokenKind.Keyword;
-      }
-      if (tokens[tokenIndex - 1]?.kind !== TokenKind.Comma) {
+      i--;
+
+      if (tokens[i]?.kind !== TokenKind.String) {
         return false;
+      }
+      i--;
+
+      if (tokens[i]?.kind === TokenKind.ParenLeft) {
+        return tokens[i - 1]?.kind === TokenKind.Keyword;
       }
     }
 
