@@ -63,8 +63,7 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
 
     while (true) {
       if (c === "") {
-        console.error(`parsing error, string literal is not closed until end of file`);
-        break;
+        throw new SyntaxError(`parsing error, string literal is not closed until end of file`);
       }
       if (prevChar !== "\\") {
         if (c === "\\") {
@@ -87,6 +86,37 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
     return content.replace(/\r\n/g, "\n");
   }
 
+  // only parse strings that are arguments of a gettext keyword; walk tokens backward to keyword
+  function isGettextArgument(): boolean {
+    let i = tokens.length - 1;
+
+    if (tokens[i]?.kind === TokenKind.ParenLeft) {
+      return tokens[i - 1]?.kind === TokenKind.Keyword;
+    }
+
+    if (tokens[i]?.kind !== TokenKind.Comma) {
+      return false;
+    }
+
+    while (i >= 0) {
+      if (tokens[i]?.kind !== TokenKind.Comma) {
+        return false;
+      }
+      i--;
+
+      if (tokens[i]?.kind !== TokenKind.String) {
+        return false;
+      }
+      i--;
+
+      if (tokens[i]?.kind === TokenKind.ParenLeft) {
+        return tokens[i - 1]?.kind === TokenKind.Keyword;
+      }
+    }
+
+    return false;
+  }
+
   function scanToken() {
     const c = advance();
     switch (c) {
@@ -99,14 +129,7 @@ export function tokenize(mapping: KeywordMapping, src: string): Token[] {
       case '"':
       case "'":
       case "`":
-        // this check prevents parsing string literals that aren't part of a function call
-        // improves robustness as it prevents issues with odd numbers
-        // but will also parse calls within string literals
-        const prevTokenKind = tokens[tokens.length - 1]?.kind;
-        if (
-          !unrecognizedContent.trim() &&
-          (prevTokenKind === TokenKind.ParenLeft || prevTokenKind === TokenKind.Comma)
-        ) {
+        if (!unrecognizedContent.trim() && isGettextArgument()) {
           addToken(TokenKind.String, idx, readString(c));
           break;
         }

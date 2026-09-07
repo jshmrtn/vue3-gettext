@@ -5,30 +5,47 @@ const keywords = getKeywords();
 
 describe("tokenizer", () => {
   it("basic function calls", () => {
-    expect(tokenize(keywords, `("test")`)).toEqual(<Token[]>[
-      { kind: TokenKind.ParenLeft, idx: 0 },
-      { kind: TokenKind.String, value: "test", idx: 1 },
+    expect(tokenize(keywords, `$gettext("test")`)).toEqual(<Token[]>[
+      { kind: TokenKind.Keyword, idx: 0, value: "$gettext" },
+      { kind: TokenKind.ParenLeft, idx: 8 },
+      { kind: TokenKind.String, value: "test", idx: 9 },
     ]);
 
-    expect(tokenize(keywords, `("test", 'test', \`test\`)`)).toEqual(<Token[]>[
-      { kind: TokenKind.ParenLeft, idx: 0 },
-      { kind: TokenKind.String, value: "test", idx: 1 },
-      { kind: TokenKind.Comma, idx: 7 },
-      { kind: TokenKind.String, value: "test", idx: 9 },
-      { kind: TokenKind.Comma, idx: 15 },
-      { kind: TokenKind.String, value: "test", idx: 17 },
+    expect(tokenize(keywords, `$npgettext("test", 'test', \`test\`)`)).toEqual(<Token[]>[
+      { kind: TokenKind.Keyword, idx: 0, value: "$npgettext" },
+      { kind: TokenKind.ParenLeft, idx: 10 },
+      { kind: TokenKind.String, value: "test", idx: 11 },
+      { kind: TokenKind.Comma, idx: 17 },
+      { kind: TokenKind.String, value: "test", idx: 19 },
+      { kind: TokenKind.Comma, idx: 25 },
+      { kind: TokenKind.String, value: "test", idx: 27 },
     ]);
   });
 
   it("deals with escaped delimiters", () => {
-    expect(tokenize(keywords, `("te\\"s\\\\t", 'te\\'st', \`te\\\`st\`)`)).toEqual(<Token[]>[
-      { kind: TokenKind.ParenLeft, idx: 0 },
-      { kind: TokenKind.String, value: `te"s\\t`, idx: 1 },
-      { kind: TokenKind.Comma, idx: 11 },
-      { kind: TokenKind.String, value: `te'st`, idx: 13 },
+    expect(tokenize(keywords, `$npgettext("te\\"s\\\\t", 'te\\'st', \`te\\\`st\`)`)).toEqual(<Token[]>[
+      { kind: TokenKind.Keyword, idx: 0, value: "$npgettext" },
+      { kind: TokenKind.ParenLeft, idx: 10 },
+      { kind: TokenKind.String, value: `te"s\\t`, idx: 11 },
       { kind: TokenKind.Comma, idx: 21 },
-      { kind: TokenKind.String, value: "te`st", idx: 23 },
+      { kind: TokenKind.String, value: `te'st`, idx: 23 },
+      { kind: TokenKind.Comma, idx: 31 },
+      { kind: TokenKind.String, value: "te`st", idx: 33 },
     ]);
+  });
+
+  it("does not read Vue template text as a string literal", () => {
+    const src = `<template>
+  <p>('</p>
+  <p>{{ $gettext(\`Hello\`) }}</p>
+</template>`;
+
+    expect(tokenize(keywords, src)).toContainEqual(
+      expect.objectContaining({
+        kind: TokenKind.String,
+        value: "Hello",
+      }),
+    );
   });
 
   it("read vue file", () => {
